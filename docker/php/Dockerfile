@@ -21,10 +21,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure intl \
     && docker-php-ext-install intl
 
-COPY --from=composer:2.0.9 /usr/bin/composer /usr/bin/composer
-
-FROM node:6.7.0
-RUN npm install -g yarn
+COPY --from=composer:2.3.10 /usr/bin/composer /usr/bin/composer
 
 
 WORKDIR /var/www
