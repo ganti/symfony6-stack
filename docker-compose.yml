@@ -1,0 +1,46 @@
+version: "3.8"
+services:
+
+  # PHP service
+  app:
+    container_name: symfony5app-php
+    build: ./docker/php/.
+    working_dir: /var/www/site
+    volumes:
+      - ./app:/var/www/site
+    networks:
+      - app-network
+
+  # Nginx service
+  nginx:
+    container_name: symfony5app-nginx
+    image: nginx:alpine
+    working_dir: /var/www/site
+    ports:
+      - 8001:80
+    volumes:
+      - ./app:/var/www/site
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-network
+
+  # Mysql service
+  # change databasename in /docker/mysql/init.sql
+  mysql:
+    container_name: symfony5app-mysql
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password --init-file="/tmp/mysql/init.sql"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=P@ssw0rd
+    volumes:
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/mysql:/tmp/mysql
+    ports:
+      - 8989:3306
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
