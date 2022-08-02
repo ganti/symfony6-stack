@@ -92,14 +92,18 @@ use TimestampableDeletedTrait;
 ### UUID Trait
 
 composer require symfony/uid
+composer require ramsey/uuid
 
-
+use Ramsey\Uuid\Uuid;
 
 https://symfony.com/doc/current/frontend/encore/installation.html
 composer require symfony/webpack-encore-bundle
 
+## fixtures
+composer require orm-fixtures --dev 
+php bin/console doctrine:fixtures:load --group=setup
 
-symfony/mailer wont send
+## symfony/mailer wont send
 in config/packages/messenger.yaml comment out
 
     messenger:
