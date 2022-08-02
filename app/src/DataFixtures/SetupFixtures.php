@@ -3,25 +3,37 @@
 namespace App\DataFixtures;
 
 use App\Entity\UserRole;
+use App\Service\LogSystemService;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
-class UserRoleFixtures extends Fixture implements FixtureGroupInterface
+class SetupFixtures extends Fixture implements FixtureGroupInterface
 {
-
+    private LogSystemService $log;
+    
     public static function getGroups(): array
     {
-         return ['setup'];
+        return ['setup'];
     }
-
+    
+    public function __construct(LogSystemService $log)
+    {
+        $this->log = $log;
+    }
     public function load(ObjectManager $manager)
     {
+        $this->loadDefaultUserRoles($manager);
+        $this->log->fixtures('setup', 'SetupFixtures loaded', true);
+    }
 
-        
+    public function loadDefaultUserRoles(ObjectManager $manager)
+    {
+
         $roles = [  'Super Admin' => 'ROLE_SUPER_ADMIN',
                     'Admin' => 'ROLE_ADMIN',
                     'User' => 'ROLE_USER'];
+
         foreach ($roles as $k => $v) {
             $role = new Userrole();
             $role->setRole($v);
