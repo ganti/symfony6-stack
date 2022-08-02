@@ -3,7 +3,7 @@ services:
 
   # PHP service
   app:
-    container_name: symfony5app-php
+    container_name: symfony6app-php
     build: ./docker/php/.
     working_dir: /var/www/site
     volumes:
@@ -13,7 +13,7 @@ services:
 
   # Nginx service
   nginx:
-    container_name: symfony5app-nginx
+    container_name: symfony6app-nginx
     image: nginx:alpine
     working_dir: /var/www/site
     ports:
@@ -27,7 +27,7 @@ services:
   # Mysql service
   # change databasename in /docker/mysql/init.sql
   mysql:
-    container_name: symfony5app-mysql
+    container_name: symfony6app-mysql
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password --init-file="/tmp/mysql/init.sql"
     restart: always
