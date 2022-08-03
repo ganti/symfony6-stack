@@ -57,6 +57,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->logs = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return (string) $this->email;
+    }
 
     public function getId(): ?int
     {

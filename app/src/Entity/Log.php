@@ -26,7 +26,7 @@ class Log
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: 'id')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(name: 'level', length: 255)]
@@ -44,7 +44,6 @@ class Log
     #[ORM\Column(name: 'is_success', nullable: true)]
     private ?bool $success = null;
 
-    #[ORM\Column(name: 'user_id', nullable: true)]
     #[ORM\ManyToOne(inversedBy: 'logs')]
     private ?User $user = null;
 
@@ -147,7 +146,7 @@ class Log
         return $this->clientIP;
     }
 
-    public function setClientIP(?string $clientIp): self
+    public function setClientIP(?string $clientIP): self
     {
         $this->clientIP = $clientIP;
 

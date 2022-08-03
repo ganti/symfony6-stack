@@ -16,7 +16,7 @@ trait UuidTrait
 
     public function __construct()
     {
-        $this->pid = strtoupper(Uuid::v4()->__toString());
+        $this->setPid();
     }
 
     /**
@@ -30,9 +30,14 @@ trait UuidTrait
      * @param uuid
      * @return Uuid
      */
-    public function setPid(string $pid) :self
+    public function setPid(string $pid = null) :self
     {
-        $this->pid = $pid;
+        if (empty($pid))
+        {
+            $this->pid = strtoupper(Uuid::v4()->__toString());
+        }else{
+            $this->pid = $pid;
+        }
         return $this;
     }
 }

@@ -2,11 +2,14 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\User;
 use App\Entity\UserRole;
 use App\Service\LogSystemService;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SetupFixtures extends Fixture implements FixtureGroupInterface
 {
@@ -16,15 +19,41 @@ class SetupFixtures extends Fixture implements FixtureGroupInterface
     {
         return ['setup'];
     }
-    
-    public function __construct(LogSystemService $log)
+
+    /**
+     * @var UserPasswordHasherInterface
+     */
+    private $passwordHasher;
+
+    public function __construct(LogSystemService $log, UserPasswordHasherInterface $passwordHasher)
     {
         $this->log = $log;
+        $this->passwordHasher = $passwordHasher;
     }
     public function load(ObjectManager $manager)
     {
+        $this->loadDefaultAdminUser($manager);
         $this->loadDefaultUserRoles($manager);
         $this->log->fixtures('setup', 'SetupFixtures loaded', true);
+    }
+
+    public function loadDefaultAdminUser(ObjectManager $manager)
+    {
+            $user = new User();
+            $user->setEmail('admin@admin.com');
+            $user->setPassword(
+                $this->passwordHasher->hashPassword(
+                    $user,
+                    'admin'
+                )
+            );
+            $user->setIsVerified(True);
+            $user->setActive(True);
+            $user->setPid();
+            $user->setRoles(['ROLE_SUPER_ADMIN']);
+            
+            $manager->persist($user);
+            $manager->flush();
     }
 
     public function loadDefaultUserRoles(ObjectManager $manager)

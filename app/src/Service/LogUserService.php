@@ -11,14 +11,15 @@ class LogUserService extends LogService
     {   
         $user = null;
         $requestUsername = $this->requestStack->getCurrentRequest()->get('username');
-        $userByUsername =  $this->manager->getRepository(User::class)
-                            ->findOneBy(['username' => $requestUsername]);
-
-        if ($userByUsername != null) {
-            $user = $userByUsername;
+        $userByEmail =  $this->manager->getRepository(User::class)
+                            ->findOneBy(['email' => $requestUsername]);
+        
+        if ($userByEmail != null)
+        {
+            $user = $userByEmail;
         }else{
-            $userByEmail =  $this->manager->getRepository(User::class)
-                                ->findOneBy(['email' => $requestUsername]);
+            $userByUsername =  $this->manager->getRepository(User::class)
+                                ->findOneBy(['username' => $requestUsername]);
             $user = $userByEmail;
         }
         if ($user != null) {
@@ -35,7 +36,7 @@ class LogUserService extends LogService
 
     public function logout($user, $success=False) : self
     {   
-        $this->log->setUser( $user);
+        $this->log->setUser($user);
         $this->debug('user', 'logout', $user.' logged out ', True);
         return $this;
     }

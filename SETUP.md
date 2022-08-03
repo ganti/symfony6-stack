@@ -54,6 +54,10 @@ php bin/console make:reset-password
  Then open your browser, go to "/reset-password" and enjoy!
 ```
 
+## Password Hash
+composer require symfony/password-hasher
+
+
 ## Fix Mailer
 symfony/mailer wont send
 in config/packages/messenger.yaml comment out
