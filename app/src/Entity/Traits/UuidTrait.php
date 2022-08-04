@@ -2,42 +2,33 @@
 
 namespace App\Entity\Traits;
 
-
-
-use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 trait UuidTrait
 {
-    
+
     #[ORM\Column(name: 'pid', type: 'string', length:36, unique: true)]
     protected $pid;
 
-
-    public function __construct()
-    {
-        $this->setPid();
-    }
-
-    /**
-     * @return UuidInterface
-     */
-    public function getPid(): string
+    public function getPid(): string|null 
     {
         return $this->pid;
     }
-    /**
-     * @param uuid
-     * @return Uuid
-     */
-    public function setPid(string $pid = null) :self
+
+    public function setPid(string $pid) :self
     {
-        if (empty($pid))
-        {
-            $this->pid = strtoupper(Uuid::v4()->__toString());
-        }else{
-            $this->pid = $pid;
-        }
+        $this->pid = $pid;
         return $this;
     }
+
+    /**
+     * The Logic on how an UUID will be generated
+     * @return string
+     */
+    public function generatePid(): string
+    {
+        return strtoupper(Uuid::v4()->__toString());
+    }
+
 }
