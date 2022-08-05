@@ -40,6 +40,7 @@ class SetupFixtures extends Fixture implements FixtureGroupInterface
     public function loadDefaultAdminUser(ObjectManager $manager)
     {
             $user = new User();
+            $user->setUsername('admin');
             $user->setEmail('admin@admin.com');
             $user->setPassword(
                 $this->passwordHasher->hashPassword(
@@ -49,7 +50,7 @@ class SetupFixtures extends Fixture implements FixtureGroupInterface
             );
             $user->setIsVerified(True);
             $user->setActive(True);
-            $user->setPid();
+            #$user->setPid();
             $user->setRoles(['ROLE_SUPER_ADMIN']);
             
             $manager->persist($user);
