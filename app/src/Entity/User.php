@@ -19,8 +19,8 @@ use App\Entity\Traits\TimestampableDeletedTrait;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface 
 {
     use UuidTrait;
@@ -58,11 +58,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->logs = new ArrayCollection();
-    }
-
-    public function __toString()
-    {
-        return (string) $this->email;
     }
 
     public function getId(): ?int
@@ -178,7 +173,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    
-
+    public function __toString()
+    {
+        return (string) $this->username;
+    }
 
 }

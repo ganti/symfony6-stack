@@ -10,14 +10,14 @@ class LogUserService extends LogService
     public function login($message='', $success=False) : self
     {   
         $user = null;
-        $requestUsername = $this->requestStack->getCurrentRequest()->get('username');
-        $userByUsername =  $this->manager->getRepository(User::class)->findOneBy(['username' => $requestUsername]);
+        $userIdentifier = $this->requestStack->getCurrentRequest()->get('email');
+        $userByEmail =  $this->manager->getRepository(User::class)->findOneBy(['email' => $userIdentifier]);
         
-        if ($userByUsername != null)
+        if ($userByEmail == null)
         {
+            $userByUsername =  $this->manager->getRepository(User::class)->findOneBy(['username' => $userIdentifier]);
             $user = $userByUsername;
         }else{
-            $userByEmail =  $this->manager->getRepository(User::class)->findOneBy(['email' => $requestUsername]);
             $user = $userByEmail;
         }
         if ($user != null) {
@@ -25,14 +25,14 @@ class LogUserService extends LogService
         }
 
         if ($success) {
-            $this->debug('user', 'login', $requestUsername.' login successful '.$message, True);
+            $this->debug('user', 'login', $userIdentifier.' login successful '.$message, True);
         }else{
-            $this->info('user', 'login', $requestUsername.' failed logging in '.$message, False);
+            $this->info('user', 'login', $userIdentifier.' failed logging in '.$message, False);
         }
         return $this;
     }
 
-    public function logout($user, $success=False) : self
+    public function logout($user) : self
     {   
         $this->log->setUser($user);
         $this->debug('user', 'logout', $user.' logged out ', True);
@@ -44,8 +44,6 @@ class LogUserService extends LogService
         $this->debug('user', 'sent password reset mail', $this->log->getUser.' logged out ', True);
         return $this;
     }
-
-
 
 
 }

@@ -26,4 +26,10 @@ services:
         class: AppBundle\EventListener\EntityUUIDListener
         tags:
             - { name: doctrine.event_listener, event: prePersist }
-    
+
+    App\EventListener\LogoutSuccessEventListener:
+        tags:
+            - name: 'kernel.event_listener'
+              event: 'Symfony\Component\Security\Http\Event\LogoutEvent'
+              dispatcher: security.event_dispatcher.main
+              method: onLogoutSuccess
