@@ -63,6 +63,7 @@ endif
 symfony:
 	${SYMFONY_CMD} ${SYMFONY_COMMAND} ${END}
 
+
 setup-app:
 	make composer-install
 	${SYMFONY_CMD} doctrine:database:create  ${END} || true
@@ -89,11 +90,23 @@ file-permissions:
 
 
 # Database
+db-create:
+	${SYMFONY_CMD} doctrine:schema:create ${END}
+
 db-drop:
 ifeq ($(ENV),prod)
 	@echo "Dropping DB on production is disabled"
 else
 	${SYMFONY_CMD} doctrine:schema:drop --force --full-database ${END}
+endif
+
+db-reset:
+ifeq ($(ENV),prod)
+	@echo "Dropping DB on production is disabled"
+else
+	make db-drop
+	make db-create
+	${SYMFONY_CMD} doctrine:fixtures:load --group=setup  -n ${END}
 endif
 
 db-make-migration:
