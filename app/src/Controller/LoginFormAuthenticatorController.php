@@ -6,22 +6,28 @@ use App\Service\LogUserService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginFormAuthenticatorController extends AbstractController
 {
 
-    public function __construct(LogUserService $log)
+    public function __construct(LogUserService $log, Security $security)
     {
         $this->log = $log;
+        $this->security = $security;
     }
 
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+        if ($this->getUser()) {
+            if ($this->security->isGranted('ROLE_ADMIN')) {
+                return $this->redirectToRoute('admin');
+            }else{
+                return $this->redirectToRoute('missing_userforward');
+            }
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
