@@ -45,6 +45,7 @@ class LogCrudController extends AbstractCrudController
             yield IntegerField::new('id')->setCssClass('col-auto');
             yield TextField::new('level');
             yield TextField::new('context', 'Context');
+            yield TextField::new('subcontext', 'Subcontext');
             yield TextareaField::new('message');
             yield TextField::new('level');
             yield DateTimeField::new('createdAt');

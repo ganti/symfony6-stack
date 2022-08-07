@@ -39,6 +39,21 @@ class LogUserService extends LogService
         return $this;
     }
 
+    public function user_created($user) : self
+    {   
+        $this->log->setUser($user);
+        $this->debug('user', 'created', $user.' created', True);
+        return $this;
+    }
+
+    public function user_emailverified($user) : self
+    {   
+        $this->log->setUser($user);
+        $this->debug('user', 'email verified', $user->getEmail().' verifed', True);
+        return $this;
+    }
+
+    
     public function passwordResetMail($success=False) : self
     {   
         $this->debug('user', 'sent password reset mail', $this->log->getUser.' logged out ', True);

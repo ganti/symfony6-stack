@@ -11,8 +11,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
@@ -23,7 +25,6 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -72,7 +73,9 @@ class UserCrudController extends AbstractCrudController
                 yield TextField::new('username');
                 yield TextField::new('fullName');
                 yield TextField::new('email');
-                yield ArrayField::new('roles');
+                yield ChoiceField::new('roles')
+                    ->setChoices(array_combine($this->getUserRolesField(), $this->getUserRolesField()))
+                    ->renderAsBadges();
                 yield BooleanField::new('isActive')->renderAsSwitch(false);
                 yield DateTimeField::new('createdAt');
             }
@@ -131,12 +134,8 @@ class UserCrudController extends AbstractCrudController
             }
             
             yield FormField::addPanel('Logs')->setIcon('fas fa-log');
-            /*
-            yield CollectionField::new('logs')->setFormTypeOptions([
-                'allow_add' => false,
-                'allow_delete' => false
-            ]);
-            */
+            
+
             yield AssociationField::new('logs');
             //yield CollectionField::new('logs')->setTemplatePath('bundles/EasyAdminBundle/fields/array_readonly.html.twig');
 
@@ -188,8 +187,15 @@ class UserCrudController extends AbstractCrudController
         ;
     }
 
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+        ->add('username', 'Username')
+        ->add('email', 'email')
+        ->add('roles', 'Userroles')
+        ->add('isActive', 'is Active');
+    }
     
-
     private function getUserRolesField(): Array{
         $return = [];
         $roles = $this->entityManager->getRepository(UserRole::class)->findAllActive();
