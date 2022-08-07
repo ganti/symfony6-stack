@@ -13,7 +13,7 @@ trait TimestampableCreatedTrait
      */
     #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(name: 'created', type: Types::DATETIME_MUTABLE)]
-    private $created;
+    private $createdAt;
 
   
     /**
