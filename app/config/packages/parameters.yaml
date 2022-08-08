@@ -1,6 +1,16 @@
 parameters:
-
+  
+  app:
+    
     default_locale:  en
     admin_locales:   [de, en]
-
+    
     timezone: 'Europe/Zurich' #default Timezone, users can set their timezone
+
+    easyadmin:
+      registration: true #allow new users to register
+      passwort_reset: true #allow password reset
+
+    mailer:
+      from_email: 'team@root.dev'
+      from_name: 'AcmeBotName'
