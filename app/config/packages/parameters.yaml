@@ -1,0 +1,6 @@
+parameters:
+
+    default_locale:  en
+    admin_locales:   [de, en]
+
+    timezone: 'Europe/Zurich' #default Timezone, users can set their timezone

@@ -10,6 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class SetupFixtures extends Fixture implements FixtureGroupInterface
 {
@@ -25,10 +26,11 @@ class SetupFixtures extends Fixture implements FixtureGroupInterface
      */
     private $passwordHasher;
 
-    public function __construct(LogSystemService $log, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(LogSystemService $log, UserPasswordHasherInterface $passwordHasher, ContainerBagInterface $params)
     {
         $this->log = $log;
         $this->passwordHasher = $passwordHasher;
+        $this->params = $params;
     }
     public function load(ObjectManager $manager)
     {
@@ -42,6 +44,7 @@ class SetupFixtures extends Fixture implements FixtureGroupInterface
             $user = new User();
             $user->setUsername('admin');
             $user->setEmail('admin@admin.com');
+            $user->setTimezone($this->params->get('timezone')); //Load global Timezone
             $user->setPassword(
                 $this->passwordHasher->hashPassword(
                     $user,

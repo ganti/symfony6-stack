@@ -9,7 +9,6 @@ use Symfony\Component\Security\Core\Security;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -19,22 +18,24 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TimezoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserCrudController extends AbstractCrudController
 {
 
 
-    public function __construct(AdminContextProvider $adminContextProvider, Security $security,  EntityManagerInterface $entityManager)
+    public function __construct(AdminContextProvider $adminContextProvider, Security $security,  EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
     {
         $this->adminContextProvider = $adminContextProvider;
         $this->security = $security;
         $this->entityManager = $entityManager;
+        $this->passwordHasher = $passwordHasher;
     }
 
 
@@ -45,8 +46,9 @@ class UserCrudController extends AbstractCrudController
 
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud
-            ->setEntityLabelInSingular('User ')
+        return parent::configureCrud($crud)
+        //return $crud
+            ->setEntityLabelInSingular('User')
             ->setEntityLabelInPlural('Users')
             ->setPageTitle('index', '%entity_label_plural%')
             //->setPageTitle('edit', 'Edit %entity_label_singular%: %email    %')
@@ -97,7 +99,8 @@ class UserCrudController extends AbstractCrudController
                 }
 
                 yield TextField::new('firstname', 'Firstname');
-                yield TextField::new('lastname', 'Las   tname');
+                yield TextField::new('lastname', 'Lastname');
+                yield TimezoneField::new('timezone', 'TimeZone');
 
 
                 yield FormField::addPanel('Change password')
@@ -128,9 +131,14 @@ class UserCrudController extends AbstractCrudController
                 
                 yield TextField::new('pid')->setFormTypeOption('disabled', 'disabled');
 
-                yield DateTimeField::new('createdAt', 'created')->setColumns('col-4')->setFormTypeOption('disabled', 'disabled');
-                yield DateTimeField::new('updatedAt', 'updated')->setColumns('col-4')->setFormTypeOption('disabled', 'disabled');
-                yield DateTimeField::new('deletedAt', 'deleted')->setColumns('col-4');
+                yield DateTimeField::new('createdAt', 'created')
+                    ->setColumns('col-4')
+                    ->setFormTypeOption('disabled', 'disabled');
+                yield DateTimeField::new('updatedAt', 'updated')
+                    ->setColumns('col-4')
+                    ->setFormTypeOption('disabled', 'disabled');
+                yield DateTimeField::new('deletedAt', 'deleted')
+                    ->setColumns('col-4');
             }
             
             yield FormField::addPanel('Logs')->setIcon('fas fa-log');
@@ -158,7 +166,10 @@ class UserCrudController extends AbstractCrudController
                     $this->addFlash('warning', 'Passwords dont match');
                 }
                 if (!empty($plainPassword)) {
-                    $encodedPassword = $this->passwordEncoder->encodePassword($this->getUser(), $plainPassword);
+                    $encodedPassword = $this->passwordHasher->hashPassword(
+                        $this->getUser(),
+                        $plainPassword
+                    );
                     $entityInstance->setPassword($encodedPassword);
                 }else{
                     $entityInstance->eraseCredentials();
