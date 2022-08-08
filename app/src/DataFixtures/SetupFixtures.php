@@ -44,7 +44,7 @@ class SetupFixtures extends Fixture implements FixtureGroupInterface
             $user = new User();
             $user->setUsername('admin');
             $user->setEmail('admin@admin.com');
-            $user->setTimezone($this->params->get('timezone')); //Load global Timezone
+            $user->setTimezone($this->params->get('app')['timezone']); //Load global Timezone
             $user->setPassword(
                 $this->passwordHasher->hashPassword(
                     $user,

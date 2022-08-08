@@ -14,3 +14,4 @@ parameters:
     mailer:
       from_email: 'team@root.dev'
       from_name: 'AcmeBotName'
+      detailed_mail_log: true #log full send history with mail body to entity Email

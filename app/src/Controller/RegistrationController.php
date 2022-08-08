@@ -49,7 +49,7 @@ class RegistrationController extends AbstractController
             );
 
             $user->setActive(true);
-            $user->setTimezone($this->getParameter('timezone')); //Load global Timezone
+            $user->setTimezone($this->getParameter('app')['timezone']); //Load global Timezone
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -57,10 +57,10 @@ class RegistrationController extends AbstractController
             $this->log->user_created($user);
             
             // generate a signed url and email it to the user
+            $sendTo = empty($user->getFullName()) ? new Address($user->getEmail()) : new Address($user->getEmail(), $user->getFullName());
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
-                    ->from(new Address('foo@bar.com', 'AcmeMailBot'))
-                    ->to($user->getEmail())
+                    ->to($sendTo)
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
