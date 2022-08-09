@@ -3,9 +3,11 @@
 namespace App\Service;
 
 use App\Entity\User;
-use App\Service\Log\LogMailerService;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
+use App\Service\Log\LogMailerService;
 use Symfony\Component\Mime\RawMessage;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -20,11 +22,13 @@ class MailSender
     ) {
        $this->log = $log;
        $this->log->setDetailedMailLogActive($params->get('app')['mailer']['detailed_mail_log']);
+
        $this->fromMail = $params->get('app')['mailer']['from_email'];
        $this->fromName = $params->get('app')['mailer']['from_name'];
+
     }
 
-    public function sendMail(RawMessage $message, ?User $user = null) : void
+    public function sendMail(Email $message, ?User $user = null) : void
     {
         $message->from( $this->fromName == null ? new Address($this->fromMail) : new Address($this->fromMail, $this->fromName));
         try
@@ -35,6 +39,5 @@ class MailSender
             $this->log->sendMail($message, $e->getMessage(), False, $user);
         } 
     }
-
 
 }
