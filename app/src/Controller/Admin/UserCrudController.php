@@ -89,22 +89,21 @@ class UserCrudController extends AbstractCrudController
                     ->setIcon('far fa-address-card')
                     ->setCssClass('col-sm-8');
 
+                yield TextField::new('firstname', 'Firstname')->setColumns('col-6');
+                yield TextField::new('lastname', 'Lastname')->setColumns('col-6');
+
                 if ($this->isGranted('ROLE_ADMIN')) {
                     yield TextField::new('username', 'Username');
                     yield TextField::new('email', 'eMail');
                 }else{
                     //User Profile
                     yield TextField::new('username', 'Username')->setFormTypeOption('disabled', 'disabled');
-                    yield TextField::new('email', 'eMail')->setFormTypeOption('disabled', 'disabled');;
+                    yield TextField::new('email', 'eMail')->setFormTypeOption('disabled', 'disabled');
                 }
-
-                yield TextField::new('firstname', 'Firstname');
-                yield TextField::new('lastname', 'Lastname');
-                yield TimezoneField::new('timezone', 'TimeZone');
 
 
                 yield FormField::addPanel('Change password')
-                    ->setIcon('fa fa-key')
+                    ->setIcon('fa fa-solid fa-screwdriver-wrench')
                     ->setCssClass('col');
                 yield Field::new('plainPassword', 'New password')
                                             ->onlyOnForms()
@@ -115,7 +114,9 @@ class UserCrudController extends AbstractCrudController
                                                 'first_options' => ['label' => 'New password'],
                                                 'second_options' => ['label' => 'Repeat password'],
                                             ]);
-            }
+                                    }
+                yield TimezoneField::new('timezone', 'TimeZone')
+                    ->setColumns('col');
 
             if ($this->isGranted('ROLE_ADMIN')) {
                 yield FormField::addPanel('Admin Settings')
@@ -126,10 +127,10 @@ class UserCrudController extends AbstractCrudController
                                             ->autocomplete()
                                             ->setChoices( $this->getUserRolesField());
                 
-                yield BooleanField::new('is_active', 'is active');
-                yield BooleanField::new('is_verified', 'is verified')->setFormTypeOption('disabled', 'disabled');
+                yield BooleanField::new('is_active', 'User is active');
+                yield BooleanField::new('is_verified', 'Email is verified')->setFormTypeOption('disabled', 'disabled');
                 
-                yield TextField::new('pid')->setFormTypeOption('disabled', 'disabled');
+                yield TextField::new('pid', 'PID')->setFormTypeOption('disabled', 'disabled');
 
                 yield DateTimeField::new('createdAt', 'created')
                     ->setColumns('col-4')
@@ -137,8 +138,6 @@ class UserCrudController extends AbstractCrudController
                 yield DateTimeField::new('updatedAt', 'updated')
                     ->setColumns('col-4')
                     ->setFormTypeOption('disabled', 'disabled');
-                yield DateTimeField::new('deletedAt', 'deleted')
-                    ->setColumns('col-4');
             }
             
             yield FormField::addPanel('Logs')->setIcon('fas fa-log');
@@ -192,8 +191,6 @@ class UserCrudController extends AbstractCrudController
         
         return $actions
             ->disable('new')
-            //->disable('edit')
-            ->disable('delete')
             ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
         ;
     }
