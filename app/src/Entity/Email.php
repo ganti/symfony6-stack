@@ -42,6 +42,9 @@ class Email
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $opened = null;
 
+    #[ORM\ManyToOne(inversedBy: 'emails')]
+    private ?User $User = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -127,6 +130,18 @@ class Email
     public function setOpened(?\DateTimeInterface $opened): self
     {
         $this->opened = $opened;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->User;
+    }
+
+    public function setUser(?User $User): self
+    {
+        $this->User = $User;
 
         return $this;
     }

@@ -104,6 +104,10 @@ class LogMailerService extends LogService
         {
             #$maillog->setHtml($properties['bodyHTML']);
         }
+        if($user)
+        {
+            $maillog->setUser($user);
+        }
         if(!$success)
         {
             $maillog->setFailed(new \DateTime());

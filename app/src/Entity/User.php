@@ -63,11 +63,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $timezone = null;
 
+    #[ORM\OneToMany(mappedBy: 'User', targetEntity: Email::class)]
+    private Collection $emails;
+
 
 
     public function __construct()
     {
         $this->logs = new ArrayCollection();
+        $this->emails = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -233,6 +237,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return (string) $this->getUsername();
+    }
+
+    /**
+     * @return Collection<int, Email>
+     */
+    public function getEmails(): Collection
+    {
+        return $this->emails;
+    }
+
+    public function addEmail(Email $email): self
+    {
+        if (!$this->emails->contains($email)) {
+            $this->emails->add($email);
+            $email->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmail(Email $email): self
+    {
+        if ($this->emails->removeElement($email)) {
+            // set the owning side to null (unless already changed)
+            if ($email->getUser() === $this) {
+                $email->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
 
