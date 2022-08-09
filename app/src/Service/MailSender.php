@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\User;
-use App\Service\LogMailerService;
+use App\Service\Log\LogMailerService;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\RawMessage;
 use Symfony\Component\Mailer\MailerInterface;
@@ -18,7 +18,8 @@ class MailSender
         private ContainerBagInterface $params,
         private LogMailerService $log
     ) {
-       $this->log = new LogMailerService($params->get('app')['mailer']['detailed_mail_log']);
+       $this->log = $log;
+       $this->log->setDetailedMailLogActive($params->get('app')['mailer']['detailed_mail_log']);
        $this->fromMail = $params->get('app')['mailer']['from_email'];
        $this->fromName = $params->get('app')['mailer']['from_name'];
     }
@@ -29,7 +30,7 @@ class MailSender
         try
         {
             $this->mailer->send($message);
-            $this->log->sendMail($message, '', True, $user);
+            $this->log->sendMail($message, null, True, $user);
         } catch (TransportExceptionInterface $e) {
             $this->log->sendMail($message, $e->getMessage(), False, $user);
         } 

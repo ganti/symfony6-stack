@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Log;
 
-use App\Service\LogService;
 use App\Entity\User;
+use App\Service\Log\LogService;
 
 class LogUserService extends LogService
 {
+
     public function login($message='', $success=False) : self
     {   
         $user = null;
@@ -20,7 +21,7 @@ class LogUserService extends LogService
         }else{
             $user = $userByEmail;
         }
-        if ($user != null) {
+        if ($user) {
             $this->log->setUser($user);
         }
 
@@ -56,7 +57,7 @@ class LogUserService extends LogService
     
     public function passwordResetMail($success=False) : self
     {   
-        $this->debug('user', 'sent password reset mail', $this->log->getUser.' logged out ', True);
+        $this->debug('user', 'sent password reset mail', $this->log->getUser().' logged out ', True);
         return $this;
     }
 

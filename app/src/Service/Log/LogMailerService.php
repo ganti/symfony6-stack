@@ -1,25 +1,27 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Log;
 
 use App\Entity\User;
-use App\Service\LogService;
+use App\Service\Log\LogService;
 use Symfony\Component\Mime\RawMessage;
 
 class LogMailerService extends LogService
 {
+    
+    private ?bool $detailedMailLogActive = true;
 
-    public function __construct(?bool $detailedMailLogActive=true)
+
+    public function setDetailedMailLogActive(bool $detailedMailLogActive=true): self
     {
         $this->detailedMailLogActive = $detailedMailLogActive;
+        return $this;
     }
-    
-    public function sendMail(?RawMessage $mail, ?String $message='', ?bool $success=False, ?User $user = null) : self
+
+
+    public function sendMail(?RawMessage $mail, ?String $message=null, ?bool $success=False, ?User $user = null) : self
     {
-        if($message)
-        {
-            $message = trim($message . PHP_EOL . $this->getMessagePropertyString($mail));
-        }
+        $message = $message ? trim($message . PHP_EOL . $this->getMessagePropertyString($mail)) : $this->getMessagePropertyString($mail);
 
         if($user)
         {

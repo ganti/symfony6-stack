@@ -2,7 +2,7 @@
 
 namespace App\EventListener;
 
-use App\Service\LogUserService;
+use App\Service\Log\LogUserService;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 
 class LogoutSuccessEventListener

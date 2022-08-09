@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
-use App\Service\LogUserService;
+use App\Service\Log\LogUserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,10 +51,15 @@ class RegistrationController extends AbstractController
             $user->setActive(true);
             $user->setTimezone($this->getParameter('app')['timezone']); //Load global Timezone
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+            try{
+                $entityManager->persist($user);
+                $entityManager->flush();
+            } 
+            finally
+            {
+                $this->log->user_created($user);
+            }
 
-            $this->log->user_created($user);
             
             // generate a signed url and email it to the user
             $sendTo = empty($user->getFullName()) ? new Address($user->getEmail()) : new Address($user->getEmail(), $user->getFullName());

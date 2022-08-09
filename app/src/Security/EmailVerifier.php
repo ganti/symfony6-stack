@@ -3,8 +3,7 @@
 namespace App\Security;
 
 use App\Service\MailSender;
-use App\Service\LogUserService;
-use App\Service\LogEmailService;
+use App\Service\Log\LogUserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;

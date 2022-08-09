@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\LogUserService;
+use App\Service\Log\LogUserService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

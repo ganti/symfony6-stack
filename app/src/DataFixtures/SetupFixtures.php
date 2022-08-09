@@ -4,8 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use App\Entity\UserRole;
-use App\Service\LogSystemService;
-use App\Repository\UserRepository;
+use App\Service\Log\LogSystemService;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;

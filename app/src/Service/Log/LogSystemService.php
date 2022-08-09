@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Log;
 
-use App\Service\LogService;
-use App\Entity\User;
+use App\Service\Log\LogService;
 
 class LogSystemService extends LogService
 {
