@@ -17,8 +17,7 @@ class LogService extends AbstractController
     protected RequestStack $requestStack; 
     protected EntityManagerInterface $manager;
 
-    
-    private function logEvent(?String $level, ?String $context, ?String $subcontext = null, ?String $message, ?bool $isSuccess = null, EntityManagerInterface $manager, Security $security, RequestStack $requestStack): self
+    public function __construct(EntityManagerInterface $manager, Security $security, RequestStack $requestStack)
     {
         $this->manager = $manager;
         $this->security = $security;
@@ -33,7 +32,10 @@ class LogService extends AbstractController
             $this->log->setRequestMethod( $this->requestStack->getCurrentRequest()->getMethod() );
             $this->log->setRequestPath( $this->requestStack->getCurrentRequest()->getPathInfo() );
         }
+    }
 
+    private function logEvent(?String $level, ?String $context, ?String $subcontext = null, ?String $message, ?bool $isSuccess = null): self
+    {
         $this->log->setLevel($level);
         $this->log->setContext($context);
         $this->log->setSubcontext($subcontext);

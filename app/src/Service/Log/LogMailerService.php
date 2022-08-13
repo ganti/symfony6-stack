@@ -3,17 +3,13 @@
 namespace App\Service\Log;
 
 use App\Entity\User;
-use App\Entity\Email as EntityEmail;
 use App\Service\Log\LogService;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Mime\RawMessage;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use App\Entity\Email as EntityEmail;
 
 class LogMailerService extends LogService
 {
-    
     private ?bool $detailedMailLogActive = true;
-
 
     public function setDetailedMailLogActive(bool $detailedMailLogActive=true): self
     {
