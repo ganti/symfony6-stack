@@ -7,16 +7,15 @@ use Symfony\Component\Uid\Uuid;
 
 trait UuidTrait
 {
-
     #[ORM\Column(name: 'pid', type: 'string', length:36, unique: true)]
     protected $pid;
 
-    public function getPid(): string|null 
+    public function getPid(): string|null
     {
         return $this->pid;
     }
 
-    public function setPid(string $pid) :self
+    public function setPid(string $pid): self
     {
         $this->pid = $pid;
         return $this;
@@ -30,5 +29,4 @@ trait UuidTrait
     {
         return strtoupper(Uuid::v4()->__toString());
     }
-
 }

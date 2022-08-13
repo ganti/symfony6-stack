@@ -18,69 +18,69 @@ class LogMailerService extends LogService
     }
 
 
-    public function sendMail(Email $mail, ?String $message=null, ?bool $success=False, ?User $user = null) : self
+    public function sendMail(Email $mail, ?String $message=null, ?bool $success=false, ?User $user = null): self
     {
         $message = $message ? trim($message . PHP_EOL . $this->getMessagePropertyString($mail)) : $this->getMessagePropertyString($mail);
 
-        if($user)
-        {
+        if ($user) {
             $this->log->setUser($user);
         }
-        
-        if($success)
-        {
+
+        if ($success) {
             $subContext = 'sent';
             $this->info('mailer', $subContext, $message, $success);
-        }else{
+        } else {
             $subContext = 'not sent';
             $this->error('mailer', $subContext, $message, $success);
         }
-        
+
         $this->setSentMailDetailedLog($mail, $success, $user);
         return $this;
     }
 
 
-    private function getMessageProperties($message): ?Array
+    private function getMessageProperties($message): ?array
     {
         $collection = [];
-        
-        $collection['from'] = join(', ',
-                                array_map(function($entry) {
-                                    return $entry->getAddress();
-                                }, $message->getFrom())
-                        );
-        $collection['to'] = join(', ',
-                        array_map(function($entry) {
-                            return $entry->getAddress();
-                        }, $message->getTo())
-                );
 
-        $collection['cc'] = join(', ',
-                            array_map(function($entry) {
-                                return $entry->getAddress();
-                            }, $message->getCc())
-                        );
+        $collection['from'] = join(
+            ', ',
+            array_map(function ($entry) {
+                return $entry->getAddress();
+            }, $message->getFrom())
+        );
+        $collection['to'] = join(
+            ', ',
+            array_map(function ($entry) {
+                return $entry->getAddress();
+            }, $message->getTo())
+        );
 
-        $collection['bcc'] = join(', ',
-                            array_map(function($entry) {
-                                return $entry->getAddress();
-                            }, $message->getBcc())
-                        );
+        $collection['cc'] = join(
+            ', ',
+            array_map(function ($entry) {
+                return $entry->getAddress();
+            }, $message->getCc())
+        );
+
+        $collection['bcc'] = join(
+            ', ',
+            array_map(function ($entry) {
+                return $entry->getAddress();
+            }, $message->getBcc())
+        );
         $collection['subject'] = $message->getSubject();
-        #$collection['bodyHTML'] = $message->getHtmlBody(); 
-        #$collection['bodyText'] = $message->getTextBody(); 
+        #$collection['bodyHTML'] = $message->getHtmlBody();
+        #$collection['bodyText'] = $message->getTextBody();
 
         return array_filter($collection);
     }
 
-    private function getMessagePropertyString($message) : ?String
+    private function getMessagePropertyString($message): ?String
     {
         $return = "";
-        foreach($this->getMessageProperties($message) as $key => $value)
-        {
-            if($value)
-            {
+        foreach ($this->getMessageProperties($message) as $key => $value) {
+            if ($value) {
                 $return .= strtoupper($key) . ': ' . $value . PHP_EOL;
             }
         }
@@ -95,22 +95,18 @@ class LogMailerService extends LogService
         $maillog->setSubject($properties['subject']);
         $maillog->setSenderEmail($properties['from']);
         $maillog->setRecieverEmail($properties['to']);
-        
-        if($this->detailedMailLogActive)
-        {
+
+        if ($this->detailedMailLogActive) {
             #$maillog->setHtml($properties['bodyHTML']);
         }
-        if($user)
-        {
+        if ($user) {
             $maillog->setUser($user);
         }
-        if(!$success)
-        {
+        if (!$success) {
             $maillog->setFailed(new \DateTime());
         }
 
         $this->manager->persist($maillog);
         $this->manager->flush();
-
     }
 }

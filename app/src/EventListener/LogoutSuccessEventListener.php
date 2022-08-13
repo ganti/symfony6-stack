@@ -1,4 +1,4 @@
-<?
+<?php
 
 namespace App\EventListener;
 
@@ -11,7 +11,7 @@ class LogoutSuccessEventListener
     {
         $this->log = $log;
     }
-    
+
     public function onLogoutSuccess(LogoutEvent $logoutEvent): void
     {
         $user = $logoutEvent->getToken()->getUser();

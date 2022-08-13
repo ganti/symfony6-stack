@@ -8,13 +8,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 trait TimestampableUpdatedTrait
 {
-
     /**
      * @var \DateTime
      */
     #[Gedmo\Timestampable(on: 'update')]
     #[ORM\Column(name: 'updated', type: Types::DATETIME_MUTABLE)]
-    
+
     private $updatedAt;
 
     /**

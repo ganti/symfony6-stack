@@ -37,16 +37,13 @@ class UserRoleCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-
         if (Crud::PAGE_INDEX === $pageName) {
-
             yield TextField::new('role', 'Role');
             yield TextField::new('name', 'Name');
             yield TextField::new('description', 'Description');
             yield ArrayField::new('ParentRoleRecursive', 'Parent Roles');
             yield BooleanField::new('active', 'is active')->renderAsSwitch(false);
-            yield DateTimeField::new('createdAt');  
-
+            yield DateTimeField::new('createdAt');
         } else {
             yield FormField::addPanel('Role')->setIcon('fa fa-user-tag');
             if (Crud::PAGE_NEW === $pageName) {
@@ -59,17 +56,16 @@ class UserRoleCrudController extends AbstractCrudController
             yield TextField::new('description', 'Description');
             yield AssociationField::new('parentRole', 'Parent Role');
             yield BooleanField::new('active', 'is active');
-            yield BooleanField::new('systemrole', 'is systemrole')->setFormTypeOption('disabled','disabled');
+            yield BooleanField::new('systemrole', 'is systemrole')->setFormTypeOption('disabled', 'disabled');
             yield FormField::addPanel('Timestamps')->setIcon('fa fa-clock');
-            
+
             yield DateTimeField::new('createdAt', 'created')->setColumns('col-4')->setFormTypeOption('disabled', 'disabled');
             yield DateTimeField::new('updatedAt', 'updated')->setColumns('col-4')->setFormTypeOption('disabled', 'disabled');
             yield DateTimeField::new('deletedAt', 'deleted')->setColumns('col-4');
-
         }
         return $this;
     }
-    
+
     public function configureActions(Actions $actions): Actions
     {
 
@@ -77,8 +73,8 @@ class UserRoleCrudController extends AbstractCrudController
         $delete_action = parent::configureActions($actions)->getAsDto(Crud::PAGE_INDEX)->getAction(Crud::PAGE_INDEX, Action::DELETE);
         if (!is_null($delete_action)) {
             $delete_action->setDisplayCallable(function (UserRole $userrole) {
-                return $userrole->isSystemrole() === False;
-            });   
+                return $userrole->isSystemrole() === false;
+            });
         }
 
         return $actions

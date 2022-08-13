@@ -11,7 +11,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginFormAuthenticatorController extends AbstractController
 {
-
     public function __construct(LogUserService $log, Security $security)
     {
         $this->log = $log;
@@ -24,7 +23,7 @@ class LoginFormAuthenticatorController extends AbstractController
         if ($this->getUser()) {
             if ($this->security->isGranted('ROLE_ADMIN')) {
                 return $this->redirectToRoute('admin');
-            }else{
+            } else {
                 return $this->redirectToRoute('missing_userforward');
             }
         }

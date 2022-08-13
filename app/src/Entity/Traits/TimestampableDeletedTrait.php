@@ -9,7 +9,6 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 
 trait TimestampableDeletedTrait
 {
-
     use SoftDeleteableEntity;
     /**
      * @var \DateTime|null
@@ -30,7 +29,7 @@ trait TimestampableDeletedTrait
      * Set or clear the deleted at timestamp.
      * @return self
      */
-    public function setDeletedAt(?\DateTimeInterface  $deletedAt = null) :self
+    public function setDeletedAt(?\DateTimeInterface  $deletedAt = null): self
     {
         $this->deletedAt = $deletedAt;
         return $this;

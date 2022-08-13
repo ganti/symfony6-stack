@@ -28,9 +28,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserCrudController extends AbstractCrudController
 {
-
-
-    public function __construct(AdminContextProvider $adminContextProvider, Security $security,  EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(AdminContextProvider $adminContextProvider, Security $security, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
     {
         $this->adminContextProvider = $adminContextProvider;
         $this->security = $security;
@@ -59,16 +57,16 @@ class UserCrudController extends AbstractCrudController
 
     /*
      * Checks if logged in user ist the same as in the CRUD request
-     */ 
-    private function getIsLoggedInUserEditingUserCrud(): bool{
+     */
+    private function getIsLoggedInUserEditingUserCrud(): bool
+    {
         $requestUserId = $this->adminContextProvider->getContext()->getRequest()->query->get('entityId');
         $loggedInUserId = $this->security->getUser()->getId();
-        return ($requestUserId == $loggedInUserId AND $requestUserId != null);
+        return ($requestUserId == $loggedInUserId and $requestUserId != null);
     }
 
     public function configureFields(string $pageName): iterable
     {
-
         if (Crud::PAGE_INDEX === $pageName) {
             if ($this->isGranted('ROLE_ADMIN')) {
                 yield IntegerField::new('id');
@@ -82,9 +80,7 @@ class UserCrudController extends AbstractCrudController
                 yield DateTimeField::new('createdAt');
             }
         } else {
-            
-            if ($this->getIsLoggedInUserEditingUserCrud() OR $this->isGranted('ROLE_ADMIN')) {
-                
+            if ($this->getIsLoggedInUserEditingUserCrud() or $this->isGranted('ROLE_ADMIN')) {
                 yield FormField::addPanel('Account Information')
                     ->setIcon('far fa-address-card')
                     ->setCssClass('col-sm-8');
@@ -95,7 +91,7 @@ class UserCrudController extends AbstractCrudController
                 if ($this->isGranted('ROLE_ADMIN')) {
                     yield TextField::new('username', 'Username');
                     yield TextField::new('email', 'eMail');
-                }else{
+                } else {
                     //User Profile
                     yield TextField::new('username', 'Username')->setFormTypeOption('disabled', 'disabled');
                     yield TextField::new('email', 'eMail')->setFormTypeOption('disabled', 'disabled');
@@ -114,8 +110,8 @@ class UserCrudController extends AbstractCrudController
                                                 'first_options' => ['label' => 'New password'],
                                                 'second_options' => ['label' => 'Repeat password'],
                                             ]);
-                                    }
-                yield TimezoneField::new('timezone', 'TimeZone')
+            }
+            yield TimezoneField::new('timezone', 'TimeZone')
                     ->setColumns('col');
 
             if ($this->isGranted('ROLE_ADMIN')) {
@@ -125,11 +121,11 @@ class UserCrudController extends AbstractCrudController
                 yield ChoiceField::new('roles', 'Role')
                                             ->allowMultipleChoices()
                                             ->autocomplete()
-                                            ->setChoices( $this->getUserRolesField());
-                
+                                            ->setChoices($this->getUserRolesField());
+
                 yield BooleanField::new('is_active', 'User is active');
                 yield BooleanField::new('is_verified', 'Email is verified')->setFormTypeOption('disabled', 'disabled');
-                
+
                 yield TextField::new('pid', 'PID')->setFormTypeOption('disabled', 'disabled');
 
                 yield DateTimeField::new('createdAt', 'created')
@@ -139,13 +135,12 @@ class UserCrudController extends AbstractCrudController
                     ->setColumns('col-4')
                     ->setFormTypeOption('disabled', 'disabled');
             }
-            
+
             yield FormField::addPanel('Logs')->setIcon('fas fa-log');
-            
+
 
             yield AssociationField::new('logs');
             //yield CollectionField::new('logs')->setTemplatePath('bundles/EasyAdminBundle/fields/array_readonly.html.twig');
-
         }
     }
 
@@ -156,12 +151,11 @@ class UserCrudController extends AbstractCrudController
         // set new password with encoder interface
         if (method_exists($entityInstance, 'setPassword')) {
             $passwords = $this->adminContextProvider->getContext()->getRequest()->request->all()['User']['plainPassword'];
-            
-            if (isset($passwords['first']) AND empty(trim($passwords['first'])) == False) {
-                
+
+            if (isset($passwords['first']) and empty(trim($passwords['first'])) == false) {
                 if (trim($passwords['first']) == trim($passwords['second'])) {
                     $plainPassword = trim($passwords['first']);
-                }else{
+                } else {
                     $this->addFlash('warning', 'Passwords dont match');
                 }
                 if (!empty($plainPassword)) {
@@ -170,10 +164,10 @@ class UserCrudController extends AbstractCrudController
                         $plainPassword
                     );
                     $entityInstance->setPassword($encodedPassword);
-                }else{
+                } else {
                     $entityInstance->eraseCredentials();
                 }
-            }else{
+            } else {
                 $entityInstance->eraseCredentials();
             }
         }
@@ -188,7 +182,6 @@ class UserCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        
         return $actions
             ->disable('new')
             ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
@@ -203,12 +196,13 @@ class UserCrudController extends AbstractCrudController
         ->add('roles', 'Userroles')
         ->add('isActive', 'is Active');
     }
-    
-    private function getUserRolesField(): Array{
+
+    private function getUserRolesField(): array
+    {
         $return = [];
         $roles = $this->entityManager->getRepository(UserRole::class)->findAllActive();
-        foreach ($roles as $r){
-            $return[$r->getName()] = $r->getRole(); 
+        foreach ($roles as $r) {
+            $return[$r->getName()] = $r->getRole();
         }
         return $return;
     }

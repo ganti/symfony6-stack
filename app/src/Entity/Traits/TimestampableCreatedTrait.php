@@ -15,7 +15,7 @@ trait TimestampableCreatedTrait
     #[ORM\Column(name: 'created', type: Types::DATETIME_MUTABLE)]
     private $createdAt;
 
-  
+
     /**
      * Get createdAt
      * @return datetime

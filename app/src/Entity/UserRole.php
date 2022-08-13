@@ -43,7 +43,7 @@ class UserRole
     {
         $this->isActive = true;
         $this->parentRole = null;
-        $this->systemrole = False;
+        $this->systemrole = false;
     }
 
 
@@ -120,20 +120,19 @@ class UserRole
     /*
      * Recursive fetch all Parent Roles
      */
-    public function getParentRoleRecursive(): ?Array
+    public function getParentRoleRecursive(): ?array
     {
         $return = [];
         $parent = $this->parentRole;
-        while($parent){
+        while ($parent) {
             $return[] = $parent->getRole() ;
             $parent = $parent->parentRole;
         }
         return $return;
     }
 
-    public function getRoleAndParents(): ?Array{
+    public function getRoleAndParents(): ?array
+    {
         return array_filter(array_unique(array_merge([$this->role], $this->getParentRoleRecursive())));
     }
-
-
 }

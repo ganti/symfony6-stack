@@ -36,8 +36,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if(empty($user->getUsername()))
-            {
+            if (empty($user->getUsername())) {
                 $user->setUsername($user->getEmail());
             }
             // encode the plain password
@@ -51,19 +50,19 @@ class RegistrationController extends AbstractController
             $user->setActive(true);
             $user->setTimezone($this->getParameter('app')['timezone']); //Load global Timezone
 
-            try{
+            try {
                 $entityManager->persist($user);
                 $entityManager->flush();
-            } 
-            finally
-            {
+            } finally {
                 $this->log->user_created($user);
             }
 
-            
+
             // generate a signed url and email it to the user
             $sendTo = empty($user->getFullName()) ? new Address($user->getEmail()) : new Address($user->getEmail(), $user->getFullName());
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            $this->emailVerifier->sendEmailConfirmation(
+                'app_verify_email',
+                $user,
                 (new TemplatedEmail())
                     ->to($sendTo)
                     ->subject('Please Confirm your Email')

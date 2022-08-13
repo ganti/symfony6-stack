@@ -21,33 +21,34 @@ class UserRoleRepository extends ServiceEntityRepository
         parent::__construct($registry, UserRole::class);
     }
 
-    public function findAllActive(){
-        return $this->findBy( array('isActive' => 1, 'deletedAt' => null), null );
+    public function findAllActive()
+    {
+        return $this->findBy(array('isActive' => 1, 'deletedAt' => null), null);
     }
 
-    public function getRoleAndParents(string $role): Array{
+    public function getRoleAndParents(string $role): array
+    {
         $role = $this->createQueryBuilder('r')
                     ->andWhere('r.role = :role')->andWhere('r.isActive = 1')->andWhere('r.deletedAt IS NULL')
                     ->setParameter('role', $role)
                     ->getQuery()->getResult();
- 
-        if ($role[0]){
+
+        if ($role[0]) {
             $return = $role[0]->getRoleAndParents();
-        }else{
+        } else {
             $this->addFlash('danger', $role.' is not active anymore , and was removed');
-            $return = [];   
+            $return = [];
         }
         return $return;
     }
 
-    public function getAllRolesToSave(Array $roles){
-
+    public function getAllRolesToSave(array $roles)
+    {
         $rolesToSave = [];
-        foreach($roles as $r){
+        foreach ($roles as $r) {
             $rolesToSave = array_merge($rolesToSave, $this->getRoleAndParents($r));
         }
 
         return array_filter(array_unique($rolesToSave));
     }
-
 }

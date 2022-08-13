@@ -18,7 +18,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class DashboardController extends AbstractDashboardController
 {
-
     public function __construct(Security $security)
     {
         $this->security = $security;
@@ -48,7 +47,7 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::section('System');
             yield MenuItem::linkToCrud('Logs', 'fas fa-list', Log::class);
             if ($this->isGranted('ROLE_SUPER_ADMIN')) {
-                yield MenuItem::linkToRoute('phpInfo', 'fa-brands fa-php','admin_phpinfo');
+                yield MenuItem::linkToRoute('phpInfo', 'fa-brands fa-php', 'admin_phpinfo');
             }
         }
     }
@@ -56,7 +55,7 @@ class DashboardController extends AbstractDashboardController
     public function configureUserMenu(UserInterface $user): UserMenu
     {
         return parent::configureUserMenu($user)
-            
+
             //Icon
             ->displayUserAvatar(true)
             ->setGravatarEmail($this->security->getUser()->getEmail())
@@ -91,16 +90,15 @@ class DashboardController extends AbstractDashboardController
         phpinfo(INFO_GENERAL);
         phpinfo(INFO_CONFIGURATION);
         phpinfo(INFO_MODULES);
-        
+
         $output = ob_get_contents();
         ob_get_clean();
         //$output = preg_replace('#<style type="text/css">.*?</style>#s', '', $output);
-     
-        $output = str_replace('body {background-color: #fff;', 'body {',$output);
-        $output = str_replace('hr {width: 934px; background-color: #ccc; border: 0; height: 1px;}', '',$output);
-        $output = str_replace('a:link {color: #009; text-decoration: none; background-color: #fff;}', '',$output);
-        
+
+        $output = str_replace('body {background-color: #fff;', 'body {', $output);
+        $output = str_replace('hr {width: 934px; background-color: #ccc; border: 0; height: 1px;}', '', $output);
+        $output = str_replace('a:link {color: #009; text-decoration: none; background-color: #fff;}', '', $output);
+
         return $this->render('@EasyAdmin/pages/phpinfo.html.twig', ['phpinfo' => $output]);
     }
-    
 }

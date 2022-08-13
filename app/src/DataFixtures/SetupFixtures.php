@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 class SetupFixtures extends Fixture implements FixtureGroupInterface
 {
     private LogSystemService $log;
-    
+
     public static function getGroups(): array
     {
         return ['setup'];
@@ -40,28 +40,27 @@ class SetupFixtures extends Fixture implements FixtureGroupInterface
 
     public function loadDefaultAdminUser(ObjectManager $manager)
     {
-            $user = new User();
-            $user->setUsername('admin');
-            $user->setEmail('admin@admin.com');
-            $user->setTimezone($this->params->get('app')['timezone']); //Load global Timezone
-            $user->setPassword(
-                $this->passwordHasher->hashPassword(
-                    $user,
-                    'admin'
-                )
-            );
-            $user->setIsVerified(True);
-            $user->setActive(True);
-            #$user->setPid();
-            $user->setRoles(['ROLE_SUPER_ADMIN']);
-            
-            $manager->persist($user);
-            $manager->flush();
+        $user = new User();
+        $user->setUsername('admin');
+        $user->setEmail('admin@admin.com');
+        $user->setTimezone($this->params->get('app')['timezone']); //Load global Timezone
+        $user->setPassword(
+            $this->passwordHasher->hashPassword(
+                $user,
+                'admin'
+            )
+        );
+        $user->setIsVerified(true);
+        $user->setActive(true);
+        #$user->setPid();
+        $user->setRoles(['ROLE_SUPER_ADMIN']);
+
+        $manager->persist($user);
+        $manager->flush();
     }
 
     public function loadDefaultUserRoles(ObjectManager $manager)
     {
-
         $roles = [  'Super Admin' => 'ROLE_SUPER_ADMIN',
                     'Admin' => 'ROLE_ADMIN',
                     'User' => 'ROLE_USER'];

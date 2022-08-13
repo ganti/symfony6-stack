@@ -14,7 +14,7 @@ class LogService extends AbstractController
 {
     protected Log $log;
     protected Security $security;
-    protected RequestStack $requestStack; 
+    protected RequestStack $requestStack;
     protected EntityManagerInterface $manager;
 
     public function __construct(EntityManagerInterface $manager, Security $security, RequestStack $requestStack)
@@ -24,13 +24,13 @@ class LogService extends AbstractController
         $this->requestStack = $requestStack;
 
         $this->log = new Log();
-        $this->log->setUser( $this->security->getUser() );
+        $this->log->setUser($this->security->getUser());
 
-        if (!empty($this->requestStack->getCurrentRequest())){
-            $this->log->setClientIP( $this->requestStack->getCurrentRequest()->getClientIp() );
-            $this->log->setClientLocale( $this->requestStack->getCurrentRequest()->getLocale() );
-            $this->log->setRequestMethod( $this->requestStack->getCurrentRequest()->getMethod() );
-            $this->log->setRequestPath( $this->requestStack->getCurrentRequest()->getPathInfo() );
+        if (!empty($this->requestStack->getCurrentRequest())) {
+            $this->log->setClientIP($this->requestStack->getCurrentRequest()->getClientIp());
+            $this->log->setClientLocale($this->requestStack->getCurrentRequest()->getLocale());
+            $this->log->setRequestMethod($this->requestStack->getCurrentRequest()->getMethod());
+            $this->log->setRequestPath($this->requestStack->getCurrentRequest()->getPathInfo());
         }
     }
 
@@ -59,17 +59,15 @@ class LogService extends AbstractController
         return $this;
     }
 
-    public function warning(?String $context, ?String $subcontext, ?String $message, ?bool $isSuccess = False): self
+    public function warning(?String $context, ?String $subcontext, ?String $message, ?bool $isSuccess = false): self
     {
         $this->logEvent('WARNING', $context, $subcontext, $message, $isSuccess);
         return $this;
     }
 
-    public function error(?String $context, ?String $subcontext, ?String $message, ?bool $isSuccess = False): self
+    public function error(?String $context, ?String $subcontext, ?String $message, ?bool $isSuccess = false): self
     {
         $this->logEvent('ERROR', $context, $subcontext, $message, $isSuccess);
         return $this;
     }
-
-
 }
