@@ -24,7 +24,7 @@ class LogService extends AbstractController
         $this->requestStack = $requestStack;
 
         $this->log = new Log();
-        $this->log->setUser($this->security->getUser());
+        $this->log->setUser($this->security->getUser()) ;
 
         if (!empty($this->requestStack->getCurrentRequest())) {
             $this->log->setClientIP($this->requestStack->getCurrentRequest()->getClientIp());

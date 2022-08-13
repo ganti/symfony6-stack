@@ -117,3 +117,10 @@ db-migrations:
 
 db-fixtures:
 	${SYMFONY_CMD} doctrine:fixtures:load -n -e dev ${END}
+
+
+cs-check:
+	tools/php-cs-fixer/vendor/bin/php-cs-fixer --no-interaction --dry-run --diff -v fix app/src
+
+cs-fix:
+	tools/php-cs-fixer/vendor/bin/php-cs-fixer --diff -v fix app/src
