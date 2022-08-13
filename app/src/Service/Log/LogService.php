@@ -13,17 +13,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class LogService extends AbstractController
 {
     protected Log $log;
-    private Security $security;
+    protected Security $security;
     protected RequestStack $requestStack; 
     protected EntityManagerInterface $manager;
 
-    /**
-     * LogService constructor.
-     * @param EntityManagerInterface $manager
-     * @param Security $security
-     * @param RequestStack $requestStack
-     */
-    public function __construct(EntityManagerInterface $manager, Security $security, RequestStack $requestStack)
+    
+    private function logEvent(?String $level, ?String $context, ?String $subcontext = null, ?String $message, ?bool $isSuccess = null, EntityManagerInterface $manager, Security $security, RequestStack $requestStack): self
     {
         $this->manager = $manager;
         $this->security = $security;
@@ -38,11 +33,7 @@ class LogService extends AbstractController
             $this->log->setRequestMethod( $this->requestStack->getCurrentRequest()->getMethod() );
             $this->log->setRequestPath( $this->requestStack->getCurrentRequest()->getPathInfo() );
         }
-        
-    }
 
-    private function logEvent(?String $level, ?String $context, ?String $subcontext = null, ?String $message, ?bool $isSuccess = null): self
-    {
         $this->log->setLevel($level);
         $this->log->setContext($context);
         $this->log->setSubcontext($subcontext);

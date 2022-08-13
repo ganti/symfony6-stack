@@ -28,8 +28,7 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        return $this->render('@EasyAdmin/dashboard/dashboard.html.twig');
-        return parent::index(); // orginal
+        return $this->render('@EasyAdmin/pages/dashboard.html.twig');
     }
 
     public function configureDashboard(): Dashboard
@@ -43,10 +42,14 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
 
         if ($this->isGranted('ROLE_ADMIN')) {
+            yield MenuItem::section('Administration');
             yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
             yield MenuItem::linkToCrud('User Roles', 'fas fa-user-tag', UserRole::class);
+            yield MenuItem::section('System');
             yield MenuItem::linkToCrud('Logs', 'fas fa-list', Log::class);
-            yield MenuItem::section();
+            if ($this->isGranted('ROLE_SUPER_ADMIN')) {
+                yield MenuItem::linkToRoute('phpInfo', 'fa-brands fa-php','admin_phpinfo');
+            }
         }
     }
 
@@ -77,6 +80,27 @@ class DashboardController extends AbstractDashboardController
             ->setDateFormat('yyyy-MM-dd')
             ->setTimeFormat('HH:mm:ss')
         ;
+    }
+
+
+    #[IsGranted('ROLE_SUPER_ADMIN')]
+    #[Route('/admin/phpinfo', name: 'admin_phpinfo')]
+    public function phpinfo(): Response
+    {
+        ob_start();
+        phpinfo(INFO_GENERAL);
+        phpinfo(INFO_CONFIGURATION);
+        phpinfo(INFO_MODULES);
+        
+        $output = ob_get_contents();
+        ob_get_clean();
+        //$output = preg_replace('#<style type="text/css">.*?</style>#s', '', $output);
+     
+        $output = str_replace('body {background-color: #fff;', 'body {',$output);
+        $output = str_replace('hr {width: 934px; background-color: #ccc; border: 0; height: 1px;}', '',$output);
+        $output = str_replace('a:link {color: #009; text-decoration: none; background-color: #fff;}', '',$output);
+        
+        return $this->render('@EasyAdmin/pages/phpinfo.html.twig', ['phpinfo' => $output]);
     }
     
 }

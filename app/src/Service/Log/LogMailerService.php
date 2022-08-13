@@ -72,7 +72,7 @@ class LogMailerService extends LogService
                             }, $message->getBcc())
                         );
         $collection['subject'] = $message->getSubject();
-        #$collection['bodyHTML'] = $message->__serialize(); 
+        #$collection['bodyHTML'] = $message->getHtmlBody(); 
         #$collection['bodyText'] = $message->getTextBody(); 
 
         return array_filter($collection);
