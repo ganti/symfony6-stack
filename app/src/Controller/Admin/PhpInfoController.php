@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class PhpInfoController extends DashboardController
 {
-
     #[IsGranted('ROLE_SUPER_ADMIN')]
     #[Route('/admin/phpinfo', name: 'admin_phpinfo')]
     public function phpinfo(): Response

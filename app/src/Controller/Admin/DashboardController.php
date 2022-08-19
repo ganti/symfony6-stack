@@ -80,5 +80,4 @@ class DashboardController extends AbstractDashboardController
             ->setTimeFormat('HH:mm:ss')
         ;
     }
-    
 }
