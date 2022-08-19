@@ -80,25 +80,5 @@ class DashboardController extends AbstractDashboardController
             ->setTimeFormat('HH:mm:ss')
         ;
     }
-
-
-    #[IsGranted('ROLE_SUPER_ADMIN')]
-    #[Route('/admin/phpinfo', name: 'admin_phpinfo')]
-    public function phpinfo(): Response
-    {
-        ob_start();
-        phpinfo(INFO_GENERAL);
-        phpinfo(INFO_CONFIGURATION);
-        phpinfo(INFO_MODULES);
-
-        $output = ob_get_contents();
-        ob_get_clean();
-        //$output = preg_replace('#<style type="text/css">.*?</style>#s', '', $output);
-
-        $output = str_replace('body {background-color: #fff;', 'body {', $output);
-        $output = str_replace('hr {width: 934px; background-color: #ccc; border: 0; height: 1px;}', '', $output);
-        $output = str_replace('a:link {color: #009; text-decoration: none; background-color: #fff;}', '', $output);
-
-        return $this->render('@EasyAdmin/pages/phpinfo.html.twig', ['phpinfo' => $output]);
-    }
+    
 }
