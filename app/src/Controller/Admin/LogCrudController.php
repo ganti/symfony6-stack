@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use function App\Controller\Admin\t;
 
 class LogCrudController extends AbstractCrudController
 {
@@ -27,7 +28,7 @@ class LogCrudController extends AbstractCrudController
     {
         return $crud
             //->setEntityLabelInSingular('Log')
-            ->setEntityLabelInPlural('Logs')
+            ->setEntityLabelInPlural(t('admin.crud.logs.titles.index_page'))
             ->setPageTitle('index', '%entity_label_plural%')
             ->setDateFormat('full')
             ->setDefaultSort(['id' => 'DESC'])
@@ -41,25 +42,25 @@ class LogCrudController extends AbstractCrudController
     {
         if (Crud::PAGE_INDEX === $pageName) {
             yield IntegerField::new('id')->setCssClass('col-auto');
-            yield TextField::new('level');
-            yield TextField::new('context', 'Context');
-            yield TextField::new('subcontext', 'Subcontext');
-            yield TextareaField::new('message');
-            yield DateTimeField::new('createdAt');
+            yield TextField::new('level', t('admin.crud.logs.label.level'));
+            yield TextField::new('context', t('admin.crud.logs.label.context'));
+            yield TextField::new('subcontext', t('admin.crud.logs.label.subcontext'));
+            yield TextareaField::new('message', t('admin.crud.logs.label.message'));
+            yield DateTimeField::new('createdAt', t('admin.crud.generic.created_at'));
         } elseif (Crud::PAGE_DETAIL=== $pageName) {
-            yield FormField::addPanel('General');
+            yield FormField::addPanel('General', t('admin.crud.logs.titles.general'));
             //yield IdField::new('id');
-            yield TextField::new('level');
-            yield TextField::new('context', 'Context');
-            yield TextareaField::new('message')->setCssClass('field-text-code');
-            yield DateTimeField::new('createdAt')->setFormTypeOption('disabled', 'disabled');
+            yield TextField::new('level', t('admin.crud.logs.label.level'));
+            yield TextField::new('context', t('admin.crud.logs.label.context'));
+            yield TextareaField::new('message', t('admin.crud.logs.label.message'))->setCssClass('field-text-code');
+            yield DateTimeField::new('createdAt', t('admin.crud.logs.titles.general'))->setFormTypeOption('disabled', 'disabled');
 
-            yield FormField::addPanel('Request Information');
-            yield TextField::new('requestMethod', 'Request Method');
-            yield TextField::new('requestPath', 'Request Path');
-            yield TextField::new('clientIP', 'Client IP');
-            yield AssociationField::new('user', 'User');
-            yield TextField::new('clientLocale', 'Locale');
+            yield FormField::addPanel(t('admin.crud.logs.titles.request_information'));
+            yield TextField::new('requestMethod',  t('admin.crud.logs.label.request_method'));
+            yield TextField::new('requestPath',  t('admin.crud.logs.label.request_path'));
+            yield TextField::new('clientIP',  t('admin.crud.logs.label.client_ip'));
+            yield AssociationField::new('user', t('admin.crud.logs.label.user'));
+            yield TextField::new('clientLocale',  t('admin.crud.logs.label.client_locale'));
         }
         return $this;
     }
@@ -67,11 +68,11 @@ class LogCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add('level', 'Level')
-            ->add('context', 'Context')
-            ->add('message', 'Message')
-            ->add('user', 'User')
-            ->add('createdAt', 'created at')
+            ->add('level', t('admin.crud.logs.label.level'))
+            ->add('context', t('admin.crud.logs.label.context'))
+            ->add('message', t('admin.crud.logs.label.message'))
+            ->add('user', t('admin.crud.logs.label.user'))
+            ->add('createdAt', t('admin.crud.generic.created_at'))
         ;
     }
 

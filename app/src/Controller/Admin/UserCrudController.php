@@ -25,6 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use function App\Controller\Admin\t;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -45,9 +46,7 @@ class UserCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return parent::configureCrud($crud)
-        //return $crud
-            ->setEntityLabelInSingular('User')
-            ->setEntityLabelInPlural('Users')
+            ->setEntityLabelInPlural(t('admin.crud.user.titles.index_page'))
             ->setPageTitle('index', '%entity_label_plural%')
             //->setPageTitle('edit', 'Edit %entity_label_singular%: %email    %')
             ->setPageTitle('edit', fn (User $user) => sprintf('Edit %s', $user->getUsername()))
@@ -70,68 +69,67 @@ class UserCrudController extends AbstractCrudController
         if (Crud::PAGE_INDEX === $pageName) {
             if ($this->isGranted('ROLE_ADMIN')) {
                 yield IntegerField::new('id');
-                yield TextField::new('username');
-                yield TextField::new('fullName');
-                yield TextField::new('email');
-                yield ChoiceField::new('roles')
+                yield TextField::new('username', t('admin.crud.user.label.username'));
+                yield TextField::new('fullName', t('admin.crud.user.label.full_name'));
+                yield TextField::new('email', t('admin.crud.user.label.email'));
+                yield ChoiceField::new('roles', t('admin.crud.user.label.user_roles'))
                     ->setChoices(array_combine($this->getUserRolesField(), $this->getUserRolesField()))
                     ->renderAsBadges();
-                yield BooleanField::new('isActive')->renderAsSwitch(false);
-                yield DateTimeField::new('createdAt');
+                yield BooleanField::new('isActive', t('admin.crud.generic.is_active'))->renderAsSwitch(false);
+                yield DateTimeField::new('createdAt', t('admin.crud.generic.created_at'));
             }
         } else {
             if ($this->getIsLoggedInUserEditingUserCrud() or $this->isGranted('ROLE_ADMIN')) {
-                yield FormField::addPanel('Account Information')
+                yield FormField::addPanel(t('admin.crud.user.titles.account_information'))
                     ->setIcon('far fa-address-card')
-                    ->setCssClass('col-sm-8');
+                    ->setCssClass('col-sm-12');
 
-                yield TextField::new('firstname', 'Firstname')->setColumns('col-6');
-                yield TextField::new('lastname', 'Lastname')->setColumns('col-6');
+                yield TextField::new('username', t('admin.crud.user.label.username'))->setColumns('col-6');
+                yield TextField::new('email', t('admin.crud.user.label.email'))->setColumns('col-6');
+            
+                yield TextField::new('firstname', t('admin.crud.user.label.firstname'))->setColumns('col-6');
+                yield TextField::new('lastname', t('admin.crud.user.label.lastname'))->setColumns('col-6');
+                    
 
-                if ($this->isGranted('ROLE_ADMIN')) {
-                    yield TextField::new('username', 'Username');
-                    yield TextField::new('email', 'eMail');
-                } else {
-                    //User Profile
-                    yield TextField::new('username', 'Username')->setFormTypeOption('disabled', 'disabled');
-                    yield TextField::new('email', 'eMail')->setFormTypeOption('disabled', 'disabled');
-                }
-
-
-                yield FormField::addPanel('Change password')
-                    ->setIcon('fa fa-solid fa-screwdriver-wrench')
-                    ->setCssClass('col');
-                yield Field::new('plainPassword', 'New password')
+                yield FormField::addPanel(t('admin.crud.user.titles.change_password'))
+                    ->setIcon('fa fa-solid fa-key')
+                    ->setCssClass('col-3');
+                yield Field::new('plainPassword', t('admin.crud.user.label.new_password'))
                                             ->onlyOnForms()
                                             ->setFormType(RepeatedType::class)
                                             ->setFormTypeOption('empty_data', '')
                                             ->setFormTypeOptions([
                                                 'type' => PasswordType::class,
-                                                'first_options' => ['label' => 'New password'],
-                                                'second_options' => ['label' => 'Repeat password'],
+                                                'first_options' => ['label' => t('admin.crud.user.label.new_password')],
+                                                'second_options' => ['label' => t('admin.crud.user.label.new_password_repeat')],
                                             ]);
             }
-            yield TimezoneField::new('timezone', 'TimeZone')
-                    ->setColumns('col');
+
+            yield FormField::addPanel(t('admin.crud.user.titles.user_settings'))
+                ->setIcon('fa fa-solid fa-screwdriver-wrench')
+                ->setCssClass('col-4');
+            yield TimezoneField::new('timezone', t('admin.crud.user.label.time_zone'))
+                ->setColumns('col');
+                
 
             if ($this->isGranted('ROLE_ADMIN')) {
-                yield FormField::addPanel('Admin Settings')
+                yield FormField::addPanel(t('admin.crud.user.titles.admin_settings'))
                 ->setIcon('fas fa-users-cog')
                 ->setCssClass('');
-                yield ChoiceField::new('roles', 'Role')
+                yield ChoiceField::new('roles', t('admin.crud.user.label.user_roles'))
                                             ->allowMultipleChoices()
                                             ->autocomplete()
                                             ->setChoices($this->getUserRolesField());
 
-                yield BooleanField::new('is_active', 'User is active');
-                yield BooleanField::new('is_verified', 'Email is verified')->setFormTypeOption('disabled', 'disabled');
+                yield BooleanField::new('is_active', t('admin.crud.generic.is_active'));
+                yield BooleanField::new('is_verified', t('admin.crud.user.label.mail_verified'))->setFormTypeOption('disabled', 'disabled');
 
                 yield TextField::new('pid', 'PID')->setFormTypeOption('disabled', 'disabled');
 
-                yield DateTimeField::new('createdAt', 'created')
+                yield DateTimeField::new('createdAt', t('admin.crud.generic.created_at'))
                     ->setColumns('col-4')
                     ->setFormTypeOption('disabled', 'disabled');
-                yield DateTimeField::new('updatedAt', 'updated')
+                yield DateTimeField::new('updatedAt', t('admin.crud.generic.updated_at'))
                     ->setColumns('col-4')
                     ->setFormTypeOption('disabled', 'disabled');
             }
@@ -156,7 +154,7 @@ class UserCrudController extends AbstractCrudController
                 if (trim($passwords['first']) == trim($passwords['second'])) {
                     $plainPassword = trim($passwords['first']);
                 } else {
-                    $this->addFlash('warning', 'Passwords dont match');
+                    $this->addFlash('warning', t('admin.crud.user.messages.passwort_not_match'));
                 }
                 if (!empty($plainPassword)) {
                     $encodedPassword = $this->passwordHasher->hashPassword(
@@ -191,10 +189,10 @@ class UserCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-        ->add('username', 'Username')
-        ->add('email', 'email')
-        ->add('roles', 'Userroles')
-        ->add('isActive', 'is Active');
+        ->add('username', t('admin.crud.user.label.username'))
+        ->add('email', t('admin.crud.user.label.email'))
+        ->add('roles', t('admin.crud.user.label.user_roles'))
+        ->add('isActive', t('admin.crud.user.label.is_active'));
     }
 
     private function getUserRolesField(): array

@@ -13,8 +13,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use Symfony\Component\Security\Core\User\UserInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use function App\Controller\Admin\t;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -33,21 +34,22 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('App');
+        ->setTranslationDomain('admin')
+        ->setTitle('App');
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linktoDashboard(t('admin.dashboard.menu.label.dashboard'), 'fa fa-home');
 
         if ($this->isGranted('ROLE_ADMIN')) {
-            yield MenuItem::section('Administration');
-            yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
-            yield MenuItem::linkToCrud('User Roles', 'fas fa-user-tag', UserRole::class);
-            yield MenuItem::section('System');
-            yield MenuItem::linkToCrud('Logs', 'fas fa-list', Log::class);
+            yield MenuItem::section(t('admin.dashboard.menu.label.administration'));
+            yield MenuItem::linkToCrud(t('admin.dashboard.menu.label.users'), 'fas fa-user', User::class);
+            yield MenuItem::linkToCrud(t('admin.dashboard.menu.label.user_roles'), 'fas fa-user-tag', UserRole::class);
+            yield MenuItem::section( t('admin.dashboard.menu.label.system'));
+            yield MenuItem::linkToCrud(t('admin.dashboard.menu.label.logs'), 'fas fa-list', Log::class);
             if ($this->isGranted('ROLE_SUPER_ADMIN')) {
-                yield MenuItem::linkToRoute('phpInfo', 'fa-brands fa-php', 'admin_phpinfo');
+                yield MenuItem::linkToRoute(t('admin.dashboard.menu.label.phpinfo'), 'fa-brands fa-php', 'admin_phpinfo');
             }
         }
     }
@@ -60,9 +62,8 @@ class DashboardController extends AbstractDashboardController
             ->displayUserAvatar(true)
             ->setGravatarEmail($this->security->getUser()->getEmail())
 
-            // you can use any type of menu item, except submenus
             ->addMenuItems([
-                MenuItem::linkToCrud('My Profile', 'fa fa-id-card', User::class)
+                MenuItem::linkToCrud(t('admin.dashboard.menu.label.my_profile'), 'fa fa-id-card', User::class)
                     ->setAction('edit')
                     ->setEntityId($this->security->getUser()->getId()),
                 MenuItem::section(),

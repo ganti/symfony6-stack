@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use function App\Controller\Admin\t;
 
 class UserRoleCrudController extends AbstractCrudController
 {
@@ -24,9 +25,9 @@ class UserRoleCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInPlural('User Roles')
+            ->setEntityLabelInPlural(t('admin.crud.user_roles.titles.index_page'))
             ->setPageTitle('index', '%entity_label_plural%')
-            ->setPageTitle('new', 'New Role')
+            ->setPageTitle('new', t('admin.crud.user_roles.label.new_role'))
 
             ->setDateFormat('full')
             ->setDefaultSort(['id' => 'ASC'])
@@ -38,30 +39,30 @@ class UserRoleCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         if (Crud::PAGE_INDEX === $pageName) {
-            yield TextField::new('role', 'Role');
-            yield TextField::new('name', 'Name');
-            yield TextField::new('description', 'Description');
-            yield ArrayField::new('ParentRoleRecursive', 'Parent Roles');
-            yield BooleanField::new('active', 'is active')->renderAsSwitch(false);
-            yield DateTimeField::new('createdAt');
+            yield TextField::new('role', t('admin.crud.user_roles.label.role'));
+            yield TextField::new('name', t('admin.crud.user_roles.label.name'));
+            yield TextField::new('description', t('admin.crud.user_roles.label.description'));
+            yield ArrayField::new('ParentRoleRecursive', t('admin.crud.user_roles.label.parent_roles'));
+            yield BooleanField::new('active', t('admin.crud.generic.is_active'))->renderAsSwitch(false);
+            yield DateTimeField::new('createdAt', t('admin.crud.generic.created_at'));
         } else {
-            yield FormField::addPanel('Role')->setIcon('fa fa-user-tag');
+            yield FormField::addPanel(t('admin.crud.user_roles.label.role'))->setIcon('fa fa-user-tag');
             if (Crud::PAGE_NEW === $pageName) {
-                yield TextField::new('role', 'Role');
+                yield TextField::new('role', t('admin.crud.user_roles.label.role'));
             } elseif (Crud::PAGE_EDIT === $pageName) {
-                yield TextField::new('role', 'Role')->setFormTypeOption('disabled', 'disabled');
+                yield TextField::new('role', t('admin.crud.user_roles.label.role'))->setFormTypeOption('disabled', 'disabled');
             }
 
-            yield TextField::new('name', 'Name');
-            yield TextField::new('description', 'Description');
-            yield AssociationField::new('parentRole', 'Parent Role');
-            yield BooleanField::new('active', 'is active');
+            yield TextField::new('name', t('admin.crud.user_roles.label.name'));
+            yield TextField::new('description', t('admin.crud.user_roles.label.description'));
+            yield AssociationField::new('parentRole', t('admin.crud.user_roles.label.parent_roles'));
+            yield BooleanField::new('active', t('admin.crud.generic.is_active'));
             yield BooleanField::new('systemrole', 'is systemrole')->setFormTypeOption('disabled', 'disabled');
             yield FormField::addPanel('Timestamps')->setIcon('fa fa-clock');
 
-            yield DateTimeField::new('createdAt', 'created')->setColumns('col-4')->setFormTypeOption('disabled', 'disabled');
-            yield DateTimeField::new('updatedAt', 'updated')->setColumns('col-4')->setFormTypeOption('disabled', 'disabled');
-            yield DateTimeField::new('deletedAt', 'deleted')->setColumns('col-4');
+            yield DateTimeField::new('createdAt', t('admin.crud.generic.created_at'))->setColumns('col-4')->setFormTypeOption('disabled', 'disabled');
+            yield DateTimeField::new('updatedAt', t('admin.crud.generic.updated_at'))->setColumns('col-4')->setFormTypeOption('disabled', 'disabled');
+
         }
         return $this;
     }

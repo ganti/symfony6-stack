@@ -126,3 +126,10 @@ cs-check:
 
 cs-fix:
 	tools/php-cs-fixer/vendor/bin/php-cs-fixer --diff -v fix app/src
+
+
+# translations
+
+trans-extract:
+	${SYMFONY_CMD} translation:extract --force --format=yaml --as-tree=10 --domain=admin en ${END}
+	${SYMFONY_CMD} translation:extract --force --format=yaml --as-tree=10 --domain=messages en ${END}

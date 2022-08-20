@@ -1,0 +1,63 @@
+admin:
+    dashboard:
+        menu:
+            label:
+                dashboard: Dashboard
+                administration: Administration
+                users: Users
+                user_roles: 'User Roles'
+                system: System
+                logs: Logs
+                phpinfo: phpinfo
+                my_profile: 'My Profile'
+    crud:
+        generic:
+            is_active: 'is active'
+            created_at: 'created at'
+            updated_at: 'updated at'
+        user:
+            titles:
+                index_page: Users
+                account_information: 'Account Information'
+                change_password: 'Change password'
+                admin_settings: 'Admin Settings'
+                user_settings: 'User Settings'
+            label:
+                username: Username
+                full_name: 'Full name'
+                email: eMail
+                user_roles: 'User Roles'
+                firstname: Firstname
+                lastname: Lastname
+                new_password: Password
+                new_password_repeat: 'Repeat password'
+                time_zone: TimeZone
+                mail_verified: 'Email is verfied'
+                user: __admin.crud.user.label.user
+                is_active: __admin.crud.user.label.is_active
+            messages:
+                passwort_not_match: 'Passwords dont match'
+        user_roles:
+            titles:
+                index_page: 'User Roles'
+            label:
+                new_role: 'New Role'
+                role: Role
+                name: Name
+                description: Description
+                parent_roles: 'Parent Roles'
+        logs:
+            titles:
+                index_page: Logs
+                general: General
+                request_information: 'Request Information'
+            label:
+                level: Level
+                context: Context
+                subcontext: Subcontext
+                message: Message
+                request_method: 'Request Method'
+                request_path: 'Request Path'
+                client_ip: 'Client IP'
+                client_locale: 'Client locale'
+                user: User         
