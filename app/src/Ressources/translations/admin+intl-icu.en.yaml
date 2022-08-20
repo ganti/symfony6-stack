@@ -31,9 +31,12 @@ admin:
                 lastname: Lastname
                 new_password: Password
                 new_password_repeat: 'Repeat password'
-                time_zone: TimeZone
+                time_zone: Timezone
+                country: Country
                 mail_verified: 'Email is verfied'
                 user: User
+                date_format: 'DateFormat'
+                time_format: 'TimeFormat'
             messages:
                 passwort_not_match: 'Passwords dont match'
         user_roles:

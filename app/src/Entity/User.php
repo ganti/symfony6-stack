@@ -56,14 +56,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Log::class)]
-    private Collection $logs;
-
     #[ORM\Column(length: 255)]
     private ?string $timezone = null;
 
+    #[ORM\Column(length: 5, nullable: true)]
+    private ?string $country = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $date_format = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $time_format = null;
+    
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Log::class)]
+    private Collection $logs;
+
     #[ORM\OneToMany(mappedBy: 'User', targetEntity: Email::class)]
     private Collection $emails;
+
 
 
 
@@ -203,6 +213,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getTimezone(): ?string
+    {
+        return $this->timezone;
+    }
+
+    public function setTimezone(string $timezone): self
+    {
+        $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getDateFormat(): ?string
+    {
+        return $this->date_format;
+    }
+
+    public function setDateFormat(?string $date_format): self
+    {
+        $this->date_format = $date_format;
+
+        return $this;
+    }
+
+    public function getTimeFormat(): ?string
+    {
+        return $this->time_format;
+    }
+
+    public function setTimeFormat(?string $time_format): self
+    {
+        $this->time_format = $time_format;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getUsername();
+    }
+
     /**
      * @return Collection<int, Log>
      */
@@ -219,23 +282,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
-    }
-
-    public function getTimezone(): ?string
-    {
-        return $this->timezone;
-    }
-
-    public function setTimezone(string $timezone): self
-    {
-        $this->timezone = $timezone;
-
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return (string) $this->getUsername();
     }
 
     /**
@@ -267,4 +313,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
 }

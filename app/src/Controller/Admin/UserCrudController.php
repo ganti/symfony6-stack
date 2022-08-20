@@ -24,6 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 use function App\Controller\Admin\t;
@@ -108,10 +109,13 @@ class UserCrudController extends AbstractCrudController
 
             yield FormField::addPanel(t('admin.crud.user.titles.user_settings'))
                 ->setIcon('fa fa-solid fa-screwdriver-wrench')
-                ->setCssClass('col-4');
+                ->setCssClass('col');
             yield TimezoneField::new('timezone', t('admin.crud.user.label.time_zone'))
-                ->setColumns('col');
-
+                ->setColumns('col-6');
+            yield CountryField::new('country', t('admin.crud.user.label.country'))
+                ->setColumns('col-6');
+            yield TextField::new('date_format', t('admin.crud.user.label.date_format'))->setColumns('col-6');
+            yield TextField::new('time_format', t('admin.crud.user.label.time_format'))->setColumns('col-6');
 
             if ($this->isGranted('ROLE_ADMIN')) {
                 yield FormField::addPanel(t('admin.crud.user.titles.admin_settings'))

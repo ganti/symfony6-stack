@@ -106,6 +106,7 @@ ifeq ($(ENV),prod)
 else
 	make db-drop
 	make db-create
+	make db-migrations
 	${SYMFONY_CMD} doctrine:fixtures:load --group=setup  -n ${END}
 endif
 

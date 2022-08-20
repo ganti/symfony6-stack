@@ -77,9 +77,9 @@ class DashboardController extends AbstractDashboardController
         return Crud::new()
             ->setPaginatorPageSize(30)
             ->setTimezone($this->security->getUser()->getTimeZone())
-            ->setDateTimeFormat('yyyy-MM-dd HH:mm:ss')
-            ->setDateFormat('yyyy-MM-dd')
-            ->setTimeFormat('HH:mm:ss')
+            ->setDateTimeFormat($this->security->getUser()->getDateFormat().' '.$this->security->getUser()->getTimeFormat())
+            ->setDateFormat($this->security->getUser()->getDateFormat())
+            ->setTimeFormat($this->security->getUser()->getTimeFormat())
         ;
     }
 }

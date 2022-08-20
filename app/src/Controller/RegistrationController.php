@@ -49,6 +49,8 @@ class RegistrationController extends AbstractController
 
             $user->setActive(true);
             $user->setTimezone($this->getParameter('app')['timezone']); //Load global Timezone
+            $user->setDateFormat($this->getParameter('app')['date_format']); //Load global Timezone
+            $user->setTimeFormat($this->getParameter('app')['time_format']); //Load global Timezone
 
             try {
                 $entityManager->persist($user);

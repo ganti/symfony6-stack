@@ -5,7 +5,9 @@ parameters:
     default_locale:  en
     admin_locales:   [de, en]
     
-    timezone: 'Europe/Zurich' #default Timezone, users can set their timezone
+    timezone: 'Europe/Zurich' #default Timezone, users can set their own
+    date_format: 'yyyy-MM-dd' #default DateFormat, users can set their own
+    time_format: 'HH:mm:ss'   #default TimeFormat, users can set their own
 
     easyadmin:
       registration: true #allow new users to register
