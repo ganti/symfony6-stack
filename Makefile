@@ -119,6 +119,8 @@ db-fixtures:
 	${SYMFONY_CMD} doctrine:fixtures:load -n -e dev ${END}
 
 
+
+# Codestyle
 cs-check:
 	tools/php-cs-fixer/vendor/bin/php-cs-fixer --no-interaction --dry-run --diff -v fix app/src
 

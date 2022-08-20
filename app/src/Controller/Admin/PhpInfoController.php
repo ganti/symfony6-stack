@@ -43,6 +43,7 @@ class PhpInfoController extends DashboardController
                 #phpinfo .v i {color: #999;}
                 #phpinfo img {float: right; border: 0;}
                 #phpinfo hr {width: 934px; background-color: #ccc; border: 0; height: 1px;}
+                h1.p{ font-size: 500% !important; }
             </style>
             <div id='phpinfo'>
                 $output
