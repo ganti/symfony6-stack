@@ -72,7 +72,6 @@ class UserCrudController extends AbstractCrudController
             if ($this->isGranted('ROLE_ADMIN')) {
                 yield IntegerField::new('id');
                 yield TextField::new('username', t('admin.crud.user.label.username'));
-                yield TextField::new('fullName', t('admin.crud.user.label.full_name'));
                 yield TextField::new('email', t('admin.crud.user.label.email'));
                 yield ChoiceField::new('roles', t('admin.crud.user.label.user_roles'))
                     ->setChoices(array_combine($this->getUserRolesField(), $this->getUserRolesField()))
@@ -114,8 +113,23 @@ class UserCrudController extends AbstractCrudController
                 ->setColumns('col-6');
             yield CountryField::new('country', t('admin.crud.user.label.country'))
                 ->setColumns('col-6');
-            yield TextField::new('date_format', t('admin.crud.user.label.date_format'))->setColumns('col-6');
-            yield TextField::new('time_format', t('admin.crud.user.label.time_format'))->setColumns('col-6');
+            yield ChoiceField::new('date_format', t('admin.crud.user.label.date_format'))
+                ->setColumns('col-6')
+                ->setChoices([
+                    '2022-06-23 (yyyy-MM-dd)' => 'yyyy-MM-dd',
+                    '6/23/2022 (M/d/yyyy)' => 'M/d/yyyy',
+                    '23.06.2022 (dd.MM.yyyy)' => 'dd.MM.yyyy',
+                    '23/06/2022 (dd/MM/yyyy)' => 'dd/MM/yyyy',
+                ]);
+
+            yield ChoiceField::new('time_format', t('admin.crud.user.label.time_format'))
+                ->setColumns('col-6')
+                ->setChoices([
+                    '15:23:42 (HH:mm:ss)' => 'HH:mm:ss',
+                    '15:23 (HH:mm)' => 'HH:mm',
+                    '3:23:42 PM (h:mm:ss a) '=> 'hh:mm:ss a',
+                    '3:23 PM (h:mm a) '=> 'hh:mm:ss a',
+                ]);
 
             if ($this->isGranted('ROLE_ADMIN')) {
                 yield FormField::addPanel(t('admin.crud.user.titles.admin_settings'))

@@ -24,9 +24,9 @@ admin:
                 user_settings: 'User Settings'
             label:
                 username: Username
-                full_name: 'Full name'
                 email: eMail
                 user_roles: 'User Roles'
+                full_name: 'Full name'
                 firstname: Firstname
                 lastname: Lastname
                 new_password: Password
@@ -35,8 +35,8 @@ admin:
                 country: Country
                 mail_verified: 'Email is verfied'
                 user: User
-                date_format: 'DateFormat'
-                time_format: 'TimeFormat'
+                date_format: 'Date format'
+                time_format: 'Time format'
             messages:
                 passwort_not_match: 'Passwords dont match'
         user_roles:
