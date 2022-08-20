@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+
 use function App\Controller\Admin\t;
 
 class DashboardController extends AbstractDashboardController
@@ -46,7 +47,7 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::section(t('admin.dashboard.menu.label.administration'));
             yield MenuItem::linkToCrud(t('admin.dashboard.menu.label.users'), 'fas fa-user', User::class);
             yield MenuItem::linkToCrud(t('admin.dashboard.menu.label.user_roles'), 'fas fa-user-tag', UserRole::class);
-            yield MenuItem::section( t('admin.dashboard.menu.label.system'));
+            yield MenuItem::section(t('admin.dashboard.menu.label.system'));
             yield MenuItem::linkToCrud(t('admin.dashboard.menu.label.logs'), 'fas fa-list', Log::class);
             if ($this->isGranted('ROLE_SUPER_ADMIN')) {
                 yield MenuItem::linkToRoute(t('admin.dashboard.menu.label.phpinfo'), 'fa-brands fa-php', 'admin_phpinfo');

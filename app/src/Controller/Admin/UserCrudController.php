@@ -25,6 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 use function App\Controller\Admin\t;
 
 class UserCrudController extends AbstractCrudController
@@ -86,10 +87,10 @@ class UserCrudController extends AbstractCrudController
 
                 yield TextField::new('username', t('admin.crud.user.label.username'))->setColumns('col-6');
                 yield TextField::new('email', t('admin.crud.user.label.email'))->setColumns('col-6');
-            
+
                 yield TextField::new('firstname', t('admin.crud.user.label.firstname'))->setColumns('col-6');
                 yield TextField::new('lastname', t('admin.crud.user.label.lastname'))->setColumns('col-6');
-                    
+
 
                 yield FormField::addPanel(t('admin.crud.user.titles.change_password'))
                     ->setIcon('fa fa-solid fa-key')
@@ -110,7 +111,7 @@ class UserCrudController extends AbstractCrudController
                 ->setCssClass('col-4');
             yield TimezoneField::new('timezone', t('admin.crud.user.label.time_zone'))
                 ->setColumns('col');
-                
+
 
             if ($this->isGranted('ROLE_ADMIN')) {
                 yield FormField::addPanel(t('admin.crud.user.titles.admin_settings'))

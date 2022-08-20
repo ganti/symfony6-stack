@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+
 use function App\Controller\Admin\t;
 
 class LogCrudController extends AbstractCrudController
@@ -56,11 +57,11 @@ class LogCrudController extends AbstractCrudController
             yield DateTimeField::new('createdAt', t('admin.crud.logs.titles.general'))->setFormTypeOption('disabled', 'disabled');
 
             yield FormField::addPanel(t('admin.crud.logs.titles.request_information'));
-            yield TextField::new('requestMethod',  t('admin.crud.logs.label.request_method'));
-            yield TextField::new('requestPath',  t('admin.crud.logs.label.request_path'));
-            yield TextField::new('clientIP',  t('admin.crud.logs.label.client_ip'));
+            yield TextField::new('requestMethod', t('admin.crud.logs.label.request_method'));
+            yield TextField::new('requestPath', t('admin.crud.logs.label.request_path'));
+            yield TextField::new('clientIP', t('admin.crud.logs.label.client_ip'));
             yield AssociationField::new('user', t('admin.crud.logs.label.user'));
-            yield TextField::new('clientLocale',  t('admin.crud.logs.label.client_locale'));
+            yield TextField::new('clientLocale', t('admin.crud.logs.label.client_locale'));
         }
         return $this;
     }

@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+
 use function App\Controller\Admin\t;
 
 class UserRoleCrudController extends AbstractCrudController
@@ -62,7 +63,6 @@ class UserRoleCrudController extends AbstractCrudController
 
             yield DateTimeField::new('createdAt', t('admin.crud.generic.created_at'))->setColumns('col-4')->setFormTypeOption('disabled', 'disabled');
             yield DateTimeField::new('updatedAt', t('admin.crud.generic.updated_at'))->setColumns('col-4')->setFormTypeOption('disabled', 'disabled');
-
         }
         return $this;
     }
