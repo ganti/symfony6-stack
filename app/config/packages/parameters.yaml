@@ -1,19 +1,18 @@
 parameters:
-  
-  app:
-    
-    default_locale:  en
-    admin_locales:   [de, en]
-    
-    timezone: 'Europe/Zurich' #default Timezone, users can set their own
-    date_format: 'yyyy-MM-dd' #default DateFormat, users can set their own, ICU Datetime Pattern (see https://unicode-org.github.io/icu/userguide/format_parse/datetime/)
-    time_format: 'HH:mm:ss'   #default TimeFormat, users can set their own, ICU Datetime Pattern (see https://unicode-org.github.io/icu/userguide/format_parse/datetime/)
+    app:
+        default_locale:  en
+        admin_locales:   [de, en]
+        
+        timezone: 'Europe/Zurich' #default Timezone, users can set their own
+        date_format: 'yyyy-MM-dd' #default DateFormat, users can set their own, ICU Datetime Pattern (see https://unicode-org.github.io/icu/userguide/format_parse/datetime/)
+        time_format: 'HH:mm:ss'   #default TimeFormat, users can set their own, ICU Datetime Pattern (see https://unicode-org.github.io/icu/userguide/format_parse/datetime/)
 
-    easyadmin:
-      registration: true #allow new users to register
-      passwort_reset: true #allow password reset
+        easyadmin:
+            dashboard_title: 'Acme Admin'
+            registration: true #allow new users to register
+            passwort_reset: true #allow password reset
 
-    mailer:
-      from_email: 'team@root.dev'
-      from_name: 'AcmeBotName'
-      detailed_mail_log: true #log full send history with mail body to entity Email
+        mailer:
+            from_email: 'team@root.dev'
+            from_name: 'AcmeBotName'
+            detailed_mail_log: true #log full send history with mail body to entity Email

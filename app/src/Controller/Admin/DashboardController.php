@@ -36,7 +36,8 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
         ->setTranslationDomain('admin')
-        ->setTitle('App');
+        ->setTitle($this->getParameter('app')['easyadmin']['dashboard_title']);
+        
     }
 
     public function configureMenuItems(): iterable
