@@ -193,7 +193,7 @@ class UserCrudController extends AbstractCrudController
         ->add('username', t('admin.crud.user.label.username'))
         ->add('email', t('admin.crud.user.label.email'))
         ->add('roles', t('admin.crud.user.label.user_roles'))
-        ->add('isActive', t('admin.crud.user.label.is_active'));
+        ->add('isActive', t('admin.crud.generic.is_active'));
     }
 
     private function getUserRolesField(): array

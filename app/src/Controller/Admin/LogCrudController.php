@@ -60,7 +60,7 @@ class LogCrudController extends AbstractCrudController
             yield TextField::new('requestMethod', t('admin.crud.logs.label.request_method'));
             yield TextField::new('requestPath', t('admin.crud.logs.label.request_path'));
             yield TextField::new('clientIP', t('admin.crud.logs.label.client_ip'));
-            yield AssociationField::new('user', t('admin.crud.logs.label.user'));
+            yield AssociationField::new('user', t('admin.crud.user.label.user'));
             yield TextField::new('clientLocale', t('admin.crud.logs.label.client_locale'));
         }
         return $this;
@@ -72,7 +72,7 @@ class LogCrudController extends AbstractCrudController
             ->add('level', t('admin.crud.logs.label.level'))
             ->add('context', t('admin.crud.logs.label.context'))
             ->add('message', t('admin.crud.logs.label.message'))
-            ->add('user', t('admin.crud.logs.label.user'))
+            ->add('user', t('admin.crud.user.label.user'))
             ->add('createdAt', t('admin.crud.generic.created_at'))
         ;
     }
