@@ -24,7 +24,7 @@ class LogUserService extends LogService
         }
 
         if ($success) {
-            $this->debug('user', 'login', $userIdentifier.' login successful '.$message, true);
+            $this->info('user', 'login', $userIdentifier.' login successful '.$message, true);
         } else {
             $this->info('user', 'login', $userIdentifier.' failed logging in '.$message, false);
         }
@@ -34,28 +34,28 @@ class LogUserService extends LogService
     public function logout($user): self
     {
         $this->log->setUser($user);
-        $this->debug('user', 'logout', $user.' logged out ', true);
+        $this->info('user', 'logout', $user.' logged out ', true);
         return $this;
     }
 
     public function user_created($user): self
     {
         $this->log->setUser($user);
-        $this->debug('user', 'created', $user.' created', true);
+        $this->info('user', 'created', $user.' created', true);
         return $this;
     }
 
     public function user_emailverified($user): self
     {
         $this->log->setUser($user);
-        $this->debug('user', 'email verified', $user->getEmail().' verifed', true);
+        $this->info('user', 'email verified', $user->getEmail().' verifed', true);
         return $this;
     }
 
 
     public function passwordResetMail($success=false): self
     {
-        $this->debug('user', 'sent password reset mail', $this->log->getUser().' logged out ', true);
+        $this->info('user', 'sent password reset mail', $this->log->getUser().' logged out ', true);
         return $this;
     }
 }

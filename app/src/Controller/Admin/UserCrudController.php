@@ -73,10 +73,12 @@ class UserCrudController extends AbstractCrudController
                 yield IntegerField::new('id');
                 yield TextField::new('username', t('admin.crud.user.label.username'));
                 yield TextField::new('email', t('admin.crud.user.label.email'));
+                yield TextField::new('fullname', t('admin.crud.user.label.fullname'));
                 yield ChoiceField::new('roles', t('admin.crud.user.label.user_roles'))
                     ->setChoices(array_combine($this->getUserRolesField(), $this->getUserRolesField()))
                     ->renderAsBadges();
-                yield BooleanField::new('isActive', t('admin.crud.generic.is_active'))->renderAsSwitch(false);
+                yield BooleanField::new('isActive', t('admin.crud.generic.is_active'))
+                    ->renderAsSwitch(false);
                 yield DateTimeField::new('createdAt', t('admin.crud.generic.created_at'));
             }
         } else {
@@ -85,25 +87,29 @@ class UserCrudController extends AbstractCrudController
                     ->setIcon('far fa-address-card')
                     ->setCssClass('col-sm-12');
 
-                yield TextField::new('username', t('admin.crud.user.label.username'))->setColumns('col-6');
-                yield TextField::new('email', t('admin.crud.user.label.email'))->setColumns('col-6');
+                yield TextField::new('username', t('admin.crud.user.label.username'))
+                    ->setColumns('col-6');
+                yield TextField::new('email', t('admin.crud.user.label.email'))
+                    ->setColumns('col-6');
 
-                yield TextField::new('firstname', t('admin.crud.user.label.firstname'))->setColumns('col-6');
-                yield TextField::new('lastname', t('admin.crud.user.label.lastname'))->setColumns('col-6');
+                yield TextField::new('firstname', t('admin.crud.user.label.firstname'))
+                    ->setColumns('col-6');
+                yield TextField::new('lastname', t('admin.crud.user.label.lastname'))
+                    ->setColumns('col-6');
 
 
                 yield FormField::addPanel(t('admin.crud.user.titles.change_password'))
                     ->setIcon('fa fa-solid fa-key')
                     ->setCssClass('col-3');
                 yield Field::new('plainPassword', t('admin.crud.user.label.new_password'))
-                                            ->onlyOnForms()
-                                            ->setFormType(RepeatedType::class)
-                                            ->setFormTypeOption('empty_data', '')
-                                            ->setFormTypeOptions([
-                                                'type' => PasswordType::class,
-                                                'first_options' => ['label' => t('admin.crud.user.label.new_password')],
-                                                'second_options' => ['label' => t('admin.crud.user.label.new_password_repeat')],
-                                            ]);
+                    ->onlyOnForms()
+                    ->setFormType(RepeatedType::class)
+                    ->setFormTypeOption('empty_data', '')
+                    ->setFormTypeOptions([
+                        'type' => PasswordType::class,
+                        'first_options' => ['label' => t('admin.crud.user.label.new_password')],
+                        'second_options' => ['label' => t('admin.crud.user.label.new_password_repeat')],
+                    ]);
             }
 
             yield FormField::addPanel(t('admin.crud.user.titles.user_settings'))
@@ -136,14 +142,16 @@ class UserCrudController extends AbstractCrudController
                 ->setIcon('fas fa-users-cog')
                 ->setCssClass('');
                 yield ChoiceField::new('roles', t('admin.crud.user.label.user_roles'))
-                                            ->allowMultipleChoices()
-                                            ->autocomplete()
-                                            ->setChoices($this->getUserRolesField());
+                    ->allowMultipleChoices()
+                    ->autocomplete()
+                    ->setChoices($this->getUserRolesField());
 
                 yield BooleanField::new('is_active', t('admin.crud.generic.is_active'));
-                yield BooleanField::new('is_verified', t('admin.crud.user.label.mail_verified'))->setFormTypeOption('disabled', 'disabled');
+                yield BooleanField::new('is_verified', t('admin.crud.user.label.mail_verified'))
+                    ->setFormTypeOption('disabled', 'disabled');
 
-                yield TextField::new('pid', 'PID')->setFormTypeOption('disabled', 'disabled');
+                yield TextField::new('pid', 'PID')
+                    ->setFormTypeOption('disabled', 'disabled');
 
                 yield DateTimeField::new('createdAt', t('admin.crud.generic.created_at'))
                     ->setColumns('col-4')
