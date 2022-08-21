@@ -1,0 +1,29 @@
+{% if email_body_title is not defined %}
+    {% set email_body_title = 'Lorem ipsum' %}
+{% endif %}
+
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+    {% if email_body_title %}
+        <tr>
+            <td style="color: #153643; font-family: Arial, sans-serif;">
+                <h1 style="font-size: 16px; margin: 0;">{{ email_body_title }}</h1>
+            </td>
+        </tr>
+    {% endif %}
+    <tr>
+        <td style="color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 24px; padding: 20px 0 30px 0;">
+            {% block email_body_content %}
+                <p style="margin: 0;">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras viverra quis leo vitae molestie. 
+                    Nullam imperdiet massa quis cursus luctus. Ut auctor pulvinar enim, eu luctus urna posuere sit amet. 
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis gravida diam, sed laoreet quam. 
+                    Praesent volutpat, quam nec ultricies cursus, enim elit cursus sem, nec porta enim enim id risus. 
+                    Fusce facilisis quam eu arcu sollicitudin, in facilisis massa accumsan. 
+                    Aenean dapibus nisi dui, vitae ullamcorper est viverra vel. 
+                    Donec non arcu tincidunt, egestas ex ac, tempor nisi. Nulla suscipit pellentesque arcu sit amet fermentum.
+                </p>
+            {% endblock %}
+        </td>
+    </tr>
+</table>

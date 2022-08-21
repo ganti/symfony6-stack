@@ -1,0 +1,20 @@
+{% extends 'email/base.email.html.twig' %}
+
+{% block email_body %}
+    {% embed 'email/include/body.email.html.twig' %}
+        {% set email_body_title = 'Please confirm your email!' %}
+
+        {% block email_body_content %}
+            <p>
+                Hi!<br> 
+                Please confirm your email address by clicking the following link: <br><br>
+                <a href="{{ signedUrl|raw }}">Confirm my Email</a>.
+                This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+            </p>
+
+            <p>
+                Cheers!
+            </p>
+      {% endblock email_body_content %}
+   {% endembed %}
+{% endblock email_body %}

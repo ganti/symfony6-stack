@@ -162,7 +162,7 @@ class ResetPasswordController extends AbstractController
             ->from(new Address('foo@foobar.com', 'AcmeMailBot'))
             ->to($user->getEmail())
             ->subject('Your password reset request')
-            ->htmlTemplate('emails/auth/reset_password.email.html.twig')
+            ->htmlTemplate('email/auth/reset_password.email.html.twig')
             ->context([
                 'resetToken' => $resetToken,
                 'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),

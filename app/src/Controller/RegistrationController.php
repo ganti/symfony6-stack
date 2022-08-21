@@ -70,7 +70,7 @@ class RegistrationController extends AbstractController
                 (new TemplatedEmail())
                     ->to($sendTo)
                     ->subject('Please Confirm your Email')
-                    ->htmlTemplate('emails/auth/registration_confirmation_email.html.twig')
+                    ->htmlTemplate('email/auth/registration_confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
 
