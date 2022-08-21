@@ -48,9 +48,11 @@ class RegistrationController extends AbstractController
             );
 
             $user->setActive(true);
-            $user->setTimezone($this->getParameter('app')['timezone']); //Load global Timezone
-            $user->setDateFormat($this->getParameter('app')['date_format']); //Load global Timezone
-            $user->setTimeFormat($this->getParameter('app')['time_format']); //Load global Timezone
+            $user->setTimezone($this->getParameter('app')['timezone']); //Load global timezone
+            $user->setDateFormat($this->getParameter('app')['date_format']); //Load global date format
+            $user->setTimeFormat($this->getParameter('app')['time_format']); //Load global time format
+            $user->setLocale($this->getParameter('app')['default_locale']); //Load global locale
+            
 
             try {
                 $entityManager->persist($user);
@@ -68,14 +70,14 @@ class RegistrationController extends AbstractController
                 (new TemplatedEmail())
                     ->to($sendTo)
                     ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->htmlTemplate('emails/auth/registration_confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('views/auth/registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
