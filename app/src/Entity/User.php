@@ -68,11 +68,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $time_format = null;
     
+    #[ORM\Column(length: 2)]
+    private ?string $locale = null;
+    
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Log::class)]
     private Collection $logs;
 
     #[ORM\OneToMany(mappedBy: 'User', targetEntity: Email::class)]
     private Collection $emails;
+
 
 
 
@@ -257,6 +261,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTimeFormat(?string $time_format): self
     {
         $this->time_format = $time_format;
+
+        return $this;
+    }
+
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(string $locale): self
+    {
+        $this->locale = $locale;
 
         return $this;
     }

@@ -37,6 +37,7 @@ admin:
                 user: User
                 date_format: 'Date format'
                 time_format: 'Time format'
+                locale: Language
             messages:
                 passwort_not_match: 'Passwords dont match'
         user_roles:

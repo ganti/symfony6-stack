@@ -46,6 +46,7 @@ class SetupFixtures extends Fixture implements FixtureGroupInterface
         $user->setTimezone($this->params->get('app')['timezone']); //Load global Timezone
         $user->setDateFormat($this->params->get('app')['date_format']); //Load global Timezone
         $user->setTimeFormat($this->params->get('app')['time_format']); //Load global Timezone
+        $user->setLocale($this->params->get('app')['default_locale']);
         $user->setCountry('CH');
         $user->setPassword(
             $this->passwordHasher->hashPassword(
