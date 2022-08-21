@@ -52,7 +52,7 @@ class RegistrationController extends AbstractController
             $user->setDateFormat($this->getParameter('app')['date_format']); //Load global date format
             $user->setTimeFormat($this->getParameter('app')['time_format']); //Load global time format
             $user->setLocale($this->getParameter('app')['default_locale']); //Load global locale
-            
+
 
             try {
                 $entityManager->persist($user);

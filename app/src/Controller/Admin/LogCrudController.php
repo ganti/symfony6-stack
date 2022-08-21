@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Log;
-use function App\Controller\Admin\t;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -15,9 +14,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
-
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+
+use function App\Controller\Admin\t;
 
 class LogCrudController extends AbstractCrudController
 {
@@ -58,14 +59,14 @@ class LogCrudController extends AbstractCrudController
         yield TextField::new('subcontext', t('admin.crud.logs.label.subcontext'));
         yield TextareaField::new('message', t('admin.crud.logs.label.message'));
         yield DateTimeField::new('createdAt', t('admin.crud.generic.created_at'));
-        
+
         yield FormField::addPanel(t('admin.crud.logs.titles.request_information'));
         yield TextField::new('requestMethod', t('admin.crud.logs.label.request_method'))->hideOnIndex();
         yield TextField::new('requestPath', t('admin.crud.logs.label.request_path'))->hideOnIndex();
         yield TextField::new('clientIP', t('admin.crud.logs.label.client_ip'))->hideOnIndex();
         yield AssociationField::new('user', t('admin.crud.user.label.user'))->hideOnIndex();
-        yield TextField::new('clientLocale', t('admin.crud.logs.label.client_locale'))->hideOnIndex();  
-    
+        yield TextField::new('clientLocale', t('admin.crud.logs.label.client_locale'))->hideOnIndex();
+
         return $this;
     }
 

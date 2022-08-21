@@ -67,10 +67,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $time_format = null;
-    
+
     #[ORM\Column(length: 2)]
     private ?string $locale = null;
-    
+
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Log::class)]
     private Collection $logs;
 
@@ -329,5 +329,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
 }
