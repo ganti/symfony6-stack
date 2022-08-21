@@ -27,7 +27,7 @@ class EmailVerifier
             $verifyEmailRouteName,
             $user->getId(),
             $user->getEmail(),
-            ['id' => $user->getId()]
+            ['id' => $user->getPid()]
         );
 
         $context = $email->getContext();
