@@ -1,0 +1,52 @@
+{% extends '@EasyAdmin/login/login.html.twig' %}
+
+{% set page_title ='registration.page_title' | trans %}
+
+
+{% block login_form %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    {{ form_start(registrationForm) }}
+            <div>
+                {{ 'registration.header_text' | trans }}
+            </div>
+
+
+            <div class="form-group field-text">
+                <label for="email" class="sr-only form-control-label required">{{ 'registration.email_label' | trans }}</label>
+                <div class="form-widget form-widget-with-icon">
+                    <i class="fa fa-fw fa-envelope-open-text"></i>
+                    {{ form_row(registrationForm.email) }}
+                </div>
+            </div>
+
+            <div class="form-group field-text">
+                <label for="password" class="sr-only form-control-label required">{{ 'registration.password_label' | trans }}</label>
+                <div class="form-widget form-widget-with-icon">
+                    <i class="fa fa-fw fa-lock"></i>
+                    {{ form_row(registrationForm.plainPassword) }}
+                </div>
+            </div>
+            
+            <div class="form-group field-check">
+                <label for="terms" class="form-check-label sr-only form-control-label required">{{ 'registration.terms_label' | trans }}</label>
+                <div class="form-widget form-widget-with-icon">
+                    {{ form_row(registrationForm.agreeTerms) }}
+                </div>
+            </div>
+
+            <div class="form-group field-button">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" onclick="this.form.submit(); this.disabled=true;">
+                    Register
+                </button>
+            </div>
+        {{ form_end(registrationForm) }}
+
+
+
+{% endblock %}
+
+
+        

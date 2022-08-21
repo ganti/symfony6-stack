@@ -1,6 +1,7 @@
 parameters:
     app:
         default_locale:  en
+        supported_locales: ['en', 'de']
         admin_locales:   [de, en]
         
         timezone: 'Europe/Zurich' #default Timezone, users can set their own
@@ -9,8 +10,8 @@ parameters:
 
         easyadmin:
             dashboard_title: 'Acme Admin'
-            registration: true #allow new users to register
-            passwort_reset: true #allow password reset
+            registration_active: true   #allow new users to register
+            passwort_reset_active: true #allow password reset
 
         mailer:
             from_email: 'team@root.dev'
