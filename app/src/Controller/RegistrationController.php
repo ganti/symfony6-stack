@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use App\Service\Log\LogUserService;
 use Doctrine\ORM\EntityManagerInterface;
+use Gedmo\Translator\TranslationInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +30,7 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -69,7 +70,7 @@ class RegistrationController extends AbstractController
                 $user,
                 (new TemplatedEmail())
                     ->to($sendTo)
-                    ->subject('Please Confirm your Email')
+                    ->subject($translator->trans('base.registration.email.subject'))
                     ->htmlTemplate('email/auth/registration_confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email

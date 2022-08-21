@@ -1,20 +1,35 @@
 {% extends 'email/base.email.html.twig' %}
 
 {% block email_body %}
-    {% embed 'email/include/body.email.html.twig' %}
-        {% set email_body_title = 'Please confirm your email!' %}
+   {% embed 'email/include/body.email.html.twig' %}
+      {% set email_body_title = 'base.registration.email.body_title' | trans %}
+   
+      {% block email_body_content %}
+         <p>
+            {{ 'base.generic.email.greeting' | trans }}
+         </p>
+         <p>
+            {{ 'base.registration.email.body_text' | trans }}
+         </p>
 
-        {% block email_body_content %}
-            <p>
-                Hi!<br> 
-                Please confirm your email address by clicking the following link: <br><br>
-                <a href="{{ signedUrl|raw }}">Confirm my Email</a>.
-                This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
-            </p>
+         {% include 'email/include/spacingTable.html.twig' %}
 
-            <p>
-                Cheers!
-            </p>
+         <center>
+            {% set btnURL = signedUrl|raw %}
+            {% set btnText = 'base.registration.email.button_text' | trans %}
+            {% include 'email/include/button.html.twig' with {'btnURL': btnURL, 'btnText' : btnText} %}
+         </center>
+
+         {% include 'email/include/spacingTable.html.twig' %}
+
+         <p>
+            {{ 'base.registration.email.deactivated'| trans({'expire' : expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle')}) }}
+         </p>   
+
+         <p>
+            {{ 'base.generic.email.farewell' | trans }}
+         </p>                 
+                              
       {% endblock email_body_content %}
    {% endembed %}
 {% endblock email_body %}
