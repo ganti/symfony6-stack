@@ -133,4 +133,5 @@ cs-fix:
 
 trans-extract:
 	${SYMFONY_CMD} translation:extract --force --format=yaml --as-tree=10 --domain=admin en ${END}
+	${SYMFONY_CMD} translation:extract --force --format=yaml --as-tree=10 --domain=validators en ${END}
 	${SYMFONY_CMD} translation:extract --force --format=yaml --as-tree=10 --domain=messages en ${END}

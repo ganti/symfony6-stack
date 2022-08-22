@@ -85,6 +85,26 @@ admin:
                 body_text: 'Please confirm your email address by clicking the following link:'
                 button_text: 'Confirm my Email'
                 deactivated: 'This link will expire in {expire}.'
+            page:
+                page_title: Registration
+                header_text: Please fill out the following fields to register
+            form:
+                username:
+                    label: Username
+                    placeholder: Your username
+                email:
+                    label: Email
+                    placeholder: john@doe.com
+                password:
+                    label: Password
+                    repeat_label: Repeat Password
+                    no_match: 'The password fields must match.'
+                terms:
+                    label: Agree terms
+                    messages:
+                        agree: 'You should agree to our terms.'
+                submit:
+                    label: Register
         password_reset:
             email:
                 subject: 'Your password reset request'
