@@ -30,7 +30,15 @@
                 
                 <div class="form-group form-check form-switch form-switch-lg w-100">
                     {{ form_widget(registrationForm.agreeTerms) }}
-                    <label class="form-check-label" for="flexSwitchCheckDefault">{{ 'admin.service.registration.form.terms.label' | trans }}</label>
+                    <label class="form-check-label" for="flexSwitchCheckDefault">
+                        {% set termsLabel = 'admin.service.registration.form.terms.label' | trans %}
+                        {% set termsURL = 'admin.service.registration.form.terms.url' | trans %}
+                        {% if termsURL is not null and termsURL != '' and termsURL != 'admin.service.registration.form.terms.url' %}
+                            <a href="{{termsURL}}" target="_blank">{{ termsLabel }}</a>
+                        {% else %}
+                            {{ termsLabel }}
+                        {% endif %}
+                    </label>
                 </div>
 
 

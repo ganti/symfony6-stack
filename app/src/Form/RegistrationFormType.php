@@ -15,45 +15,54 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use function App\Controller\Admin\t;
 
 class RegistrationFormType extends AbstractType
 {
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    private function t($message, $params=[])
+    {
+        return $this->translator->trans($message, $params, 'admin');
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => t('admin.service.registration.form.email.label'),
-                'attr' => [ 'placeholder' => t('admin.service.registration.form.email.placeholder'),
+                'label' => $this->t('admin.service.registration.form.email.label'),
+                'attr' => [ 'placeholder' => $this->t('admin.service.registration.form.email.placeholder'),
                             'autocomplete' => 'email',
                             'class' => 'form-control'
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter your email',
+                        'message' => $this->t('admin.service.registration.form.email.messages.blank'),
                     ]),
                 ],
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
+                'invalid_message' => $this->t('admin.service.registration.form.password.messages.no_match'),
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
-                'first_options'  => [   'label' => t('admin.service.registration.form.password.label'),
+                'first_options'  => [   'label' => $this->t('admin.service.registration.form.password.label'),
                                         'attr' => [ 'class' => 'form-control'],
                                         'constraints' => [
                                             new NotBlank([
-                                                'message' => 'Please enter a password',
+                                                'message' => $this->t('admin.service.registration.form.password.messages.blank'),
                                             ]),
                                             new Length([
                                                 'min' => 6,
-                                                'minMessage' => 'Your password should be at least {{ limit }} characters',
+                                                'minMessage' => $this->t('admin.service.registration.form.password.messages.min_lenght', ['limit' => 6]),
                                                 'max' => 4096,
                                             ]),
                                         ],
                                     ],
-                'second_options' => [   'label' => t('admin.service.registration.form.password.repeat_label'),
+                'second_options' => [   'label' => $this->t('admin.service.registration.form.password.repeat_label'),
                                         'attr' => [ 'class' => 'form-control'],
                                     ],
                 'mapped' => false,
@@ -61,8 +70,8 @@ class RegistrationFormType extends AbstractType
                 
             ])
             ->add('agreeTerms', CheckboxType::class, [
-                'label' => t('admin.service.registration.form.terms.label'),
-                'attr' => [ 'required' => 'false',
+                'label' => $this->t('admin.service.registration.form.terms.label'),
+                'attr' => [ 'required' => 'true',
                             'class' => 'form-check-input',
                             'style' => 'width: 3em;',
                             'role' => 'switch',
@@ -71,7 +80,7 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => t('admin.service.registration.form.terms.messages.agree'),
+                        'message' => $this->t('admin.service.registration.form.terms.messages.agree'),
                     ]),
                 ],
             ]);

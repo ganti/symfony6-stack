@@ -95,12 +95,18 @@ admin:
                 email:
                     label: Email
                     placeholder: john@doe.com
+                    messages:
+                        blank: 'Please enter your email'
                 password:
                     label: Password
                     repeat_label: Repeat Password
-                    no_match: 'The password fields must match.'
+                    messages:
+                        blank: 'Please enter a password'
+                        no_match: 'The password fields must match.'
+                        min_lenght: 'Your password should be at least {limit} characters'
                 terms:
                     label: Agree terms
+                    url: '/terms'
                     messages:
                         agree: 'You should agree to our terms.'
                 submit:
