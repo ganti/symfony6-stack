@@ -12,7 +12,7 @@
                 {% block header_logo %}
                     {% if page_title %}
                         <div class="logo {{ page_title|length > 14 ? 'logo-long' }}">
-                            {{ page_title|raw }}
+                            <h3>{{ page_title|raw }}</h3>
                         </div>
                     {% endif %}
                 {% endblock header_logo %}

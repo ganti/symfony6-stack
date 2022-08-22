@@ -106,7 +106,7 @@ admin:
                         min_lenght: 'Your password should be at least {limit} characters'
                 terms:
                     label: Agree terms
-                    url: '/terms'
+                    url: '/en/terms'
                     messages:
                         agree: 'You should agree to our terms.'
                 submit:

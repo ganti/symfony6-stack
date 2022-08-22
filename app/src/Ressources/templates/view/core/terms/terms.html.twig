@@ -1,0 +1,73 @@
+{% extends 'view/base.html.twig' %}
+{% trans_default_domain "tos" %}
+
+{% block page_title %}{{ 'basics.title.page'|trans }}{% endblock %}
+{% block body %}
+    <div class="container w-100">    
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-6">
+
+                <h1>{{ 'basics.title.tos'|trans }}</h1>
+                <hr>
+                {% block content %}
+                    {% set hasChapterContent = false %}
+                    {% for c in 1..50 %}
+                        {% set hasChapterContent = false %}
+                        {% set chapter_title = 'chapter_' ~ c ~ '.title' %}
+                        {% set chapter_text = 'chapter_' ~ c ~ '.text' %}
+                        {% set chapter_next = 'chapter_' ~ (c+1) ~ '.text' %}
+                        {% set chapter_break = chapter_next|trans != chapter_next %}
+
+                        {% if chapter_title|trans != chapter_title %}
+                            <h2>{{ c }}. {{ chapter_title|trans }}</h2>
+                        {% endif %}
+                        {% if chapter_text|trans != chapter_text %}
+                            {{ chapter_text|trans|raw }}
+                            {% set hasChapterContent = true %}
+                        {% endif %}
+
+                        {% for sc in 1..30 %}
+                            {% set subchapter_title = 'chapter_' ~ c ~ '.subchapter_' ~ sc ~ '.title' %}
+                            {% set subchapter_text  = 'chapter_' ~ c ~ '.subchapter_' ~ sc ~ '.text' %}
+                            {% set subchapter_break = (subchapter_title|trans == subchapter_title) %}
+
+                            {% if not subchapter_break %}
+                                {% if subchapter_title|trans != subchapter_title %}
+                                    <h3>{{ c }}.{{ sc }}. {{ subchapter_title|trans }}</h3>
+                                {% endif %}
+                                {% if subchapter_text|trans != subchapter_text %}
+                                    {{ subchapter_text|trans|raw }}
+                                    {% set hasChapterContent = true %}
+                                {% endif %}
+
+                                {% for ssc in 1..10 %}
+                                    {% set subsubchapter_title = 'chapter_' ~ c ~ '.subchapter_' ~ sc ~ '.subsubchapter_' ~ ssc ~ '.title' %}
+                                    {% set subsubchapter_text  = 'chapter_' ~ c ~ '.subchapter_' ~ sc ~ '.subsubchapter_' ~ ssc ~ '.text' %}
+                                    {% set subsubchapter_break = (subsubchapter_text|trans == subsubchapter_text) %}
+
+                                    {% if not subsubchapter_break %}
+                                        {% if subsubchapter_title|trans != subsubchapter_title %}
+                                            <h4>{{ c }}.{{ sc }}.{{ ssc }}. {{ subsubchapter_title|trans }}</h4>
+                                        {% endif %}
+                                        {% if subsubchapter_text|trans != subsubchapter_text %}
+                                            {{ subsubchapter_text|trans|raw }}
+                                            {% set hasChapterContent = true %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if hasChapterContent and chapter_next|trans != chapter_next %}
+                            <hr>
+                        {% endif %}
+                    {% endfor %}
+                {% endblock %}
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock %}
+
