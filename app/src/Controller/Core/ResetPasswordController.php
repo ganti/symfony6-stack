@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Core;
 
 use App\Entity\User;
 use App\Service\MailSender;
@@ -21,7 +21,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 
-#[Route('/reset-password')]
+#[Route('/reset-password', name: 'app_reset_password')]
 class ResetPasswordController extends AbstractController
 {
     use ResetPasswordControllerTrait;
@@ -50,7 +50,7 @@ class ResetPasswordController extends AbstractController
             );
         }
 
-        return $this->render('views/auth/reset_password/request.html.twig', [
+        return $this->render('view/core/reset_password/request.html.twig', [
             'requestForm' => $form->createView(),
         ]);
     }
@@ -67,7 +67,7 @@ class ResetPasswordController extends AbstractController
             $resetToken = $this->resetPasswordHelper->generateFakeResetToken();
         }
 
-        return $this->render('views/auth/reset_password/check_email.html.twig', [
+        return $this->render('view/core/reset_password/check_email.html.twig', [
             'resetToken' => $resetToken,
         ]);
     }

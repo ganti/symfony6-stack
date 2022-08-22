@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Core;
 
 use App\Service\Log\LogUserService;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class LoginFormAuthenticatorController extends AbstractController
 {
@@ -49,7 +50,7 @@ class LoginFormAuthenticatorController extends AbstractController
         $registration_active = isset($this->getParameter('app')['easyadmin']['registration_active']) ?? false;
         $password_reset_active = isset($this->getParameter('app')['easyadmin']['passwort_reset_active']) ?? false;
         
-        return $this->render('view/auth/login/login.html.twig', [
+        return $this->render('view/core/login/login.html.twig', [
             'last_username' => $lastUsername, 
             'error' => $error,
 
@@ -64,4 +65,5 @@ class LoginFormAuthenticatorController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
 }
