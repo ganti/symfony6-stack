@@ -7,7 +7,7 @@ use App\Service\MailSender;
 use Symfony\Component\Mime\Address;
 use App\Form\ChangePasswordFormType;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Form\ResetPasswordRequestFormType;
+use App\Form\Core\ResetPasswordRequestFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
@@ -44,7 +44,9 @@ class ResetPasswordController extends AbstractController
     #[Route('', name: 'app_forgot_password_request')]
     public function request(Request $request, TranslatorInterface $translator): Response
     {
-        if (isset($this->getParameter('app')['core']['passwort_reset_active']) ? $this->getParameter('app')['core']['passwort_reset_active'] : false) {
+        $this->isActive = isset($this->getParameter('app')['core']['passwort_reset_active']) ? $this->getParameter('app')['core']['passwort_reset_active'] : false;
+        if(!$this->isActive)
+        {
             return $this->redirectToRoute('app_login');
         }
 
@@ -70,7 +72,9 @@ class ResetPasswordController extends AbstractController
     #[Route('/check-email', name: 'app_check_email')]
     public function checkEmail(): Response
     {
-        if (isset($this->getParameter('app')['core']['passwort_reset_active']) ? $this->getParameter('app')['core']['passwort_reset_active'] : false) {
+        $this->isActive = isset($this->getParameter('app')['core']['passwort_reset_active']) ? $this->getParameter('app')['core']['passwort_reset_active'] : false;
+        if(!$this->isActive)
+        {
             return $this->redirectToRoute('app_login');
         }
         // Generate a fake token if the user does not exist or someone hit this page directly.
@@ -90,7 +94,9 @@ class ResetPasswordController extends AbstractController
     #[Route('/reset/{token}', name: 'app_reset_password')]
     public function reset(Request $request, UserPasswordHasherInterface $passwordHasher, TranslatorInterface $translator, string $token = null): Response
     {
-        if (isset($this->getParameter('app')['core']['passwort_reset_active']) ? $this->getParameter('app')['core']['passwort_reset_active'] : false) {
+        $this->isActive = isset($this->getParameter('app')['core']['passwort_reset_active']) ? $this->getParameter('app')['core']['passwort_reset_active'] : false;
+        if(!$this->isActive)
+        {
             return $this->redirectToRoute('app_login');
         }
 
