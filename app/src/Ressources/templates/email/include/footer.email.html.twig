@@ -1,3 +1,4 @@
+{% trans_default_domain 'core' %}
 {% if footer_background_color is not defined or footer_background_color is null %}
     {%set footer_background_color = '#ee4c50' %}
 {% endif %}
@@ -12,7 +13,7 @@
          <tr>
             <td style="color: {{ footer_font_color }}; font-family: Arial, sans-serif; font-size: 14px;">
                 {% block email_footer_content %}
-                    <p style="margin: 0;">This is the footer</p>
+                    <p style="margin: 0;">{{ 'service.generic.email.footer'|trans }}</p>
                 {% endblock %}
             </td>
          </tr>

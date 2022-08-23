@@ -26,43 +26,43 @@ class RegistrationFormType extends AbstractType
 
     private function t($message, $params=[])
     {
-        return $this->translator->trans($message, $params, 'admin');
+        return $this->translator->trans($message, $params, 'core');
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => $this->t('admin.service.registration.form.email.label'),
-                'attr' => [ 'placeholder' => $this->t('admin.service.registration.form.email.placeholder'),
+                'label' => $this->t('service.registration.form.email.label'),
+                'attr' => [ 'placeholder' => $this->t('service.registration.form.email.placeholder'),
                             'autocomplete' => 'email',
                             'class' => 'form-control'
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => $this->t('admin.service.registration.form.email.messages.blank'),
+                        'message' => $this->t('service.registration.form.email.messages.blank'),
                     ]),
                 ],
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => $this->t('admin.service.registration.form.password.messages.no_match'),
+                'invalid_message' => $this->t('service.registration.form.password.messages.no_match'),
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
-                'first_options'  => [   'label' => $this->t('admin.service.registration.form.password.label'),
+                'first_options'  => [   'label' => $this->t('service.registration.form.password.label'),
                                         'attr' => [ 'class' => 'form-control'],
                                         'constraints' => [
                                             new NotBlank([
-                                                'message' => $this->t('admin.service.registration.form.password.messages.blank'),
+                                                'message' => $this->t('service.registration.form.password.messages.blank'),
                                             ]),
                                             new Length([
                                                 'min' => 6,
-                                                'minMessage' => $this->t('admin.service.registration.form.password.messages.min_lenght', ['limit' => 6]),
+                                                'minMessage' => $this->t('service.registration.form.password.messages.min_lenght', ['limit' => 6]),
                                                 'max' => 4096,
                                             ]),
                                         ],
                                     ],
-                'second_options' => [   'label' => $this->t('admin.service.registration.form.password.repeat_label'),
+                'second_options' => [   'label' => $this->t('service.registration.form.password.repeat_label'),
                                         'attr' => [ 'class' => 'form-control'],
                                     ],
                 'mapped' => false,
@@ -70,7 +70,7 @@ class RegistrationFormType extends AbstractType
                 
             ])
             ->add('agreeTerms', CheckboxType::class, [
-                'label' => $this->t('admin.service.registration.form.terms.label'),
+                'label' => $this->t('service.registration.form.terms.label'),
                 'attr' => [ 'required' => 'true',
                             'class' => 'form-check-input',
                             'style' => 'width: 3em;',
@@ -80,7 +80,7 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => $this->t('admin.service.registration.form.terms.messages.agree'),
+                        'message' => $this->t('service.registration.form.terms.messages.agree'),
                     ]),
                 ],
             ]);

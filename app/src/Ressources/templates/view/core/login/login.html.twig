@@ -1,7 +1,7 @@
 {% extends 'view/core/core_base.html.twig' %}
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'core' %}
 
-{% set page_title = 'admin.service.login.page.page_title' | trans %}
+{% set page_title = 'service.login.page.page_title' | trans %}
 
 {% block page_content %}
     {% block login_form %}
@@ -16,7 +16,7 @@
                 <label for="username" class="sr-only form-control-label required">{{ 'login.username_label' | trans }}</label>
                 <div class="form-widget form-widget-with-icon">
                     <i class="fa fa-fw fa-user"></i>
-                    <input type="text" id="username" name="{{ username_parameter|default('username') }}" class="form-control" placeholder="{{ 'admin.service.login.page.username_placeholder' | trans }}" value="{{ last_username|default('') }}" required autofocus>
+                    <input type="text" id="username" name="{{ username_parameter|default('username') }}" class="form-control" placeholder="{{ 'service.login.page.username_placeholder' | trans }}" value="{{ last_username|default('') }}" required autofocus>
                 </div>
             </div>
 
@@ -24,13 +24,13 @@
                 <label for="password" class="sr-only form-control-label required">c</label>
                 <div class="form-widget form-widget-with-icon">
                     <i class="fa fa-fw fa-lock"></i>
-                    <input type="password" id="password" name="{{ password_parameter|default('password') }}" class="form-control" placeholder="{{ 'admin.service.login.page.password_placeholder' | trans }}" required>
+                    <input type="password" id="password" name="{{ password_parameter|default('password') }}" class="form-control" placeholder="{{ 'service.login.page.password_placeholder' | trans }}" required>
                 </div>
             </div>
 
             <div class="form-group field-button">
                 <button type="submit" class="btn btn-primary btn-lg btn-block w-100" onclick="this.form.submit(); this.disabled=true;">
-                    {{ 'admin.service.login.page.sign_in_label' | trans }}
+                    {{ 'service.login.page.sign_in_label' | trans }}
                 </button>
             </div>
         </form>
@@ -39,7 +39,7 @@
             <div class="form-group field-button">
                 <form action="{{ path('app_forgot_password_request') }}">
                     <button type="submit" class="btn btn-lg btn-block w-100">
-                        {{ 'admin.service.login.page.reset_link'|trans }}
+                        {{ 'service.login.page.reset_link'|trans }}
                     </button>
                 </form>
             </div>
@@ -48,7 +48,7 @@
             <div class="form-group field-button">
                 <form action="{{ path('app_register') }}">
                     <button type="submit" class="btn btn-lg btn-block w-100">
-                        {{ 'admin.service.login.page.register_link'|trans }}
+                        {{ 'service.login.page.register_link'|trans }}
                     </button>
                 </form>
             </div>

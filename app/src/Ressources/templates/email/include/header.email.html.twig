@@ -1,3 +1,4 @@
+{% trans_default_domain 'core' %}
 {% if header_background_color is not defined or header_background_color is null %}
     {%set header_background_color = '#70bbd9' %}
 {% endif %}
@@ -8,7 +9,7 @@
 <tr>
    <td align="center" bgcolor="{{ header_background_color }}" style="padding: 40px 0 30px 0; color: {{ header_font_color }}; font-family: Arial, sans-serif; font-size: 14px;">
       {%block email_header_content %}
-         <img src="http://placekitten.com/450/300" alt="Magic Kitten" style="display: block;" />
+         {{ 'service.generic.email.header'|trans|raw }}
       {% endblock %}
    </td>
 </tr>

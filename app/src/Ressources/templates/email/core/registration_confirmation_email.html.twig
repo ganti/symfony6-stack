@@ -1,33 +1,35 @@
 {% extends 'email/base.email.html.twig' %}
+{% trans_default_domain 'core' %}
 
 {% block email_body %}
    {% embed 'email/include/body.email.html.twig' %}
-      {% set email_body_title = 'base.registration.email.body_title' | trans %}
+      {% trans_default_domain 'core' %}
+      {% set email_body_title = 'service.registration.email.body_title' | trans %}
    
       {% block email_body_content %}
          <p>
-            {{ 'base.generic.email.greeting' | trans }}
+            {{ 'service.generic.email.greeting' | trans }}
          </p>
          <p>
-            {{ 'base.registration.email.body_text' | trans }}
+            {{ 'service.registration.email.body_text' | trans }}
          </p>
 
          {% include 'email/include/spacingTable.html.twig' %}
 
          <center>
             {% set btnURL = signedUrl|raw %}
-            {% set btnText = 'base.registration.email.button_text' | trans %}
+            {% set btnText = 'service.registration.email.button_text' | trans %}
             {% include 'email/include/button.html.twig' with {'btnURL': btnURL, 'btnText' : btnText} %}
          </center>
 
          {% include 'email/include/spacingTable.html.twig' %}
 
          <p>
-            {{ 'base.registration.email.deactivated'| trans({'expire' : expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle')}) }}
+            {{ 'service.generic.expire'| trans({'expire' : expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle')}) }}
          </p>   
 
          <p>
-            {{ 'base.generic.email.farewell' | trans }}
+            {{ 'service.generic.email.farewell' | trans }}
          </p>                 
                               
       {% endblock email_body_content %}

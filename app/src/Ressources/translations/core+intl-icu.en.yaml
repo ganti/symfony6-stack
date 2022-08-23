@@ -1,0 +1,69 @@
+service:
+    generic:
+        email:
+            greeting: Hey
+            farewell: Cheers
+            header: '<img src="http://placekitten.com/450/300" alt="Magic Kitten" style="display: block;" />'
+            footer: This is the footer
+        expire: 'This link will expire in {expire}.'
+    login:
+        page:
+            page_title: Acme Login
+            username_label: Your email
+            username_placeholder: john@doe.com
+            password_label: Your password
+            password_placeholder: ''
+            sign_in_label: Log in
+            reset_link: Reset password
+            register_link: Register
+    registration:
+        email:
+            subject: Please confirm your email
+            body_title: Please confirm your email
+            body_text: 'Please confirm your email address by clicking the following link:'
+            button_text: 'Confirm my Email'
+        page:
+            page_title: Registration
+            header_text: Please fill out the following fields to register
+        form:
+            username:
+                label: Username
+                placeholder: Your username
+            email:
+                label: Email
+                placeholder: john@doe.com
+                messages:
+                    blank: 'Please enter your email'
+            password:
+                label: Password
+                repeat_label: Repeat Password
+                messages:
+                    blank: 'Please enter a password'
+                    no_match: 'The password fields must match.'
+                    min_lenght: 'Your password should be at least {limit} characters'
+            terms:
+                label: Agree terms
+                url: '/en/terms'
+                messages:
+                    agree: 'You should agree to our terms.'
+            submit:
+                label: Register
+    password_reset:
+        email:
+            subject: 'Your password reset request'
+            body_title: Reset password 
+            body_text: To reset your password, please click button below
+            button_text: 'Reset Password'
+        page:
+            title: Reset Password
+            text: Enter your email address and we will send you a link to reset your password.
+            submit_label: Send password reset email
+        page_sent:
+            title: Password Reset Email Sent
+            text_intro: If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
+            text_outro: 'If you don''t receive an email please check your spam folder or <a href="{url}">try again</a>.'
+            submit_label: Back to page
+        page_reset:
+            title: Reset Password
+            text: ''
+            submit_label: Reset password now

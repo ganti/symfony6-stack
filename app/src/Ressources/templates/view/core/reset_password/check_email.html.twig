@@ -1,11 +1,28 @@
-{% extends 'view/base.html.twig' %}
+{% extends 'view/core/core_base.html.twig' %}
+{% trans_default_domain 'core' %}
 
-{% block title %}Password Reset Email Sent{% endblock %}
+{% set page_title = 'service.password_reset.page_sent.title' | trans %}
 
-{% block body %}
-    <p>
-        If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
-        This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
-    </p>
-    <p>If you don't receive an email please check your spam folder or <a href="{{ path('app_forgot_password_request') }}">try again</a>.</p>
+{% block page_content %}
+    {% block login_form %}
+        <div>
+            <p>
+                {{ 'service.password_reset.page_sent.text_intro' | trans }}
+                {{ 'service.generic.expire'| trans({'expire' : resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle')}) }}
+            </p>
+            <p>
+                {{ 'service.password_reset.page_sent.text_outro'| trans({'url' : path('app_forgot_password_request') })|raw }}
+            </p>
+            <div class="form-group field-button">
+                <form method="get" action="/">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block w-100" onclick="this.form.submit();">
+                        {{ 'service.password_reset.page_sent.submit_label' | trans }}
+                    </button>
+                </form>
+            </div>
+        </div>        
+    {% endblock %}
 {% endblock %}
+
+
+        

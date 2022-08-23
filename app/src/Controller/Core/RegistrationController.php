@@ -22,14 +22,20 @@ class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
 
-    public function __construct(EmailVerifier $emailVerifier, LogUserService $log)
+    public function __construct(EmailVerifier $emailVerifier, LogUserService $log, TranslatorInterface $translator)
     {
         $this->emailVerifier = $emailVerifier;
         $this->log = $log;
+        $this->translator = $translator;
+    }
+
+    private function t($message, $params=[])
+    {
+        return $this->translator->trans($message, $params, 'core');
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -69,8 +75,8 @@ class RegistrationController extends AbstractController
                 $user,
                 (new TemplatedEmail())
                     ->to($sendTo)
-                    ->subject($translator->trans('base.registration.email.subject'))
-                    ->htmlTemplate('email/auth/registration_confirmation_email.html.twig')
+                    ->subject($this->t('service.registration.email.subject'))
+                    ->htmlTemplate('email/core/registration_confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
 

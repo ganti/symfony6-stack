@@ -1,7 +1,11 @@
 {% extends 'email/base.email.html.twig' %}
+{% trans_default_domain 'core' %}
+
 
 {% block email_body %}
    {% embed 'email/include/body.email.html.twig' %}
+      {% trans_default_domain 'core' %}
+
       {% set email_body_title = 'This is a test title' %}
    
       {% block email_body_content %}

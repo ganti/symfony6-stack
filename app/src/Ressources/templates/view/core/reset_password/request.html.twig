@@ -1,22 +1,30 @@
-{% extends 'view/base.html.twig' %}
+{% extends 'view/core/core_base.html.twig' %}
+{% trans_default_domain 'core' %}
 
-{% block title %}Reset your password{% endblock %}
+{% set page_title ='service.password_reset.page.title' | trans %}
 
-{% block body %}
-    {% for flash_error in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
-    <h1>Reset your password</h1>
+{% block page_content %}
+    {% block login_form %}
+        {{ form_start(requestForm) }}
 
-    {{ form_start(requestForm) }}
-        {{ form_row(requestForm.email) }}
-        <div>
-            <small>
-                Enter your email address and we will send you a
-                link to reset your password.
-            </small>
-        </div>
-
-        <button class="btn btn-primary">Send password reset email</button>
-    {{ form_end(requestForm) }}
+                <div>
+                    {{ 'service.password_reset.page.text' | trans }}
+                </div>
+                <div class="form-group field-text">
+                    <label for="email" class="sr-only form-control-label required">{{ 'service.registration.form.email.label' | trans }}</label>
+                    <div class="form-widget w-100">
+                        {{ form_widget(requestForm.email) }}
+                    </div>
+                </div>
+                
+                <div class="form-group field-button">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block w-100" onclick="this.form.submit();">
+                        {{ 'service.password_reset.page.submit_label' | trans }}
+                    </button>
+                </div>
+            {{ form_end(requestForm) }}
+    {% endblock %}
 {% endblock %}
+
+
+        

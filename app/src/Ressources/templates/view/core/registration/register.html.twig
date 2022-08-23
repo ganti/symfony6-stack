@@ -1,7 +1,7 @@
 {% extends 'view/core/core_base.html.twig' %}
-{% trans_default_domain 'admin' %}
+{% trans_default_domain 'core' %}
 
-{% set page_title ='admin.service.registration.page.page_title' | trans %}
+{% set page_title ='service.registration.page.page_title' | trans %}
 
 {% block page_content %}
     {% block login_form %}
@@ -11,18 +11,18 @@
 
         {{ form_start(registrationForm) }}
                 <div>
-                    {{ 'admin.service.registration.page.header_text' | trans }}
+                    {{ 'service.registration.page.header_text' | trans }}
                 </div>
 
                 <div class="form-group field-text">
-                    <label for="email" class="sr-only form-control-label required">{{ 'registration.username_label' | trans }}</label>
+                    <label for="email" class="sr-only form-control-label required">{{ 'service.registration.form.email.label' | trans }}</label>
                     <div class="form-widget">
                         {{ form_row(registrationForm.email) }}
                     </div>
                 </div>
 
                 <div class="form-group field-text">
-                    <label for="password" class="sr-only form-control-label required">{{ 'registration.password_label' | trans }}</label>
+                    <label for="password" class="sr-only form-control-label required">{{ 'service.registration.form.password.label' | trans }}</label>
                     <div class="form-widget">
                         {{ form_row(registrationForm.plainPassword) }}
                     </div>
@@ -31,9 +31,9 @@
                 <div class="form-group form-check form-switch form-switch-lg w-100">
                     {{ form_widget(registrationForm.agreeTerms) }}
                     <label class="form-check-label" for="flexSwitchCheckDefault">
-                        {% set termsLabel = 'admin.service.registration.form.terms.label' | trans %}
-                        {% set termsURL = 'admin.service.registration.form.terms.url' | trans %}
-                        {% if termsURL is not null and termsURL != '' and termsURL != 'admin.service.registration.form.terms.url' %}
+                        {% set termsLabel = 'service.registration.form.terms.label' | trans %}
+                        {% set termsURL = 'service.registration.form.terms.url' | trans %}
+                        {% if termsURL is not null and termsURL != '' and termsURL != 'service.registration.form.terms.url' %}
                             <a href="{{termsURL}}" target="_blank">{{ termsLabel }}</a>
                         {% else %}
                             {{ termsLabel }}
@@ -44,7 +44,7 @@
 
                 <div class="form-group field-button">
                     <button type="submit" class="btn btn-primary btn-lg btn-block w-100" onclick="this.form.submit();">
-                        {{ 'admin.service.registration.form.submit.label' | trans }}
+                        {{ 'service.registration.form.submit.label' | trans }}
                     </button>
                 </div>
             {{ form_end(registrationForm) }}

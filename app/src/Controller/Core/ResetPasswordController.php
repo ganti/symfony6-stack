@@ -21,7 +21,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 
-#[Route('/reset-password', name: 'app_reset_password')]
+#[Route('/reset-password')]
 class ResetPasswordController extends AbstractController
 {
     use ResetPasswordControllerTrait;
@@ -29,10 +29,15 @@ class ResetPasswordController extends AbstractController
     public function __construct(
         private ResetPasswordHelperInterface $resetPasswordHelper,
         private EntityManagerInterface $entityManager,
-        private MailSender $mailer
+        private MailSender $mailer,
+        private TranslatorInterface $translator
     ) {
     }
 
+    private function t($message, $params=[])
+    {
+        return $this->translator->trans($message, $params, 'core');
+    }
     /**
      * Display & process form to request a password reset.
      */
@@ -126,7 +131,7 @@ class ResetPasswordController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('views/auth/reset_password/reset.html.twig', [
+        return $this->render('view/core/reset_password/reset.html.twig', [
             'resetForm' => $form->createView(),
         ]);
     }
@@ -161,8 +166,8 @@ class ResetPasswordController extends AbstractController
         $sendTo = empty($user->getFullName()) ? new Address($user->getEmail()) : new Address($user->getEmail(), $user->getFullName());
         $email = (new TemplatedEmail())
             ->to($sendTo)
-            ->subject($translator->trans('base.password_reset.email.subject'))
-            ->htmlTemplate('email/auth/reset_password.email.html.twig')
+            ->subject($this->t('service.password_reset.email.subject'))
+            ->htmlTemplate('email/core/reset_password.email.html.twig')
             ->context([
                 'resetToken' => $resetToken,
                 'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
