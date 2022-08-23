@@ -1,0 +1,30 @@
+{% extends 'view/core/core_base.html.twig' %}
+{% trans_default_domain 'core' %}
+
+{% set page_title ='service.verify_mail.page.title' | trans %}
+
+{% block page_content %}
+    {% block login_form %}
+        {{ form_start(requestForm) }}
+
+                <div>
+                    {{ 'service.verify_mail.page.text' | trans }}
+                </div>
+                <div class="form-group field-text">
+                    <label for="email" class="sr-only form-control-label required">{{ 'service.registration.form.email.label' | trans }}</label>
+                    <div class="form-widget w-100">
+                        {{ form_widget(requestForm.email) }}
+                    </div>
+                </div>
+                
+                <div class="form-group field-button">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block w-100" onclick="this.form.submit();">
+                        {{ 'service.verify_mail.page.submit_label' | trans }}
+                    </button>
+                </div>
+            {{ form_end(requestForm) }}
+    {% endblock %}
+{% endblock %}
+
+
+        

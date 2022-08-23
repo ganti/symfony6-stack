@@ -3,39 +3,74 @@
 
 {% set page_title = 'service.login.page.page_title' | trans %}
 
+{% block login_alert %}
+    {% if error|default(false) %}
+        {% if error.messageKey == 'login_email_not_verified' %}
+            <div class="w-100 alert alert-warning">
+                {{ 'service.verify_mail.message.not_verified'|trans({'url': path('app_request_verify_email')})|raw }}
+            </div>
+        {% else %}
+            <div class="w-100 alert alert-danger">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+        
+    {% endif %}
+{% endblock %}
+
 {% block page_content %}
     {% block login_form %}
         <form method="post" action="{{ action|default('') }}">
-            {% if csrf_token_intention|default(false) %}
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token(csrf_token_intention) }}">
+            {% if csrfTokenIntention|default(false) %}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token(csrfTokenIntention) }}">
             {% endif %}
-
             <input type="hidden" name="{{ target_path_parameter|default('_target_path') }}" value="{{ target_path|default(ea is defined ? path(ea.dashboardRouteName) : '/') }}" />
 
+            {% if userIdentifierType == 'username'%}
+                {% set identifier_placholder = 'service.login.form.placeholder_username'|trans %}
+            {% elseif userIdentifierType == 'both'%}
+                {% set identifier_placholder = 'service.login.form.placeholder_both'|trans %}
+            {% else %}
+                {% set identifier_placholder = 'service.login.form.placeholder_email'|trans %}
+            {% endif %}
+
             <div class="form-group field-text">
-                <label for="username" class="sr-only form-control-label required">{{ 'service.login.username_label'|trans }}</label>
-                <div class="form-widget form-widget-with-icon">
-                    <i class="fa fa-fw fa-user"></i>
-                    <input type="text" id="username" name="{{ username_parameter|default('username') }}" class="form-control" placeholder="{{ 'service.login.page.username_placeholder' | trans }}" value="{{ last_username|default('') }}" required autofocus>
+                <label for="useridentifier" class="sr-only form-control-label required">
+                    {{ 'service.registration.form.email.label'|trans }}
+                </label>
+                <div class="form-widget">
+                    <input  type="username" 
+                            id="username" 
+                            name="username" 
+                            placeholder="{{ identifier_placholder }}" 
+                            class="form-control" 
+                            value="{{ lastIdentifier|default('') }}" 
+                            required autofocus>
                 </div>
             </div>
 
             <div class="form-group field-password">
-                <label for="password" class="sr-only form-control-label required">c</label>
-                <div class="form-widget form-widget-with-icon">
-                    <i class="fa fa-fw fa-lock"></i>
-                    <input type="password" id="password" name="{{ password_parameter|default('password') }}" class="form-control" placeholder="{{ 'service.login.page.password_placeholder' | trans }}" required>
+                <label for="password" class="sr-only form-control-label required">
+                    {{ 'service.registration.form.password.label'|trans }}
+                </label>
+                <div class="form-widget">
+                    <input  type="password" 
+                            id="password"
+                            name="{{ password_parameter|default('password') }}" 
+                            placeholder="{{ 'service.registration.form.password.label'|trans }}"
+                            class="form-control" 
+                            required>
                 </div>
             </div>
 
             <div class="form-group field-button">
-                <button type="submit" class="btn btn-primary btn-lg btn-block w-100" onclick="this.form.submit(); this.disabled=true;">
-                    {{ 'service.login.page.sign_in_label' | trans }}
+                <button type="submit" class="btn btn-primary btn-lg btn-block w-100" onclick="this.form.submit();">
+                    {{ 'service.login.page.submit_label' | trans }}
                 </button>
             </div>
         </form>
 
-        {% if password_reset_active %}
+        {% if registrationActive %}
             <div class="form-group field-button">
                 <form action="{{ path('app_forgot_password_request') }}">
                     <button type="submit" class="btn btn-lg btn-block w-100">
@@ -44,7 +79,7 @@
                 </form>
             </div>
         {% endif %}
-        {% if registration_active %}
+        {% if passwordResetActive %}
             <div class="form-group field-button">
                 <form action="{{ path('app_register') }}">
                     <button type="submit" class="btn btn-lg btn-block w-100">

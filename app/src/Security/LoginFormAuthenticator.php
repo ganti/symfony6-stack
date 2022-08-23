@@ -63,17 +63,19 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
                 if ($activeParams != null) {
                     $activeParams['deletedAt'] = null;
-                    $activeParams['isVerified'] = true;
 
                     $user = $this->entityManager->getRepository(User::class)->findOneBy($activeParams);
 
                     if (!$user) {
-                        $this->log->login('Login attempt while eMail is not active', false);
-                        throw new CustomUserMessageAuthenticationException('Login attempt while eMail is not active');
+                        $this->log->login('User not found', false);
+                        throw new UserNotFoundException();
                     } else {
-                        if ($user->isActive()) {
+                        if ($user->isActive() and $user->isVerified()) {
                             $this->log->login('', true);
                             return $user;
+                        } elseif (!$user->isVerified() and $user->isActive()) {
+                            $this->log->login('email not verified', false);
+                            throw new CustomUserMessageAuthenticationException('login_email_not_verified');
                         } else {
                             $this->log->login('User not active', false);
                             throw new UserNotFoundException();

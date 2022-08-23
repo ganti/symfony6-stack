@@ -47,7 +47,7 @@
         "symfony/yaml": "6.1.*",
         "symfonycasts/reset-password-bundle": "^1.14",
         "symfonycasts/verify-email-bundle": "^1.11",
-        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/extra-bundle": "^3.4",
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {

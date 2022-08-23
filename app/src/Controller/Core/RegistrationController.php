@@ -3,20 +3,22 @@
 namespace App\Controller\Core;
 
 use App\Entity\User;
-use App\Form\Core\RegistrationFormType;
-use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
+use App\Repository\UserRepository;
 use App\Service\Log\LogUserService;
+use Symfony\Component\Mime\Address;
+use App\Form\Core\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Address;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Form\Core\ResetPasswordRequestFormType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
 class RegistrationController extends AbstractController
 {
@@ -72,18 +74,7 @@ class RegistrationController extends AbstractController
                 $this->log->user_created($user);
             }
 
-
-            // generate a signed url and email it to the user
-            $sendTo = empty($user->getFullName()) ? new Address($user->getEmail()) : new Address($user->getEmail(), $user->getFullName());
-            $this->emailVerifier->sendEmailConfirmation(
-                'app_verify_email',
-                $user,
-                (new TemplatedEmail())
-                    ->to($sendTo)
-                    ->subject($this->t('service.registration.email.subject'))
-                    ->htmlTemplate('email/core/registration_confirmation_email.html.twig')
-            );
-            // do anything else you need here, like send an email
+            $this->sendVerificationMail($user);
 
             return $this->redirectToRoute('app_login');
         }
@@ -91,6 +82,19 @@ class RegistrationController extends AbstractController
         return $this->render('view/core/registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    private function sendVerificationMail(?User $user)
+    {
+        $sendTo = empty($user->getFullName()) ? new Address($user->getEmail()) : new Address($user->getEmail(), $user->getFullName());
+        $this->emailVerifier->sendEmailConfirmation(
+            'app_verify_email',
+            $user,
+            (new TemplatedEmail())
+                ->to($sendTo)
+                ->subject($this->t('service.registration.email.subject'))
+                ->htmlTemplate('email/core/registration_confirmation_email.html.twig')
+        );
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
@@ -127,5 +131,30 @@ class RegistrationController extends AbstractController
         $this->addFlash('success', 'Your email address has been verified.');
 
         return $this->redirectToRoute('app_login');
+    }
+
+
+    #[Route('/request-verify-email', name: 'app_request_verify_email')]
+    public function requestVerifyUserEmail(Request $request, UserRepository $userRepository): Response {
+
+        if ($this->getUser())
+        {
+            return $this->redirectToRoute('app_home');
+        }
+
+        $form = $this->createForm(ResetPasswordRequestFormType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) 
+        {
+            $user =  $userRepository->findOneByEmail($form->get('email')->getData());
+            if ($user)
+            {
+                $this->sendVerificationMail($user);
+                return $this->redirectToRoute('app_login');
+            }
+        }
+        return $this->render('view/core/resend_verifcation/resend_verifcation.html.twig', [
+            'requestForm' => $form->createView(),
+        ]);
     }
 }

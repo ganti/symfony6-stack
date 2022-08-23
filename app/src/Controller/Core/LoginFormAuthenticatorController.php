@@ -44,16 +44,24 @@ class LoginFormAuthenticatorController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        $registration_active = isset($this->getParameter('app')['core']['registration_active']) ? $this->getParameter('app')['core']['registration_active'] : false;
-        $password_reset_active = isset($this->getParameter('app')['core']['passwort_reset_active']) ? $this->getParameter('app')['core']['passwort_reset_active'] : false;
+        $params = $this->getParameter('app')['core'];
+        $registrationActive = isset($params['registration_active']) ? $params['registration_active'] : false;
+        $passwordResetActive = isset($params['passwort_reset_active']) ? $params['passwort_reset_active'] : false;
+
+        $userIdentifierType = (
+            isset($params['login']['identifier']) and
+            in_array($params['login']['identifier'], ['email', 'username','both'])
+        ) ? $params['login']['identifier'] : 'email';
+
 
         return $this->render('view/core/login/login.html.twig', [
-            'last_username' => $lastUsername,
+            'lastIdentifier' => $lastUsername,
             'error' => $error,
 
-            'csrf_token_intention' => 'authenticate',
-            'registration_active' => $registration_active,
-            'password_reset_active' => $password_reset_active,
+            'csrfTokenIntention' => 'authenticate',
+            'registrationActive' => $registrationActive,
+            'passwordResetActive' => $passwordResetActive,
+            'userIdentifierType' => $userIdentifierType
         ]);
     }
 

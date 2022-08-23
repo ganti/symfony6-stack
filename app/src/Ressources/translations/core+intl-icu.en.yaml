@@ -9,13 +9,13 @@ service:
     login:
         page:
             page_title: 'Acme Login'
-            username_label: 'Your email'
-            username_placeholder: john@doe.com
-            password_label: 'Your password'
-            password_placeholder: ''
-            sign_in_label: 'Log in'
+            submit_label: 'Log in'
             reset_link: 'Reset password'
             register_link: Register
+        form:
+            placeholder_email: Email
+            placeholder_username: Username
+            placeholder_both: Username or Email            
     registration:
         email:
             subject: 'Please confirm your email'
@@ -48,6 +48,13 @@ service:
                     agree: 'You should agree to our terms.'
             submit:
                 label: Register
+    verify_mail:
+        page:
+            title: 'Resend Email Verification'
+            text: 'Enter your email address and we will send you a link to verify your account'
+            submit_label: 'Send email'
+        message:
+            not_verified: Your mailadress is not verfied yet. <a href="{url}">Send mail again</a>
     password_reset:
         email:
             subject: 'Your password reset request'

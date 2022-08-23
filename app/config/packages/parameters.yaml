@@ -15,6 +15,14 @@ parameters:
             registration_active: true   #allow new users to register
             passwort_reset_active: true #allow password reset
 
+            login:
+                identifier: 'both' # username, email or both
+            registration:
+                ask_username: true
+                ask_name: true # firstname and lastname
+                ask_locale: true
+                 
+
         mailer:
             from_email: 'team@root.dev'
             from_name: 'AcmeBotName'
