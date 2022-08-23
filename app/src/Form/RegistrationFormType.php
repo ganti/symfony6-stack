@@ -18,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 class RegistrationFormType extends AbstractType
 {
-
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
@@ -67,7 +66,7 @@ class RegistrationFormType extends AbstractType
                                     ],
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
-                
+
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'label' => $this->t('service.registration.form.terms.label'),

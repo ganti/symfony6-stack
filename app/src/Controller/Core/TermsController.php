@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TermsController extends AbstractController
 {
-    
     #[Route(path: '/terms', name: 'app_terms_base')]
     public function terms_base(): Response
     {
@@ -19,10 +18,9 @@ class TermsController extends AbstractController
     #[Route(path: '/{_locale}/terms', name: 'app_terms')]
     public function terms($_locale, Request $request): Response
     {
-        
-        if( in_array($request->getLocale(), $this->getParameter('app')['admin_locales']) ){
+        if (in_array($request->getLocale(), $this->getParameter('app')['admin_locales'])) {
             return $this->render('view/core/terms/terms.html.twig');
-        }else{
+        } else {
             return $this->redirectToRoute('app_terms_base');
         }
     }

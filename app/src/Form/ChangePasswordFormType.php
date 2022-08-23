@@ -22,7 +22,7 @@ class ChangePasswordFormType extends AbstractType
     {
         return $this->translator->trans($message, $params, 'core');
     }
-    
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -49,7 +49,7 @@ class ChangePasswordFormType extends AbstractType
                                     ],
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
-                
+
             ])
         ;
     }

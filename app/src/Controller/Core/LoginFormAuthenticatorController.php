@@ -25,12 +25,11 @@ class LoginFormAuthenticatorController extends AbstractController
     {
         return $this->redirectToRoute('app_login');
     }
-    
+
     #[Route(path: '/{_locale}/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
-        if (!in_array($request->getLocale(), $this->getParameter('app')['admin_locales']))
-        {
+        if (!in_array($request->getLocale(), $this->getParameter('app')['admin_locales'])) {
             return $this->redirectToRoute('app_login_base');
         }
 
@@ -48,10 +47,10 @@ class LoginFormAuthenticatorController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         $registration_active = isset($this->getParameter('app')['core']['registration_active']) ? $this->getParameter('app')['core']['registration_active'] : false;
-        $password_reset_active = isset($this->getParameter('app')['core']['passwort_reset_active']) ? $this->getParameter('app')['core']['passwort_reset_active'] :false;
-        
+        $password_reset_active = isset($this->getParameter('app')['core']['passwort_reset_active']) ? $this->getParameter('app')['core']['passwort_reset_active'] : false;
+
         return $this->render('view/core/login/login.html.twig', [
-            'last_username' => $lastUsername, 
+            'last_username' => $lastUsername,
             'error' => $error,
 
             'csrf_token_intention' => 'authenticate',
@@ -65,5 +64,4 @@ class LoginFormAuthenticatorController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
-
 }

@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 class ResetPasswordRequestFormType extends AbstractType
 {
-
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
