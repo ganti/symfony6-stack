@@ -10,6 +10,8 @@ parameters:
 
         easyadmin:
             dashboard_title: 'Acme Admin'
+            
+        core:
             registration_active: true   #allow new users to register
             passwort_reset_active: true #allow password reset
 

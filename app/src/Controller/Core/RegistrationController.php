@@ -37,6 +37,11 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        if( isset($this->getParameter('app')['core']['registration_active']) ? $this->getParameter('app')['core']['registration_active'] : false )
+        {
+            return $this->redirectToRoute('app_login');
+        }
+        
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -91,6 +96,11 @@ class RegistrationController extends AbstractController
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
     {
+        if( isset($this->getParameter('app')['core']['registration_active']) ? $this->getParameter('app')['core']['registration_active'] : false )
+        {
+            return $this->redirectToRoute('app_login');
+        }
+
         $pid = $request->get('id');
 
         if (null === $pid) {

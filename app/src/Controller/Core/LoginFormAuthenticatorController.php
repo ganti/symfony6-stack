@@ -47,8 +47,8 @@ class LoginFormAuthenticatorController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        $registration_active = isset($this->getParameter('app')['easyadmin']['registration_active']) ?? false;
-        $password_reset_active = isset($this->getParameter('app')['easyadmin']['passwort_reset_active']) ?? false;
+        $registration_active = isset($this->getParameter('app')['core']['registration_active']) ? $this->getParameter('app')['core']['registration_active'] : false;
+        $password_reset_active = isset($this->getParameter('app')['core']['passwort_reset_active']) ? $this->getParameter('app')['core']['passwort_reset_active'] :false;
         
         return $this->render('view/core/login/login.html.twig', [
             'last_username' => $lastUsername, 
