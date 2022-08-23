@@ -62,4 +62,4 @@ admin:
                 request_method: 'Request Method'
                 request_path: 'Request Path'
                 client_ip: 'Client IP'
-                client_locale: 'Client locale'         
+                client_locale: 'Client locale'

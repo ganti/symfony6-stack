@@ -13,7 +13,7 @@
             <input type="hidden" name="{{ target_path_parameter|default('_target_path') }}" value="{{ target_path|default(ea is defined ? path(ea.dashboardRouteName) : '/') }}" />
 
             <div class="form-group field-text">
-                <label for="username" class="sr-only form-control-label required">{{ 'login.username_label' | trans }}</label>
+                <label for="username" class="sr-only form-control-label required">{{ 'service.login.username_label'|trans }}</label>
                 <div class="form-widget form-widget-with-icon">
                     <i class="fa fa-fw fa-user"></i>
                     <input type="text" id="username" name="{{ username_parameter|default('username') }}" class="form-control" placeholder="{{ 'service.login.page.username_placeholder' | trans }}" value="{{ last_username|default('') }}" required autofocus>
