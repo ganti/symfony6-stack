@@ -1,0 +1,16 @@
+# https://api-platform.com/docs/core/configuration/
+api_platform:
+    #title: 'API title' # The title of the API.
+    #description: 'API description' # The description of the API.
+    version: '0.0.1'    # The version of the API.
+    
+    show_webby: false # show spider
+
+    mapping:
+        paths: ['%kernel.project_dir%/src/Entity']
+    
+    patch_formats:
+        json: ['application/merge-patch+json']
+    
+    swagger:
+        versions: [3]

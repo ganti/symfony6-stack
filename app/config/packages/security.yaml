@@ -15,7 +15,9 @@ security:
             security: false
         main:
             lazy: true
-            custom_authenticator: App\Security\LoginFormAuthenticator
+            custom_authenticator:
+                - App\Security\LoginFormAuthenticator
+                - App\Security\ApiTokenAuthenticator
             logout:
                 path: app_logout
 

@@ -8,8 +8,11 @@ use App\Repository\ApiTokenRepository;
 use App\Entity\Traits\TimestampableCreatedTrait;
 use App\Entity\Traits\TimestampableDeletedTrait;
 use App\Entity\Traits\TimestampableUpdatedTrait;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ApiTokenRepository::class)]
+#[ORM\Table(name: '`user_api_token`')]
+#[UniqueEntity(fields: ['token'], message: 'Token must be unique')]
 class ApiToken
 {
     use ActiveTrait;
