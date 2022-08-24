@@ -101,8 +101,7 @@ class RegistrationController extends AbstractController
     public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
     {
         $this->isActive = isset($this->getParameter('app')['core']['registration_active']) ? $this->getParameter('app')['core']['registration_active'] : false;
-        if (!$this->isActive) 
-        {
+        if (!$this->isActive) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -135,20 +134,17 @@ class RegistrationController extends AbstractController
 
 
     #[Route('/request-verify-email', name: 'app_request_verify_email')]
-    public function requestVerifyUserEmail(Request $request, UserRepository $userRepository): Response {
-
-        if ($this->getUser())
-        {
+    public function requestVerifyUserEmail(Request $request, UserRepository $userRepository): Response
+    {
+        if ($this->getUser()) {
             return $this->redirectToRoute('app_home');
         }
 
         $form = $this->createForm(ResetPasswordRequestFormType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) 
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $user =  $userRepository->findOneByEmail($form->get('email')->getData());
-            if ($user)
-            {
+            if ($user) {
                 $this->sendVerificationMail($user);
                 return $this->redirectToRoute('app_login');
             }

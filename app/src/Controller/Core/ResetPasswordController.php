@@ -45,8 +45,7 @@ class ResetPasswordController extends AbstractController
     public function request(Request $request, TranslatorInterface $translator): Response
     {
         $this->isActive = isset($this->getParameter('app')['core']['passwort_reset_active']) ? $this->getParameter('app')['core']['passwort_reset_active'] : false;
-        if(!$this->isActive)
-        {
+        if (!$this->isActive) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -73,8 +72,7 @@ class ResetPasswordController extends AbstractController
     public function checkEmail(): Response
     {
         $this->isActive = isset($this->getParameter('app')['core']['passwort_reset_active']) ? $this->getParameter('app')['core']['passwort_reset_active'] : false;
-        if(!$this->isActive)
-        {
+        if (!$this->isActive) {
             return $this->redirectToRoute('app_login');
         }
         // Generate a fake token if the user does not exist or someone hit this page directly.
@@ -95,8 +93,7 @@ class ResetPasswordController extends AbstractController
     public function reset(Request $request, UserPasswordHasherInterface $passwordHasher, TranslatorInterface $translator, string $token = null): Response
     {
         $this->isActive = isset($this->getParameter('app')['core']['passwort_reset_active']) ? $this->getParameter('app')['core']['passwort_reset_active'] : false;
-        if(!$this->isActive)
-        {
+        if (!$this->isActive) {
             return $this->redirectToRoute('app_login');
         }
 
