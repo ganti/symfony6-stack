@@ -23,6 +23,13 @@
                     </button>
                 </div>
             {{ form_end(requestForm) }}
+            <div class="form-group field-button">
+                <form action="{{ path('app_login') }}">
+                    <button type="submit" class="btn btn-lg btn-block w-100">
+                        {{ 'service.generic.form.submit.label_back'|trans }}
+                    </button>
+                </form>
+            </div>
     {% endblock %}
 {% endblock %}
 

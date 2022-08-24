@@ -6,6 +6,9 @@ service:
             header: '<img src="http://placekitten.com/450/300" alt="Magic Kitten" style="display: block;" />'
             footer: 'This is the footer'
         expire: 'This link will expire in {expire}.'
+        form:
+            submit:
+                label_back: Back to login
     login:
         page:
             page_title: 'Acme Login'

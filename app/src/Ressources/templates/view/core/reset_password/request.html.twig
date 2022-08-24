@@ -6,23 +6,29 @@
 {% block page_content %}
     {% block login_form %}
         {{ form_start(requestForm) }}
-
-                <div>
-                    {{ 'service.password_reset.page.text' | trans }}
+            <div>
+                {{ 'service.password_reset.page.text' | trans }}
+            </div>
+            <div class="form-group field-text">
+                <label for="email" class="sr-only form-control-label required">{{ 'service.registration.form.email.label' | trans }}</label>
+                <div class="form-widget w-100">
+                    {{ form_widget(requestForm.email) }}
                 </div>
-                <div class="form-group field-text">
-                    <label for="email" class="sr-only form-control-label required">{{ 'service.registration.form.email.label' | trans }}</label>
-                    <div class="form-widget w-100">
-                        {{ form_widget(requestForm.email) }}
-                    </div>
-                </div>
-                
-                <div class="form-group field-button">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block w-100" onclick="this.form.submit();">
-                        {{ 'service.password_reset.page.submit_label' | trans }}
-                    </button>
-                </div>
-            {{ form_end(requestForm) }}
+            </div>
+            
+            <div class="form-group field-button">
+                <button type="submit" class="btn btn-primary btn-lg btn-block w-100" onclick="this.form.submit();">
+                    {{ 'service.password_reset.page.submit_label' | trans }}
+                </button>
+            </div>
+        {{ form_end(requestForm) }}
+        <div class="form-group field-button">
+            <form action="{{ path('app_login') }}">
+                <button type="submit" class="btn btn-lg btn-block w-100">
+                    {{ 'service.generic.form.submit.label_back'|trans }}
+                </button>
+            </form>
+        </div>
     {% endblock %}
 {% endblock %}
 
