@@ -3,7 +3,7 @@ service:
         email:
             greeting: Hey
             farewell: Cheers
-            header: '<img src="http://placekitten.com/450/300" alt="Magic Kitten" style="display: block;" />'
+            header: '<img src="http://placekitten.com/450/300" style="display: block;" />'
             footer: 'This is the footer'
         expire: 'This link will expire in {expire}.'
         form:

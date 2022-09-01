@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Service\Log\LogService;
 use Symfony\Component\Mime\Email;
 use App\Entity\Email as EntityEmail;
+use Symfony\Component\Mailer\SentMessage;
 
 class LogMailerService extends LogService
 {
@@ -18,7 +19,7 @@ class LogMailerService extends LogService
     }
 
 
-    public function sendMail(Email $mail, ?String $message=null, ?bool $success=false, ?User $user = null): self
+    public function sendMail($mail, ?String $message=null, ?bool $success=false, ?User $user = null): self
     {
         $message = $message ? trim($message . PHP_EOL . $this->getMessagePropertyString($mail)) : $this->getMessagePropertyString($mail);
 
@@ -42,46 +43,53 @@ class LogMailerService extends LogService
     private function getMessageProperties($message): ?array
     {
         $collection = [];
+        $collection['messageId'] = '';
 
-        $collection['from'] = join(
-            ', ',
-            array_map(function ($entry) {
-                return $entry->getAddress();
-            }, $message->getFrom())
-        );
-        $collection['to'] = join(
-            ', ',
-            array_map(function ($entry) {
-                return $entry->getAddress();
-            }, $message->getTo())
-        );
+        if ($message instanceof SentMessage)
+        {   
+            $collection['from'] = $message->getEnvelope()->getSender()->getAddress();
 
-        $collection['cc'] = join(
-            ', ',
-            array_map(function ($entry) {
-                return $entry->getAddress();
-            }, $message->getCc())
-        );
+            $collection['to'] = join(
+                ', ',
+                array_map(function ($entry) {
+                    return $entry->getAddress();
+                }, $message->getEnvelope()->getRecipients())
+            );
 
-        $collection['bcc'] = join(
-            ', ',
-            array_map(function ($entry) {
-                return $entry->getAddress();
-            }, $message->getBcc())
-        );
-        $collection['subject'] = $message->getSubject();
-        #$collection['bodyHTML'] = $message->getHtmlBody();
-        #$collection['bodyText'] = $message->getTextBody();
-
+            $collection['messageId'] = $message->getMessageId();
+            $collection['subject'] = $message->getOriginalMessage()->getHeaders()->get('Subject')->getValue();
+            $collection['bodyHTML'] = $message->getOriginalMessage()->getHtmlBody();
+            $collection['bodyText'] = $message->getOriginalMessage()->getTextBody();
+        }else{
+            $collection['from'] = join(
+                ', ',
+                array_map(function ($entry) {
+                    return $entry->getAddress();
+                }, $message->getFrom())
+            );
+            $collection['to'] = join(
+                ', ',
+                array_map(function ($entry) {
+                    return $entry->getAddress();
+                }, $message->getTo())
+            );
+            $collection['subject'] = $message->getSubject();
+            $collection['bodyHTML'] = $message->getHtmlBody();
+            $collection['bodyText'] = $message->getTextBody();
+            
+        }
         return array_filter($collection);
     }
 
-    private function getMessagePropertyString($message): ?String
+    private function getMessagePropertyString($message, $withBody = false): ?String
     {
         $return = "";
         foreach ($this->getMessageProperties($message) as $key => $value) {
             if ($value) {
-                $return .= strtoupper($key) . ': ' . $value . PHP_EOL;
+                if(!$withBody and str_contains($key, 'body'))
+                {
+                    $return .= strtoupper($key) . ': ' . $value . PHP_EOL;
+                }
             }
         }
         return $return;
@@ -90,15 +98,20 @@ class LogMailerService extends LogService
     private function setSentMailDetailedLog($message, ?bool $success, ?User $user): void
     {
         $properties = $this->getMessageProperties($message);
-
+        
         $maillog = new EntityEmail();
         $maillog->setSubject($properties['subject']);
         $maillog->setSenderEmail($properties['from']);
         $maillog->setRecieverEmail($properties['to']);
-
+        
         if ($this->detailedMailLogActive) {
-            #$maillog->setHtml($properties['bodyHTML']);
+            $maillog->setHtml($properties['bodyHTML']);
+            $maillog->setText($properties['bodyText']);
         }
+        if(isset($properties['messageId'])){
+            $maillog->setMessageId($properties['messageId']);
+        }
+
         if ($user) {
             $maillog->setUser($user);
         }

@@ -9,7 +9,7 @@
       {% set email_body_title = 'This is a test title' %}
    
       {% block email_body_content %}
-            <p>This is the email body</p>
+            <p>This is the email body, with a <a href="https://foo.bar">link</a>  </p>
       {% endblock email_body_content %}
    {% endembed %}
 {% endblock email_body %}

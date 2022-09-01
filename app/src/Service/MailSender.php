@@ -3,19 +3,20 @@
 namespace App\Service;
 
 use App\Entity\User;
+use Twig\Environment;
+use Html2Text\Html2Text;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
 use App\Service\Log\LogMailerService;
-use Symfony\Component\Mime\RawMessage;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class MailSender
 {
     public function __construct(
-        private MailerInterface $mailer,
+        private TransportInterface $mailer,
+        private Environment $twig,
         private ContainerBagInterface $params,
         private LogMailerService $log
     ) {
@@ -28,9 +29,17 @@ class MailSender
 
     public function sendMail(Email $message, ?User $user = null): void
     {
+        //If template is used, render it
+        if (!empty($message->getHtmlTemplate())){
+            $renderedHtmlBody = $this->twig->render($message->getHtmlTemplate(), $message->getContext());
+            $message->html($renderedHtmlBody);
+            $textContent = new Html2Text($renderedHtmlBody, ['do_links' => 'table']);
+            $message->text(trim($textContent->getText()));
+        }
+
         $message->from($this->fromName == null ? new Address($this->fromMail) : new Address($this->fromMail, $this->fromName));
         try {
-            $this->mailer->send($message);
+            $message = $this->mailer->send($message);
             $this->log->sendMail($message, null, true, $user);
         } catch (TransportExceptionInterface $e) {
             $this->log->sendMail($message, $e->getMessage(), false, $user);

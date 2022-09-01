@@ -36,6 +36,9 @@ class Email
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $html = null;
 
+    #[ORM\Column(name: 'messageId',length: 255, nullable: true)]
+    private ?string $MessageId = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $failed = null;
 
@@ -44,6 +47,7 @@ class Email
 
     #[ORM\ManyToOne(inversedBy: 'emails')]
     private ?User $User = null;
+
 
     public function getId(): ?int
     {
@@ -110,6 +114,18 @@ class Email
         return $this;
     }
 
+    public function getMessageId(): ?string
+    {
+        return $this->MessageId;
+    }
+
+    public function setMessageId(?string $MessageId): self
+    {
+        $this->MessageId = $MessageId;
+
+        return $this;
+    }
+
     public function getFailed(): ?\DateTimeInterface
     {
         return $this->failed;
@@ -145,4 +161,5 @@ class Email
 
         return $this;
     }
+
 }
