@@ -10,26 +10,30 @@ use Symfony\Component\Mailer\SentMessage;
 
 class LogMailerService extends LogService
 {
-    private ?bool $detailedMailLogActive = true;
+    private bool $generalLogging = false;
+    private bool $fullLogging = false;
 
-    public function setDetailedMailLogActive(bool $detailedMailLogActive=true): self
+    public function setMailLogging(bool $generalLogging, bool $fullLogging): self
     {
-        $this->detailedMailLogActive = $detailedMailLogActive;
+        $this->generalLogging = $generalLogging;
+        $this->fullLogging = $fullLogging;
         return $this;
     }
 
 
     public function sendMail($mail, ?String $message=null, ?bool $success=false, ?User $user = null): self
     {
-        $message = $message ? trim($message . PHP_EOL . $this->getMessagePropertyString($mail)) : $this->getMessagePropertyString($mail);
+        $message = $this->getMessagePropertyString($mail);
 
         if ($user) {
             $this->log->setUser($user);
         }
 
         if ($success) {
-            $subContext = 'sent';
-            $this->info('mailer', $subContext, $message, $success);
+            if($this->generalLogging){
+                $subContext = 'sent';
+                $this->info('mailer', $subContext, $message, $success);
+            }
         } else {
             $subContext = 'not sent';
             $this->error('mailer', $subContext, $message, $success);
@@ -86,7 +90,7 @@ class LogMailerService extends LogService
         $return = "";
         foreach ($this->getMessageProperties($message) as $key => $value) {
             if ($value) {
-                if(!$withBody and str_contains($key, 'body'))
+                if( ($withBody and str_contains($key, 'body')) or !str_contains($key, 'body') )
                 {
                     $return .= strtoupper($key) . ': ' . $value . PHP_EOL;
                 }
@@ -97,29 +101,31 @@ class LogMailerService extends LogService
 
     private function setSentMailDetailedLog($message, ?bool $success, ?User $user): void
     {
-        $properties = $this->getMessageProperties($message);
-        
-        $maillog = new EntityEmail();
-        $maillog->setSubject($properties['subject']);
-        $maillog->setSenderEmail($properties['from']);
-        $maillog->setRecieverEmail($properties['to']);
-        
-        if ($this->detailedMailLogActive) {
-            $maillog->setHtml($properties['bodyHTML']);
-            $maillog->setText($properties['bodyText']);
-        }
-        if(isset($properties['messageId'])){
-            $maillog->setMessageId($properties['messageId']);
-        }
+        if($this->generalLogging){
+            $properties = $this->getMessageProperties($message);
+            
+            $maillog = new EntityEmail();
+            $maillog->setSubject($properties['subject']);
+            $maillog->setSenderEmail($properties['from']);
+            $maillog->setRecieverEmail($properties['to']);
+            
+            if ($this->fullLogging) {
+                $maillog->setHtml($properties['bodyHTML']);
+                $maillog->setText($properties['bodyText']);
+            }
+            if(isset($properties['messageId'])){
+                $maillog->setMessageId($properties['messageId']);
+            }
 
-        if ($user) {
-            $maillog->setUser($user);
-        }
-        if (!$success) {
-            $maillog->setFailed(new \DateTime());
-        }
+            if ($user) {
+                $maillog->setUser($user);
+            }
+            if (!$success) {
+                $maillog->setFailed(new \DateTime());
+            }
 
-        $this->manager->persist($maillog);
-        $this->manager->flush();
+            $this->manager->persist($maillog);
+            $this->manager->flush();
+        }
     }
 }

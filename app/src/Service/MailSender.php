@@ -21,10 +21,11 @@ class MailSender
         private LogMailerService $log
     ) {
         $this->log = $log;
-        $this->log->setDetailedMailLogActive($params->get('app')['mailer']['detailed_mail_log']);
+        $params = $params->get('app')['mailer'];
+        $this->log->setMailLogging($params['logging_general'], $params['logging_full']);
 
-        $this->fromMail = $params->get('app')['mailer']['from_email'];
-        $this->fromName = $params->get('app')['mailer']['from_name'];
+        $this->fromMail = $params['from_email'];
+        $this->fromName = $params['from_name'];
     }
 
     public function sendMail(Email $message, ?User $user = null): void
