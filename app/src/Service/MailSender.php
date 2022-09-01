@@ -26,6 +26,8 @@ class MailSender
 
         $this->fromMail = $params['from_email'];
         $this->fromName = $params['from_name'];
+        $this->textMailLinkFomat  = $params['text_body']['link_format'] ?? 'table';
+        $this->textMailWidth  = $params['text_body']['width'] ?? '70';
     }
 
     public function sendMail(Email $message, ?User $user = null): void
@@ -34,7 +36,7 @@ class MailSender
         if (!empty($message->getHtmlTemplate())){
             $renderedHtmlBody = $this->twig->render($message->getHtmlTemplate(), $message->getContext());
             $message->html($renderedHtmlBody);
-            $textContent = new Html2Text($renderedHtmlBody, ['do_links' => 'table']);
+            $textContent = new Html2Text($renderedHtmlBody, ['do_links' => $this->textMailLinkFomat, 'width' => $this->textMailWidth]);
             $message->text(trim($textContent->getText()));
         }
 

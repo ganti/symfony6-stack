@@ -39,7 +39,9 @@ class LogMailerService extends LogService
             $this->error('mailer', $subContext, $message, $success);
         }
 
-        $this->setSentMailDetailedLog($mail, $success, $user);
+        if($this->generalLogging){
+            $this->setSentMailDetailedLog($mail, $success, $user);
+        }
         return $this;
     }
 
@@ -101,31 +103,30 @@ class LogMailerService extends LogService
 
     private function setSentMailDetailedLog($message, ?bool $success, ?User $user): void
     {
-        if($this->generalLogging){
-            $properties = $this->getMessageProperties($message);
-            
-            $maillog = new EntityEmail();
-            $maillog->setSubject($properties['subject']);
-            $maillog->setSenderEmail($properties['from']);
-            $maillog->setRecieverEmail($properties['to']);
-            
-            if ($this->fullLogging) {
-                $maillog->setHtml($properties['bodyHTML']);
-                $maillog->setText($properties['bodyText']);
-            }
-            if(isset($properties['messageId'])){
-                $maillog->setMessageId($properties['messageId']);
-            }
-
-            if ($user) {
-                $maillog->setUser($user);
-            }
-            if (!$success) {
-                $maillog->setFailed(new \DateTime());
-            }
-
-            $this->manager->persist($maillog);
-            $this->manager->flush();
+        $properties = $this->getMessageProperties($message);
+        
+        $maillog = new EntityEmail();
+        $maillog->setSubject($properties['subject']);
+        $maillog->setSenderEmail($properties['from']);
+        $maillog->setRecieverEmail($properties['to']);
+        
+        if($this->fullLogging){
+            $maillog->setHtml($properties['bodyHTML']);
+            $maillog->setText($properties['bodyText']);
         }
+        
+        if(isset($properties['messageId'])){
+            $maillog->setMessageId($properties['messageId']);
+        }
+
+        if ($user) {
+            $maillog->setUser($user);
+        }
+        if (!$success) {
+            $maillog->setFailed(new \DateTime());
+        }
+
+        $this->manager->persist($maillog);
+        $this->manager->flush();
     }
 }
