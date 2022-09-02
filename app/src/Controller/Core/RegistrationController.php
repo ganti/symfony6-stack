@@ -39,9 +39,13 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_auth_bridge');
+        }
+        
         $this->isActive = isset($this->getParameter('app')['core']['registration_active']) ? $this->getParameter('app')['core']['registration_active'] : false;
         if (!$this->isActive) {
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_auth_bridge');
         }
 
         $user = new User();

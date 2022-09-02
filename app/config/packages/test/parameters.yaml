@@ -1,0 +1,32 @@
+parameters:
+    app:
+        default_locale:  en
+        supported_locales: ['en', 'de']
+        admin_locales:   [de, en]
+        
+        timezone: 'Europe/Zurich' #default Timezone, users can set their own
+        date_format: 'yyyy-MM-dd' #default DateFormat, users can set their own, ICU Datetime Pattern (see https://unicode-org.github.io/icu/userguide/format_parse/datetime/)
+        time_format: 'HH:mm:ss'   #default TimeFormat, users can set their own, ICU Datetime Pattern (see https://unicode-org.github.io/icu/userguide/format_parse/datetime/)
+            
+        core:
+            registration_active: true   #allow new users to register
+            passwort_reset_active: true #allow password reset
+
+            login:
+                identifier: 'both' # username, email or both
+            registration:
+                ask_username: true
+                ask_name: true # firstname and lastname
+                ask_locale: true
+                 
+        mailer:
+            from_email: 'team@root.dev'
+            from_name: 'AcmeBotName'
+            logging_general: true   # enable mail logging
+            logging_full: true      # enable full log, sentmail-history with mail body to entity Email, logging_general must be true
+            text_body:
+                link_format: 'table' # (none|inline|nextline|table|bbcode) https://github.com/mtibben/html2text/blob/b0fb318e4d97e9e05ffb3569e674dca7b25a6860/src/Html2Text.php#L216
+                width: 80 # Maximum width (in chars) on each line,  set to 0 for no text wrapping 
+
+        easyadmin:
+            dashboard_title: 'Acme Admin'

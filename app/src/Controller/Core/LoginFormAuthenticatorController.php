@@ -19,6 +19,19 @@ class LoginFormAuthenticatorController extends AbstractController
         $this->security = $security;
     }
 
+    #[Route(path: '/authbridge', name: 'app_auth_bridge')]
+    public function auth_bridge(): Response
+    {
+        if ($this->getUser()) {
+            if ($this->security->isGranted('ROLE_ADMIN')) {
+                return $this->redirectToRoute('admin');
+            } else {
+                return $this->redirectToRoute('missing_userforward');
+            }
+        }
+        return $this->redirectToRoute('app_login');
+    }
+
     #[Route(path: '/login', name: 'app_login_base')]
     public function login_base(): Response
     {
@@ -33,11 +46,7 @@ class LoginFormAuthenticatorController extends AbstractController
         }
 
         if ($this->getUser()) {
-            if ($this->security->isGranted('ROLE_ADMIN')) {
-                return $this->redirectToRoute('admin');
-            } else {
-                return $this->redirectToRoute('missing_userforward');
-            }
+            return $this->redirectToRoute('app_auth_bridge');
         }
 
         // get the login error if there is one

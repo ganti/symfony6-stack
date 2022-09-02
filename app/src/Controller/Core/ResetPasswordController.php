@@ -44,6 +44,10 @@ class ResetPasswordController extends AbstractController
     #[Route('', name: 'app_forgot_password_request')]
     public function request(Request $request, TranslatorInterface $translator): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_auth_bridge');
+        }
+        
         $this->isActive = isset($this->getParameter('app')['core']['passwort_reset_active']) ? $this->getParameter('app')['core']['passwort_reset_active'] : false;
         if (!$this->isActive) {
             return $this->redirectToRoute('app_login');
