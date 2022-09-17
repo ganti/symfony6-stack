@@ -47,7 +47,7 @@ class ResetPasswordController extends AbstractController
         if ($this->getUser()) {
             return $this->redirectToRoute('app_auth_bridge');
         }
-        
+
         $this->isActive = isset($this->getParameter('app')['core']['passwort_reset_active']) ? $this->getParameter('app')['core']['passwort_reset_active'] : false;
         if (!$this->isActive) {
             return $this->redirectToRoute('app_login');

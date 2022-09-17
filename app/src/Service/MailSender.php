@@ -33,7 +33,7 @@ class MailSender
     public function sendMail(Email $message, ?User $user = null): void
     {
         //If template is used, render it
-        if (!empty($message->getHtmlTemplate())){
+        if (!empty($message->getHtmlTemplate())) {
             $renderedHtmlBody = $this->twig->render($message->getHtmlTemplate(), $message->getContext());
             $message->html($renderedHtmlBody);
             $textContent = new Html2Text($renderedHtmlBody, ['do_links' => $this->textMailLinkFomat, 'width' => $this->textMailWidth]);

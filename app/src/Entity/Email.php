@@ -36,7 +36,7 @@ class Email
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $html = null;
 
-    #[ORM\Column(name: 'messageId',length: 255, nullable: true)]
+    #[ORM\Column(name: 'messageId', length: 255, nullable: true)]
     private ?string $MessageId = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -161,5 +161,4 @@ class Email
 
         return $this;
     }
-
 }

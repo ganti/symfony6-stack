@@ -30,7 +30,7 @@ class LogMailerService extends LogService
         }
 
         if ($success) {
-            if($this->generalLogging){
+            if ($this->generalLogging) {
                 $subContext = 'sent';
                 $this->info('mailer', $subContext, $message, $success);
             }
@@ -39,7 +39,7 @@ class LogMailerService extends LogService
             $this->error('mailer', $subContext, $message, $success);
         }
 
-        if($this->generalLogging){
+        if ($this->generalLogging) {
             $this->setSentMailDetailedLog($mail, $success, $user);
         }
         return $this;
@@ -51,8 +51,7 @@ class LogMailerService extends LogService
         $collection = [];
         $collection['messageId'] = '';
 
-        if ($message instanceof SentMessage)
-        {   
+        if ($message instanceof SentMessage) {
             $collection['from'] = $message->getEnvelope()->getSender()->getAddress();
 
             $collection['to'] = join(
@@ -66,7 +65,7 @@ class LogMailerService extends LogService
             $collection['subject'] = $message->getOriginalMessage()->getHeaders()->get('Subject')->getValue();
             $collection['bodyHTML'] = $message->getOriginalMessage()->getHtmlBody();
             $collection['bodyText'] = $message->getOriginalMessage()->getTextBody();
-        }else{
+        } else {
             $collection['from'] = join(
                 ', ',
                 array_map(function ($entry) {
@@ -82,7 +81,6 @@ class LogMailerService extends LogService
             $collection['subject'] = $message->getSubject();
             $collection['bodyHTML'] = $message->getHtmlBody();
             $collection['bodyText'] = $message->getTextBody();
-            
         }
         return array_filter($collection);
     }
@@ -92,8 +90,7 @@ class LogMailerService extends LogService
         $return = "";
         foreach ($this->getMessageProperties($message) as $key => $value) {
             if ($value) {
-                if( ($withBody and str_contains($key, 'body')) or !str_contains($key, 'body') )
-                {
+                if (($withBody and str_contains($key, 'body')) or !str_contains($key, 'body')) {
                     $return .= strtoupper($key) . ': ' . $value . PHP_EOL;
                 }
             }
@@ -104,18 +101,18 @@ class LogMailerService extends LogService
     private function setSentMailDetailedLog($message, ?bool $success, ?User $user): void
     {
         $properties = $this->getMessageProperties($message);
-        
+
         $maillog = new EntityEmail();
         $maillog->setSubject($properties['subject']);
         $maillog->setSenderEmail($properties['from']);
         $maillog->setRecieverEmail($properties['to']);
-        
-        if($this->fullLogging){
+
+        if ($this->fullLogging) {
             $maillog->setHtml($properties['bodyHTML']);
             $maillog->setText($properties['bodyText']);
         }
-        
-        if(isset($properties['messageId'])){
+
+        if (isset($properties['messageId'])) {
             $maillog->setMessageId($properties['messageId']);
         }
 

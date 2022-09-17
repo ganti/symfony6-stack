@@ -42,7 +42,7 @@ class RegistrationController extends AbstractController
         if ($this->getUser()) {
             return $this->redirectToRoute('app_auth_bridge');
         }
-        
+
         $this->isActive = isset($this->getParameter('app')['core']['registration_active']) ? $this->getParameter('app')['core']['registration_active'] : false;
         if (!$this->isActive) {
             return $this->redirectToRoute('app_auth_bridge');
