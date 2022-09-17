@@ -2,14 +2,18 @@
 
 namespace App\Tests\Core;
 
-use PHPUnit\Exception;
 use App\Repository\UserRepository;
-use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\ExpectationFailedException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
 
 class AuthTest extends WebTestCase
 {
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
 
     private function clientLoginAsAdmin()
     {
@@ -19,6 +23,7 @@ class AuthTest extends WebTestCase
         $client->loginUser($user);
         return $client;
     }
+
 
     public function testOpenAdminAsAnonymous(): void
     {
@@ -36,14 +41,6 @@ class AuthTest extends WebTestCase
         $this->assertResponseStatusCodeSame(200);
     }
 
-    public function testLogout(): void
-    {
-        $client = $this->clientLoginAsAdmin();
-        $client->request('GET', '/logout');
-        $this->assertTrue($client->getResponse()->isRedirect());
-    }
-   
-  
     public function testLoginRedirect(): void
     {
         $client = static::createClient();
@@ -51,15 +48,36 @@ class AuthTest extends WebTestCase
         $this->assertResponseRedirects('/en/login');
     }
 
-    public function testUserAccessingNonAuthPages(): void
+    public function testUserAccessingAuthPages(): void
     {
+        $pages = ['/en/login','/register','/reset-password'];
         $client = $this->clientLoginAsAdmin();
-        foreach (['/en/login','/register','/reset-password','/verify/email'] as $page)
+        foreach ($pages as $page)
         {
             $client->request('GET', $page);
-            $this->assertTrue($client->getResponse()->isRedirect(), $page);   
+            $this->assertResponseRedirects();
+            $this->assertTrue($client->getResponse()->isRedirect('/authbridge'), $page);
         }
 
+    }
+
+    public function testAnonymousAccessingAuthPages(): void
+    {
+        $pages = ['/en/login','/register','/reset-password'];
+        $client = static::createClient();
+        foreach ($pages as $page)
+        {
+            $client->request('GET', $page);
+            $assert = $client->getResponse()->isRedirect('/authbridge') == false ;
+            $this->assertTrue($assert, $page);
+        }
+    }
+
+    public function testLogout(): void
+    {
+        $client = $this->clientLoginAsAdmin();
+        $client->request('GET', '/logout');
+        $this->assertTrue($client->getResponse()->isRedirect());
     }
 
     /**
@@ -70,5 +88,24 @@ class AuthTest extends WebTestCase
         $client = static::createClient();
         $client->request('GET', '/foobarXCFASDFGKPKéSFD');
         $this->assertResponseStatusCodeSame(404);
+    }
+
+    
+    public function testParamRegistrationActive(): void
+    {
+        $client = static::createClient();   
+        $client->request('GET', '/register');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('h3', 'Registration');
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+    }
+
+    public function testParamPasswortResetActive(): void
+    {   
+        $client = static::createClient();
+        $client->request('GET', '/reset-password');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('h3', 'Reset Password');
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 }

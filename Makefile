@@ -162,4 +162,7 @@ tests:
 tests-phpunit: clear-cache tests-phpunit-tests
 
 tests-phpunit-tests:
-	${PHP_CMD} vendor/bin/phpunit --colors=always ${PHPUNIT_FILTER} --testdox ${END}
+	${PHP_CMD} vendor/bin/phpunit  --testdox ${PHPUNIT_FILTER} ${END}
+
+testdev:
+	${PHP_CMD} vendor/bin/phpunit  --testdox --group dev ${PHPUNIT_FILTER} ${END}

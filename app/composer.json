@@ -21,6 +21,7 @@
         "stof/doctrine-extensions-bundle": "^1.7",
         "symfony/asset": "6.1.*",
         "symfony/console": "6.1.*",
+        "symfony/dependency-injection": "6.1.*",
         "symfony/doctrine-messenger": "6.1.*",
         "symfony/dotenv": "6.1.*",
         "symfony/expression-language": "6.1.*",
@@ -55,12 +56,12 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^9",
         "symfony/browser-kit": "6.1.*",
         "symfony/css-selector": "6.1.*",
         "symfony/debug-bundle": "6.1.*",
         "symfony/maker-bundle": "^1.0",
-        "symfony/phpunit-bridge": "^6.1",
+        "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "6.1.*",
         "symfony/web-profiler-bundle": "6.1.*"
     },

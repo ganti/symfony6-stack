@@ -19,7 +19,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install -j$(nproc) zip \
     && docker-php-ext-configure intl \
-    && docker-php-ext-install intl
+    && docker-php-ext-install intl \
+    && docker-php-ext-install opcache
+
 
 COPY --from=composer:2.3.10 /usr/bin/composer /usr/bin/composer
 
