@@ -11,17 +11,21 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use Symfony\Component\Translation\TranslatableMessage;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-
-use function App\Controller\Admin\t;
 
 class LogCrudController extends AbstractCrudController
 {
+    public function t(string $message, array $parameters = []): TranslatableMessage
+    {
+        return new TranslatableMessage($message, $parameters, 'admin');
+    }
+
     public static function getEntityFqcn(): string
     {
         return Log::class;
@@ -31,7 +35,7 @@ class LogCrudController extends AbstractCrudController
     {
         return $crud
             //->setEntityLabelInSingular('Log')
-            ->setEntityLabelInPlural(t('admin.crud.logs.titles.index_page'))
+            ->setEntityLabelInPlural($this->t('admin.crud.logs.titles.index_page'))
             ->setPageTitle('index', '%entity_label_plural%')
             ->setDateFormat('full')
             ->setDefaultSort(['id' => 'DESC'])
@@ -45,7 +49,7 @@ class LogCrudController extends AbstractCrudController
     {
         yield IntegerField::new('id')
             ->setCssClass('col-auto');
-        yield ChoiceField::new('level', t('admin.crud.logs.label.level'))
+        yield ChoiceField::new('level', $this->t('admin.crud.logs.label.level'))
             ->renderAsBadges([
                 'ERROR' => 'danger',
                 'WARNING' => 'warning',
@@ -55,17 +59,17 @@ class LogCrudController extends AbstractCrudController
                 'NO_LEVEL' => 'secondary'
             ])
             ->setChoices(['ERROR'=>'ERROR', 'WARNING'=>'WARNING', 'INFO'=>'INFO', 'NOTICE'=>'NOTICE', 'DEBUG'=>'DEBUG', 'NO_LEVEL'=>'NO_LEVEL']);
-        yield TextField::new('context', t('admin.crud.logs.label.context'));
-        yield TextField::new('subcontext', t('admin.crud.logs.label.subcontext'));
-        yield TextareaField::new('message', t('admin.crud.logs.label.message'));
-        yield DateTimeField::new('createdAt', t('admin.crud.generic.created_at'));
+        yield TextField::new('context', $this->t('admin.crud.logs.label.context'));
+        yield TextField::new('subcontext', $this->t('admin.crud.logs.label.subcontext'));
+        yield TextareaField::new('message', $this->t('admin.crud.logs.label.message'));
+        yield DateTimeField::new('createdAt', $this->t('admin.crud.generic.created_at'));
 
-        yield FormField::addPanel(t('admin.crud.logs.titles.request_information'));
-        yield TextField::new('requestMethod', t('admin.crud.logs.label.request_method'))->hideOnIndex();
-        yield TextField::new('requestPath', t('admin.crud.logs.label.request_path'))->hideOnIndex();
-        yield TextField::new('clientIP', t('admin.crud.logs.label.client_ip'))->hideOnIndex();
-        yield AssociationField::new('user', t('admin.crud.user.label.user'))->hideOnIndex();
-        yield TextField::new('clientLocale', t('admin.crud.logs.label.client_locale'))->hideOnIndex();
+        yield FormField::addPanel($this->t('admin.crud.logs.titles.request_information'));
+        yield TextField::new('requestMethod', $this->t('admin.crud.logs.label.request_method'))->hideOnIndex();
+        yield TextField::new('requestPath', $this->t('admin.crud.logs.label.request_path'))->hideOnIndex();
+        yield TextField::new('clientIP', $this->t('admin.crud.logs.label.client_ip'))->hideOnIndex();
+        yield AssociationField::new('user', $this->t('admin.crud.user.label.user'))->hideOnIndex();
+        yield TextField::new('clientLocale', $this->t('admin.crud.logs.label.client_locale'))->hideOnIndex();
 
         return $this;
     }
@@ -73,11 +77,11 @@ class LogCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add('level', t('admin.crud.logs.label.level'))
-            ->add('context', t('admin.crud.logs.label.context'))
-            ->add('message', t('admin.crud.logs.label.message'))
-            ->add('user', t('admin.crud.user.label.user'))
-            ->add('createdAt', t('admin.crud.generic.created_at'))
+            ->add('level', $this->t('admin.crud.logs.label.level'))
+            ->add('context', $this->t('admin.crud.logs.label.context'))
+            ->add('message', $this->t('admin.crud.logs.label.message'))
+            ->add('user', $this->t('admin.crud.user.label.user'))
+            ->add('createdAt', $this->t('admin.crud.generic.created_at'))
         ;
     }
 
