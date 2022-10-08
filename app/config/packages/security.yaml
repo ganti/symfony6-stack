@@ -20,12 +20,17 @@ security:
                 - App\Security\ApiTokenAuthenticator
             logout:
                 path: app_logout
+            two_factor:
+                    auth_form_path: 2fa_login    # The route name you have used in the routes.yaml
+                    check_path: 2fa_login_check  # The route name you have used in the routes.yaml
+
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
   
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/2fa, role: IS_AUTHENTICATED_2FA_IN_PROGRESS }
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER

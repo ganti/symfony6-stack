@@ -1,0 +1,86 @@
+{% extends 'view/core/core_base.html.twig' %}
+{% trans_default_domain 'core' %}
+
+{% set page_title = 'Two Factor Authentication' %}
+{% block title %}Two Factor Authentication{% endblock %}
+
+{% block login_alert %}
+    {% if authenticationError %}
+        <div class="w-100 alert alert-danger">
+            <p>{{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}</p>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block page_content %}  
+    {% block login_form %}
+        <p>
+            Open your Authenticator app and type in the number.
+        </p>
+
+        {% if authenticationError %}
+            <p>{{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}</p>
+        {% endif %}
+
+        {# Let the user select the authentication method #}
+        {% if availableTwoFactorProviders|length > 1 %}
+            <p>{{ "choose_provider"|trans({}, 'SchebTwoFactorBundle') }}:
+                {% for provider in availableTwoFactorProviders %}
+                    <a href="{{ path("2fa_login", {"preferProvider": provider}) }}">{{ provider }}</a>
+                {% endfor %}
+            </p>
+        {% endif %}
+
+        <form class="form" action="{{ checkPathUrl ? checkPathUrl: path(checkPathRoute) }}" method="post">
+            
+            <div class="form-group field-text">
+                <label for="number" class="sr-only form-control-label required">{{ "auth_code"|trans({}, 'SchebTwoFactorBundle') }}</label>
+                <div class="form-widget">
+                    <input  id="_auth_code"
+                            type="text"
+                            name="{{ authCodeParameterName }}"
+                            placeholder="Code"
+                            autocomplete="one-time-code"
+                            autofocus
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            class="w-100"
+                            style="height: 5rem;font-size: 60pt;text-align: center;font-family: monospace;"
+                            {#
+                            https://www.twilio.com/blog/html-attributes-two-factor-authentication-autocomplete
+                            If your 2fa methods are using numeric codes only, add these attributes for better user experience:
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            #}
+                    />
+                </div>
+            </div>
+
+            {% if displayTrustedOption %}
+                <p class="widget">
+                    <label for="_trusted">
+                        <input id="_trusted" type="checkbox" name="{{ trustedParameterName }}" /> {{ "trusted"|trans({}, 'SchebTwoFactorBundle') }}
+                    </label>
+                </p>
+            {% endif %}
+            {% if isCsrfProtectionEnabled %}
+                <input type="hidden" name="{{ csrfParameterName }}" value="{{ csrf_token(csrfTokenId) }}">
+            {% endif %}
+            
+            <div class="form-group field-button">
+                <button type="submit" class="btn btn-primary btn-lg btn-block w-100" onclick="this.form.submit();" value="{{ "login"|trans({}, 'SchebTwoFactorBundle') }}" >
+                    {{ 'service.login.page.submit_label' | trans }}
+                </button>
+            </div>
+        </form>
+
+        {# The logout link gives the user a way out if they can't complete two-factor authentication #}
+        <div class="form-group field-button">
+            <form action="{{ path('app_logout') }}">
+                <button type="submit" class="btn btn-lg btn-block w-100">
+                    {{ "cancel"|trans({}, 'SchebTwoFactorBundle') }}
+                </button>
+            </form>
+        </div>
+    {% endblock %}
+{% endblock %}

@@ -3,6 +3,9 @@
 namespace App\Controller\Core;
 
 use App\Service\Log\LogUserService;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
 
 class LoginFormAuthenticatorController extends AbstractController
 {
@@ -79,5 +83,37 @@ class LoginFormAuthenticatorController extends AbstractController
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+
+
+    #[Route("/authentication/2fa/enable", name:"app_2fa_enable")]
+    #[IsGranted("ROLE_USER")]
+    public function enable2fa(GoogleAuthenticatorInterface $googleAutInterface, EntityManagerInterface $entityManager)
+    {
+        $user = $this->getUser();
+        if (!$user->isGoogleAuthenticatorEnabled()) {
+            $user->setGoogleAuthenticatorSecret($googleAutInterface->generateSecret());
+            $entityManager->flush();
+        }
+
+        return $this->render('view/core/2fa/enable2fa.html.twig');
+    }
+
+    #[Route("/authentication/2fa/qr-code", name: "app_2fa_qr_code")]
+    #[IsGranted("ROLE_USER")]
+    public function displayGoogleAuthenticatorQrCode(GoogleAuthenticatorInterface $googleAutInterface)
+    {
+        // $qrCode is provided by the endroid/qr-code library. See the docs how to customize the look of the QR code:
+        // https://github.com/endroid/qr-code
+        $qrCodeContent = $googleAutInterface->getQRContent($this->getUser());
+        $result = Builder::create()
+            ->data($qrCodeContent)
+            ->encoding(new Encoding('UTF-8'))
+            ->size(300)
+            ->margin(10)
+            ->build();
+
+        return new Response($result->getString(), 300, ['Content-Type' => 'image/png']);
     }
 }

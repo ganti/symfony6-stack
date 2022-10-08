@@ -2,25 +2,26 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Traits\UuidTrait;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Traits\ActiveTrait;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use App\Entity\Traits\TimestampableCreatedTrait;
+use App\Entity\Traits\TimestampableDeletedTrait;
+
+use App\Entity\Traits\TimestampableUpdatedTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-
-use App\Entity\Traits\UuidTrait;
-use App\Entity\Traits\ActiveTrait;
-use App\Entity\Traits\TimestampableCreatedTrait;
-use App\Entity\Traits\TimestampableUpdatedTrait;
-use App\Entity\Traits\TimestampableDeletedTrait;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface
 {
     use UuidTrait;
     use ActiveTrait;
@@ -73,6 +74,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Log::class)]
     private Collection $logs;
+
+    #[ORM\Column(name:"2fa_active", type: "boolean")]
+    private bool $twoFactor_active = false;
+
+    #[ORM\Column(name:"2fa_secret_google", type:"string", nullable:true)]
+    private ?string $twoFactor_secret_google;
 
     #[ORM\OneToMany(mappedBy: 'User', targetEntity: Email::class)]
     private Collection $emails;
@@ -362,5 +369,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+
+    /*
+     * ====== 2FA
+     */
+    public function isGoogleAuthenticatorEnabled(): bool
+    {
+        return (null !== $this->twoFactor_secret_google) and ($this->twoFactor_active == true);
+    }
+
+    public function getGoogleAuthenticatorUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function getGoogleAuthenticatorSecret(): ?string
+    {
+        return $this->twoFactor_secret_google;
+    }
+
+    public function setGoogleAuthenticatorSecret(?string $googleAuthenticatorSecret): void
+    {
+        $this->twoFactor_secret_google = $googleAuthenticatorSecret;
     }
 }

@@ -47,11 +47,9 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linktoDashboard($this->t('Manual'), 'fa-solid fa-book-open');
+        yield MenuItem::linktoDashboard($this->t('Dashboard'), 'fa-solid fa-house');
 
         if ($this->isGranted('ROLE_ADMIN')) {
-            yield MenuItem::linkToCrud('Newsletter', 'fas fa-link', Newsletter::class);
-
             yield MenuItem::section($this->t('admin.dashboard.menu.label.administration'));
             yield MenuItem::linkToCrud($this->t('admin.dashboard.menu.label.users'), 'fas fa-user', User::class);
             yield MenuItem::linkToCrud($this->t('admin.dashboard.menu.label.user_roles'), 'fas fa-user-tag', UserRole::class);
@@ -65,18 +63,16 @@ class DashboardController extends AbstractDashboardController
 
     public function configureUserMenu(UserInterface $user): UserMenu
     {
-        return parent::configureUserMenu($user)
+        $menuItems[] = MenuItem::linkToCrud($this->t('admin.dashboard.menu.label.my_profile'), 'fa fa-id-card', User::class)
+                                ->setAction('edit')
+                                ->setEntityId($this->security->getUser()->getId());
+        $menuItems[] = MenuItem::section();
+        $menuItems[] = MenuItem::linkToRoute('Activate 2FA', 'fa fa-lock', 'app_2fa_enable');
 
-            //Icon
+        return parent::configureUserMenu($user)
             ->displayUserAvatar(true)
             ->setGravatarEmail($this->security->getUser()->getEmail())
-
-            ->addMenuItems([
-                MenuItem::linkToCrud($this->t('admin.dashboard.menu.label.my_profile'), 'fa fa-id-card', User::class)
-                    ->setAction('edit')
-                    ->setEntityId($this->security->getUser()->getId()),
-                MenuItem::section(),
-            ]);
+            ->addMenuItems($menuItems);
     }
 
     //Default Crud Settings
