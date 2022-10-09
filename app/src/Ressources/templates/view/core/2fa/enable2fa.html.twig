@@ -1,20 +1,140 @@
-{% extends 'view/core/core_base.html.twig' %}
+{% extends '@EasyAdmin/page/content.html.twig' %}
 {% trans_default_domain 'core' %}
 
-{% set page_title = '2fa Activation' %}
+
+{% block page_title 'Two Factor Authentication' %}
+{% block content_title '' %}
+
+
 
 {% block page_content %}
-    {% block login_form %}
-        <div class="container">
-            <div class="row">
-                <div class="login-form bg-light mt-4 p-4">
-                    <h1 class="h3 mb-3 font-weight-normal">Use Authy or Google Authenticator to Scan the QR Code</h1>
-                    <img src="{{ path('app_2fa_qr_code') }}" alt="2fa QR Code">
+    <section class="content">
+        <div class="container2fa container container-sm px-8 shadow-lg p-3 mb-5 rounded">
+            <div class="row ">
+                <div class="col-md-12 pb-3">
+                    {% if isEnabled %}
+                        <p>
+                            <span class="badge badge-pill badge-success even-larger-badge text-center w-100">
+                                The two-step verification is enabled
+                            </span>
+                        </p>
+                        <p>
+                            If you want to disable the two-step verifcation: 
+                            <a href="{{ disableURL }}" target="_self">Click here to disable</a>.
+                        </p>
+                        
+
+                    {% else %}
+                        <p>
+                            <span class="badge badge-pill badge-warning even-larger-badge text-center w-100">
+                                The two-step verification is not enabled
+                            </span>
+                        </p>
+                        
+                        <p>
+                            The two-step verification increases the security of your account. 
+                            In addition to your password, a code is required in a second step, which is displayed on your smartphone.
+                        </p>
+                        
+                        <ul class="list-unstyled">
+                            <li>You may use one of the following apps for verification:
+                                <ul>
+                                    <li>Google Authenticator (<a target="_blank" rel="noopener noreferrer" target="_blank" href="https://itunes.apple.com/en/app/google-authenticator/id388497605">iOS</a>, 
+                                                            <a target="_blank" rel="noopener noreferrer" target="_blank" href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2">Android</a>)
+                                    </li>
+                                    <li>Duo Mobile (<a href="https://itunes.apple.com/us/app/duo-mobile/id422663827" target="_blank">iOS</a>, 
+                                                    <a target="_blank" rel="noopener noreferrer" href="https://play.google.com/store/apps/details?id=com.duosecurity.duomobile" target="_blank">Android</a>)
+                                    </li>
+                                    <li>Amazon Virtual MFA (<a target="_blank" href="http://www.amazon.com/gp/product/B0061MU68M" target="_blank">Android</a>)</li>
+                                    <li>Authenticator (<a target="_blank" rel="noopener noreferrer" href="http://www.windowsphone.com/en-us/store/app/authenticator/021dd79f-0598-e011-986b-78e7d1fa76f8" target="_blank">Windows
+                                            Phone</a>)
+                                    </li>
+                                    <li>Authenticator (<a target="_blank" rel="noopener noreferrer" href="https://marketplace.firefox.com/app/authenticator-1?src=search#id=439326" target="_blank">Firefox
+                                            OS</a>)
+                                    </li>
+                                    <li>1Password (<a target="_blank" rel="noopener noreferrer" href="https://1password.com/downloads/ios/" target="_blank">iOS</a>,
+                                                <a target="_blank" href="https://1password.com/downloads/android/" target="_blank">Android</a>,
+                                                <a target="_blank" href="https://1password.com/downloads/windows/" target="_blank">Windows</a>,
+                                                <a target="_blank" href="https://1password.com/downloads/mac/" target="_blank">Mac</a>,
+                                                <a target="_blank" href="https://1password.com/downloads/linux/" target="_blank">Linux</a>)
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+
+
+                    {% endif %}
                 </div>
             </div>
+            {% if not isEnabled %}
+                <div class="row gx-3">
+                    <div class="col-md-6">
+                        <div class="p-3 col2fa-colors">
+                            <h4>Step 1: scan this QR-Code</h4>
+                            <div class="container">
+                                <div class="row text-center">
+                                    <object class="twofactorqrcode w-100 px-0 py-3" data="{{ url('app_2fa_qr_code') }}" type="image/svg+xml" ></object>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 col2fa-colors h-100">
+                            <div class="row h-100">
+                                <div class="col-12">
+                                    <h4>Step 2: verfication code</h4>
+                                </div>
+                                <div class="col">
+                                    <form class="form" action="" method="post">
+                                        <div class="form-group field-text">
+                                            <label for="number" class="sr-only form-control-label required">{{ "auth_code"|trans({}, 'SchebTwoFactorBundle') }}</label>
+                                            <div class="form-widget">
+                                                <input  id="_auth_code"
+                                                        type="text"
+                                                        name="verificationCode"
+                                                        placeholder="Code"
+                                                        autocomplete="one-time-code"
+                                                        autofocus
+                                                        inputmode="numeric"
+                                                        pattern="[0-9]*"
+                                                        class="w-100"
+                                                        focus
+                                                        minlength="6"
+                                                        maxlength="6"
+                                                        style="height: 5rem;font-size: 50pt;text-align: center;font-family: monospace;"
+                                                        {#
+                                                        https://www.twilio.com/blog/html-attributes-two-factor-authentication-autocomplete
+                                                        If your 2fa methods are using numeric codes only, add these attributes for better user experience:
+                                                        inputmode="numeric"
+                                                        pattern="[0-9]*"
+                                                        #}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {% if errorMsg|default(false) %}
+                                            <div class="w-100 alert alert-danger">
+                                                {{ errorMsg }}
+                                            </div>
+                                        {% endif %}
+
+
+                                        <div class="form-group field-button">
+                                            <button type="submit" class="btn btn-primary btn-lg btn-block w-100" onclick="this.form.submit();" value="{{ "login"|trans({}, 'SchebTwoFactorBundle') }}" >
+                                                {{ 'Enable verifiaction' | trans }}
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         </div>
-    {% endblock %}
+    </section>
+
+
+
+    </div>
 {% endblock %}
-
-
-        

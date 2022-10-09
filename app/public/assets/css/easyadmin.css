@@ -1,0 +1,24 @@
+.badge.even-larger-badge{
+    font-size: 1.25em;
+    line-height: 32px;
+}
+
+.container2fa{
+  max-width: 650px !important;
+}
+
+.col2fa-colors{
+  background-color: var(--page-login-form-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-lg);
+  flex-wrap: wrap;
+}
+
+/*
+ * === Popover
+ */
+
+ul {
+  list-style: inside;
+  list-style-position: outside;
+}

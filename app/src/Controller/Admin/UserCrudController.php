@@ -3,9 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
-use PHPUnit\Util\Type;
 use App\Entity\UserRole;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Admin\Field\TwoFactorEnableField;
 use Symfony\Component\Security\Core\Security;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
@@ -20,15 +20,15 @@ use Symfony\Component\Translation\TranslatableMessage;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimezoneField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
@@ -94,38 +94,34 @@ class UserCrudController extends AbstractCrudController
             }
         } else {
             if ($this->getIsLoggedInUserEditingUserCrud() or $this->isGranted('ROLE_ADMIN')) {
+
+                /*
+                 * ===== Tab: Account Information =====
+                 */
+                yield FormField::addTab($this->t('admin.crud.user.titles.account_information'))
+                    ->setIcon('far fa-address-card');
+
                 yield FormField::addPanel($this->t('admin.crud.user.titles.account_information'))
                     ->setIcon('far fa-address-card')
-                    ->setCssClass('col-sm-8');
+                    ->setCssClass('col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8');
 
                 yield TextField::new('username', $this->t('admin.crud.user.label.username'))
-                    ->setColumns('col-6');
+                    ->setColumns('col-12');
 
                 yield TextField::new('email', $this->t('admin.crud.user.label.email'))
-                    ->setColumns('col-6');
+                    ->setColumns('col-12');
 
                 yield TextField::new('firstname', $this->t('admin.crud.user.label.firstname'))
-                    ->setColumns('col-6');
+                    ->setColumns('col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6');
 
                 yield TextField::new('lastname', $this->t('admin.crud.user.label.lastname'))
-                    ->setColumns('col-6');
+                    ->setColumns('col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6');
 
-                yield FormField::addPanel($this->t('admin.crud.user.titles.change_password'))
-                    ->setIcon('fa fa-solid fa-key')
-                    ->setCssClass('col-4');
-                yield Field::new('plainPassword', $this->t('admin.crud.user.label.new_password'))
-                    ->onlyOnForms()
-                    ->setFormType(RepeatedType::class)
-                    ->setFormTypeOption('empty_data', '')
-                    ->setFormTypeOptions([
-                        'type' => PasswordType::class,
-                        'first_options' => ['label' => $this->t('admin.crud.user.label.new_password')],
-                        'second_options' => ['label' => $this->t('admin.crud.user.label.new_password_repeat')],
-                    ]);
 
                 yield FormField::addPanel($this->t('admin.crud.user.titles.user_settings'))
                 ->setIcon('fa fa-solid fa-screwdriver-wrench')
-                ->setCssClass('col-6');
+                ->setCssClass('col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8');
+                
 
                 yield LocaleField::new('locale', $this->t('admin.crud.user.label.locale'))
                     ->includeOnly($this->params->get('app')['admin_locales'])
@@ -139,7 +135,7 @@ class UserCrudController extends AbstractCrudController
 
 
                 yield ChoiceField::new('date_format', $this->t('admin.crud.user.label.date_format'))
-                    ->setColumns('col-6')
+                    ->setColumns('col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6')
                     ->setChoices([
                         '2022-06-23 (yyyy-MM-dd)' => 'yyyy-MM-dd',
                         '6/23/2022 (M/d/yyyy)' => 'M/d/yyyy',
@@ -148,21 +144,51 @@ class UserCrudController extends AbstractCrudController
                     ]);
 
                 yield ChoiceField::new('time_format', $this->t('admin.crud.user.label.time_format'))
-                    ->setColumns('col-6')
+                    ->setColumns('col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6')
                     ->setChoices([
                         '15:23:42 (HH:mm:ss)' => 'HH:mm:ss',
                         '15:23 (HH:mm)' => 'HH:mm',
                         '3:23:42 PM (h:mm:ss a) '=> 'hh:mm:ss a',
                         '3:23 PM (h:mm a) '=> 'hh:mm:ss a',
                     ]);
+            
+                /*
+                * ===== Tab: Account Security =====
+                */
+                yield FormField::addTab('admin.crud.user.titles.security')
+                        ->setIcon('far fa-lock');
+                yield FormField::addPanel($this->t('admin.crud.user.titles.change_password'))
+                    ->setIcon('fa fa-solid fa-key')
+                    ->setCssClass('col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8');
+                yield Field::new('plainPassword', $this->t('admin.crud.user.label.new_password'))
+                    ->onlyOnForms()
+                    ->setFormType(RepeatedType::class)
+                    ->setFormTypeOption('empty_data', '')
+                    ->setFormTypeOptions([
+                        'type' => PasswordType::class,
+                        'first_options' => ['label' => $this->t('admin.crud.user.label.new_password')],
+                        'second_options' => ['label' => $this->t('admin.crud.user.label.new_password_repeat')],
+                    ]);
+                
+                yield FormField::addPanel($this->t('admin.crud.user.titles.2fa'))
+                    ->setIcon('fa fa-solid fa-qrcode')
+                    ->setCssClass('col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8');
+
             }
 
+            /*
+             * ===== Tab: Admin =====
+             */
             if ($this->isGranted('ROLE_ADMIN')) {
+                yield FormField::addTab('Admin')
+                    ->setIcon('far fa-users-cog');
+
                 yield FormField::addPanel($this->t('admin.crud.user.titles.admin_settings'))
                     ->setIcon('fas fa-users-cog')
-                    ->setCssClass('');
+                    ->setCssClass('col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6');
+
                 yield ChoiceField::new('roles', $this->t('admin.crud.user.label.user_roles'))
-                    ->setColumns('col-3')
+                    ->setColumns('col-12')
                     ->allowMultipleChoices()
                     ->autocomplete()
                     ->setChoices($this->getUserRolesField());
@@ -172,16 +198,21 @@ class UserCrudController extends AbstractCrudController
                     ->setFormTypeOption('disabled', 'disabled');
 
                 yield TextField::new('pid', 'PID')
+                    ->setColumns('col-12')
                     ->setFormTypeOption('disabled', 'disabled');
 
                 yield DateTimeField::new('createdAt', $this->t('admin.crud.generic.created_at'))
-                    ->setColumns('col-3')
+                ->setColumns('col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6')
                     ->setFormTypeOption('disabled', 'disabled');
                 yield DateTimeField::new('updatedAt', $this->t('admin.crud.generic.updated_at'))
-                    ->setColumns('col-3')
+                    ->setColumns('col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6')
+                    ->setFormTypeOption('disabled', 'disabled');
+                yield DateTimeField::new('deletedAt', $this->t('admin.crud.generic.deleted_at'))
+                    ->setColumns('col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6')
                     ->setFormTypeOption('disabled', 'disabled');
             }
 
+        
             yield FormField::addPanel('Logs')->setIcon('fas fa-log');
 
             //yield AssociationField::new('logs');
@@ -229,28 +260,13 @@ class UserCrudController extends AbstractCrudController
         parent::updateEntity($entityManager, $entityInstance);
     }
 
+    /*
     public function configureActions(Actions $actions): Actions
     {
-        /*
-        $url = $this->crudUrlGenerator
-            ->setController(LogCrudController::class)
-            ->setAction(Action::INDEX)
-            ->set('filters', [
-                'user' => [
-                    'comparison' => '=',
-                    'value' => 1,
-                ]
-            ])
-            ->setDashboard(DashboardController::class)
-            ->generateUrl();
-            */
-
-        $url = '?crudAction=index&crudControllerFqcn=App\Controller\Admin\LogCrudController&filters[user][comparison]=%3D&filters[user][value]=';
-        $url .= 1; //$this->adminContextProvider->getEntity()->getInstance()->getId();
         return $actions
             ->disable('new')
             ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE);
-    }
+    }*/
 
     public function configureFilters(Filters $filters): Filters
     {
