@@ -68,7 +68,11 @@ class DashboardController extends AbstractDashboardController
                                 ->setAction('edit')
                                 ->setEntityId($this->security->getUser()->getId());
         $menuItems[] = MenuItem::section();
-        $menuItems[] = MenuItem::linkToRoute('Activate 2FA', 'fa fa-lock', 'app_2fa_enable');
+
+        if( !$this->security->getUser()->isTwoFactorEnabled() )
+        {
+            $menuItems[] = MenuItem::linkToRoute('Activate 2FA', 'fa fa-lock', 'app_2fa_enable');
+        }
 
         return parent::configureUserMenu($user)
             ->displayUserAvatar(true)

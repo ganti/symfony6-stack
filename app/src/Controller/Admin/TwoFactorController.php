@@ -43,7 +43,7 @@ class TwoFactorController extends AbstractController
             if (!$user->isGoogleAuthenticatorEnabled()) {
                 if( $googleAutInterface->checkCode($user, $verificationCode))
                 {
-                    $user->set2FaActive(true);
+                    $user->setTwoFactorEnabled(true);
                     $entityManager->flush();
                 }else{
                     $errorMsg = "verification code wrong";
@@ -52,13 +52,15 @@ class TwoFactorController extends AbstractController
         }else{
             if (!$user->isGoogleAuthenticatorEnabled()) {
                 $user->setGoogleAuthenticatorSecret($googleAutInterface->generateSecret());
-                $user->set2FaActive(False);
+                $user->setTwoFactorEnabled(false);
                 $entityManager->flush();
             }
         }
 
+        $isLoggedInUser = ($user->getId() == $this->security->getUser()->getId());
         return $this->render('view/core/2fa/enable2fa.html.twig',[
             'isEnabled' => $user->isTwoFactorEnabled(),
+            'isLoggedInUser' => $isLoggedInUser,
             'disableURL' => '/admin?routeName=app_2fa_disable&disable=1',
             'errorMsg' => $errorMsg
         ]);
@@ -79,7 +81,7 @@ class TwoFactorController extends AbstractController
         {
             if ($user->isGoogleAuthenticatorEnabled()) 
             {
-                $user->set2FaActive(true);
+                $user->setTwoFactorEnabled(true);
                 $user->setGoogleAuthenticatorSecret(null);
                 $entityManager->flush();
             }

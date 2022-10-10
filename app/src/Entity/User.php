@@ -381,6 +381,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         return ($this->twoFactor_active == true);
     }
 
+    public function setTwoFactorEnabled(?bool $twoFactor_active): void
+    {
+        $this->twoFactor_active = $twoFactor_active;
+    }
+
+    
     public function isGoogleAuthenticatorEnabled(): bool
     {
         return (null !== $this->twoFactor_secret_google) and $this->isTwoFactorEnabled();
@@ -401,15 +407,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         $this->twoFactor_secret_google = $googleAuthenticatorSecret;
     }
 
-    public function get2FaActive(): ?string
-    {
-        return $this->twoFactor_active;
-    }
-
-    public function set2FaActive(?bool $twoFactor_active): void
-    {
-        $this->twoFactor_active = $twoFactor_active;
-    }
 
     
 }

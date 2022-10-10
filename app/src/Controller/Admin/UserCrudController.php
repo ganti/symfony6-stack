@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\UserRole;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Admin\Field\TwoFactorEnableField;
+use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Security;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
@@ -34,7 +35,13 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class UserCrudController extends AbstractCrudController
 {
-    public function __construct(AdminContextProvider $adminContextProvider, AdminUrlGenerator $adminUrlGenerator, Security $security, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, ContainerBagInterface $params)
+    public function __construct(AdminContextProvider $adminContextProvider, 
+                                AdminUrlGenerator $adminUrlGenerator, 
+                                Security $security, 
+                                EntityManagerInterface $entityManager, 
+                                UserPasswordHasherInterface $passwordHasher, 
+                                ContainerBagInterface $params,
+                                UserRepository $userRepository)
     {
         $this->adminContextProvider = $adminContextProvider;
         $this->adminUrlGenerator = $adminUrlGenerator;
@@ -42,6 +49,7 @@ class UserCrudController extends AbstractCrudController
         $this->entityManager = $entityManager;
         $this->passwordHasher = $passwordHasher;
         $this->params = $params;
+        $this->userRepository = $userRepository;
     }
 
     public function t(string $message, array $parameters = []): TranslatableMessage
@@ -170,9 +178,24 @@ class UserCrudController extends AbstractCrudController
                         'second_options' => ['label' => $this->t('admin.crud.user.label.new_password_repeat')],
                     ]);
                 
-                yield FormField::addPanel($this->t('admin.crud.user.titles.2fa'))
-                    ->setIcon('fa fa-solid fa-qrcode')
-                    ->setCssClass('col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8');
+
+                // 2Factor
+                $usrId = $this->adminContextProvider->getContext()->getRequest()->query->get('entityId');
+                $twofactorEnabled = $this->userRepository->findOneBy(['id' => $usrId])->isTwoFactorEnabled();
+                yield FormField::addPanel()
+                    ->setCssClass('col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8')
+                    ->setHelp(
+                        $this->render('view/core/2fa/enable2fa_crud.html.twig',[
+                            'isEnabled' => $twofactorEnabled,
+                            'isLoggedInUser' => $this->getIsLoggedInUserEditingUserCrud(),
+                            'enableTwoFactorURL' => '/admin?routeName=app_2fa_enable',
+                            'disableTwoFactorURL' => '/admin?routeName=app_2fa_disable'
+                        ])->getContent()
+                    );
+                if (!$this->getIsLoggedInUserEditingUserCrud() and $twofactorEnabled and $this->isGranted('ROLE_ADMIN') ) {
+                    yield BooleanField::new('TwoFactorEnabled', $this->t('admin.crud.user.label.TwoFactorEnabled'));
+                }
+
 
             }
 
