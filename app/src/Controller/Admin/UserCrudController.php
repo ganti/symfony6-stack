@@ -4,9 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Entity\UserRole;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Admin\Field\TwoFactorEnableField;
-use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Security;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
@@ -15,20 +15,22 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\LocaleField;
 use Symfony\Component\Translation\TranslatableMessage;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimezoneField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
-
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -184,6 +186,7 @@ class UserCrudController extends AbstractCrudController
                 // 2Factor
                 $usrId = $this->adminContextProvider->getContext()->getRequest()->query->get('entityId');
                 $twofactorEnabled = $this->userRepository->findOneBy(['id' => $usrId])->isTwoFactorEnabled();
+                $backupCodes = $this->userRepository->findOneBy(['id' => $usrId])->getBackupCodes();
                 yield FormField::addPanel()
                     ->setCssClass('col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8')
                     ->setHelp(
@@ -191,12 +194,14 @@ class UserCrudController extends AbstractCrudController
                             'isEnabled' => $twofactorEnabled,
                             'isLoggedInUser' => $this->getIsLoggedInUserEditingUserCrud(),
                             'enableTwoFactorURL' => '/admin?routeName=app_2fa_enable',
-                            'disableTwoFactorURL' => '/admin?routeName=app_2fa_disable'
+                            'disableTwoFactorURL' => '/admin?routeName=app_2fa_disable',
+                            'backupCodes' => $backupCodes
                         ])->getContent()
                     );
                 if (!$this->getIsLoggedInUserEditingUserCrud() and $twofactorEnabled and $this->isGranted('ROLE_ADMIN')) {
                     yield BooleanField::new('TwoFactorEnabled', $this->t('admin.crud.user.label.TwoFactorEnabled'));
                 }
+
             }
 
             /*

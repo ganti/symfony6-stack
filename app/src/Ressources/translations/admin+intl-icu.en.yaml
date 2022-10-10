@@ -54,6 +54,9 @@ admin:
                     step1: 'Step 1: scan this QR-Code'
                     step2: 'Step 2: verfication code'
                     submit_enable: 'Enable verification'
+                backup:
+                    title: 'Backup Codes'
+                    intro: 'Backup codes are one-time authentication codes, which can be used instead of the actual codes. They''re meant as emergency codes, when the authentication device is not available, and you have to pass the two-factor authentication process.'
                 messages:
                     verification_code_wrong: 'the verification code is wrong'
                     

@@ -19,8 +19,25 @@
                             {{ 'admin.crud.user.twofactor.label.link_disable'| trans }}
                         </a>.
                     </div> 
+                    <hr>
+                    <p></p>
+                    
+                    {% if backupCodes|default(false) %}
+                        <h3>{{ 'admin.crud.user.twofactor.backup.title'| trans }}</h3>
+                        <p>{{ 'admin.crud.user.twofactor.backup.intro'| trans }}</p>
+                        <div class="col text-center">
+                            <code style="font-size: 32px">
+                            {% for c in backupCodes %}
+                                {{c}}<br>
+                            {% endfor %}
+                            </code>
+                        </div> 
+                    {% endif %}
                 {% endif %}
                 
+
+            
+
             {% else %}
                 <p>
                     <span class="badge badge-pill badge-warning even-larger-badge text-center w-100">

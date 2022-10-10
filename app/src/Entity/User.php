@@ -12,6 +12,7 @@ use App\Entity\Traits\TimestampableDeletedTrait;
 
 use App\Entity\Traits\TimestampableUpdatedTrait;
 use Doctrine\Common\Collections\ArrayCollection;
+use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -21,7 +22,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface, BackupCodeInterface
 {
     use UuidTrait;
     use ActiveTrait;
@@ -80,6 +81,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
 
     #[ORM\Column(name:"2fa_secret_google", type:"string", nullable:true)]
     private ?string $twoFactor_secret_google;
+
+    #[ORM\Column(name:"2fa_backupcodes", type:"json", nullable:true)]
+    private array $twoFactor_backupCodes = [];
 
     #[ORM\OneToMany(mappedBy: 'User', targetEntity: Email::class)]
     private Collection $emails;
@@ -406,4 +410,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     {
         $this->twoFactor_secret_google = $googleAuthenticatorSecret;
     }
+
+    public function getBackupCodes(): ?Array
+    {
+        return $this->twoFactor_backupCodes;
+    }
+    public function isBackupCode(string $code): bool
+    {
+        return in_array($code, $this->twoFactor_backupCodes);
+    }
+
+    public function invalidateBackupCode(string $code): void
+    {
+        $key = array_search($code, $this->twoFactor_backupCodes);
+        if ($key !== false){
+            unset($this->twoFactor_backupCodes[$key]);
+        }
+        $this->generateBackUpCode();
+    }
+
+    public function invalidateAllBackupCodes(): void
+    {
+        $this->twoFactor_backupCodes = [];
+    }
+
+
+    public function addBackUpCode(string $backUpCode): void
+    {
+        if (!in_array($backUpCode, $this->twoFactor_backupCodes)) {
+            $this->twoFactor_backupCodes[] = $backUpCode;
+        }
+    }
+
+    public function generateBackUpCode($count=1): void
+    {
+        $codeLen = 6;
+        for ($i = 0; $i < $count; $i++) {
+            $backUpCode = substr(str_shuffle(str_repeat('0123456789', mt_rand(1,10))), 1, $codeLen);
+            $this->addBackUpCode($backUpCode);
+        }
+    }
+
 }

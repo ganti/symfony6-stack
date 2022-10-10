@@ -42,6 +42,7 @@ class TwoFactorController extends AbstractController
             if (!$user->isGoogleAuthenticatorEnabled() and $isLoggedInUser) {
                 if ($googleAutInterface->checkCode($user, $verificationCode)) {
                     $user->setTwoFactorEnabled(true);
+                    $user->generateBackUpCode($count = 5);
                     $entityManager->flush();
                 } else {
                     $errorMsg = 'admin.crud.user.twofactor.messages.verification_code_wrong';
@@ -51,6 +52,7 @@ class TwoFactorController extends AbstractController
             if (!$user->isGoogleAuthenticatorEnabled()) {
                 $user->setGoogleAuthenticatorSecret($googleAutInterface->generateSecret());
                 $user->setTwoFactorEnabled(false);
+                $user->invalidateAllBackupCodes();
                 $entityManager->flush();
             }
         }
