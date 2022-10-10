@@ -32,24 +32,21 @@ class TwoFactorController extends AbstractController
     {
         $errorMsg = null;
         $user = $this->getUser();
-        if(!$user)
-        {
+        if (!$user) {
             return $this->redirectToRoute('app_logout');
         }
 
         $verificationCode = (int) $request->request->get('verificationCode');
-        if ($verificationCode)
-        {
+        if ($verificationCode) {
             if (!$user->isGoogleAuthenticatorEnabled()) {
-                if( $googleAutInterface->checkCode($user, $verificationCode))
-                {
+                if ($googleAutInterface->checkCode($user, $verificationCode)) {
                     $user->setTwoFactorEnabled(true);
                     $entityManager->flush();
-                }else{
+                } else {
                     $errorMsg = "verification code wrong";
                 }
             }
-        }else{
+        } else {
             if (!$user->isGoogleAuthenticatorEnabled()) {
                 $user->setGoogleAuthenticatorSecret($googleAutInterface->generateSecret());
                 $user->setTwoFactorEnabled(false);
@@ -58,7 +55,7 @@ class TwoFactorController extends AbstractController
         }
 
         $isLoggedInUser = ($user->getId() == $this->security->getUser()->getId());
-        return $this->render('view/core/2fa/enable2fa.html.twig',[
+        return $this->render('view/core/2fa/enable2fa.html.twig', [
             'isEnabled' => $user->isTwoFactorEnabled(),
             'isLoggedInUser' => $isLoggedInUser,
             'disableURL' => '/admin?routeName=app_2fa_disable&disable=1',
@@ -71,16 +68,13 @@ class TwoFactorController extends AbstractController
     public function disable2fa(Request $request, EntityManagerInterface $entityManager)
     {
         $user = $this->getUser();
-        if(!$user)
-        {
+        if (!$user) {
             return $this->redirectToRoute('app_logout');
         }
 
-        $disable = ( 1== $request->get('disable'));
-        if ($disable)
-        {
-            if ($user->isGoogleAuthenticatorEnabled()) 
-            {
+        $disable = (1== $request->get('disable'));
+        if ($disable) {
+            if ($user->isGoogleAuthenticatorEnabled()) {
                 $user->setTwoFactorEnabled(true);
                 $user->setGoogleAuthenticatorSecret(null);
                 $entityManager->flush();

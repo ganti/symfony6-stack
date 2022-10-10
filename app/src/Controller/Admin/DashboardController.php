@@ -67,10 +67,9 @@ class DashboardController extends AbstractDashboardController
         $menuItems[] = MenuItem::linkToCrud($this->t('admin.dashboard.menu.label.my_profile'), 'fa fa-id-card', User::class)
                                 ->setAction('edit')
                                 ->setEntityId($this->security->getUser()->getId());
-        $menuItems[] = MenuItem::section();
 
-        if( !$this->security->getUser()->isTwoFactorEnabled() )
-        {
+        if (!$this->security->getUser()->isTwoFactorEnabled()) {
+            $menuItems[] = MenuItem::section();
             $menuItems[] = MenuItem::linkToRoute('Activate 2FA', 'fa fa-lock', 'app_2fa_enable');
         }
 
@@ -97,5 +96,4 @@ class DashboardController extends AbstractDashboardController
     {
         return Assets::new()->addCssFile('assets/css/easyadmin.css');
     }
-
 }

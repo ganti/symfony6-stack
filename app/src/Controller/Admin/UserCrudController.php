@@ -35,13 +35,15 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class UserCrudController extends AbstractCrudController
 {
-    public function __construct(AdminContextProvider $adminContextProvider, 
-                                AdminUrlGenerator $adminUrlGenerator, 
-                                Security $security, 
-                                EntityManagerInterface $entityManager, 
-                                UserPasswordHasherInterface $passwordHasher, 
-                                ContainerBagInterface $params,
-                                UserRepository $userRepository)
+    public function __construct(
+        AdminContextProvider $adminContextProvider,
+        AdminUrlGenerator $adminUrlGenerator,
+        Security $security,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher,
+        ContainerBagInterface $params,
+        UserRepository $userRepository
+    )
     {
         $this->adminContextProvider = $adminContextProvider;
         $this->adminUrlGenerator = $adminUrlGenerator;
@@ -129,7 +131,7 @@ class UserCrudController extends AbstractCrudController
                 yield FormField::addPanel($this->t('admin.crud.user.titles.user_settings'))
                 ->setIcon('fa fa-solid fa-screwdriver-wrench')
                 ->setCssClass('col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8');
-                
+
 
                 yield LocaleField::new('locale', $this->t('admin.crud.user.label.locale'))
                     ->includeOnly($this->params->get('app')['admin_locales'])
@@ -159,7 +161,7 @@ class UserCrudController extends AbstractCrudController
                         '3:23:42 PM (h:mm:ss a) '=> 'hh:mm:ss a',
                         '3:23 PM (h:mm a) '=> 'hh:mm:ss a',
                     ]);
-            
+
                 /*
                 * ===== Tab: Account Security =====
                 */
@@ -177,7 +179,7 @@ class UserCrudController extends AbstractCrudController
                         'first_options' => ['label' => $this->t('admin.crud.user.label.new_password')],
                         'second_options' => ['label' => $this->t('admin.crud.user.label.new_password_repeat')],
                     ]);
-                
+
 
                 // 2Factor
                 $usrId = $this->adminContextProvider->getContext()->getRequest()->query->get('entityId');
@@ -185,18 +187,16 @@ class UserCrudController extends AbstractCrudController
                 yield FormField::addPanel()
                     ->setCssClass('col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8')
                     ->setHelp(
-                        $this->render('view/core/2fa/enable2fa_crud.html.twig',[
+                        $this->render('view/core/2fa/enable2fa_crud.html.twig', [
                             'isEnabled' => $twofactorEnabled,
                             'isLoggedInUser' => $this->getIsLoggedInUserEditingUserCrud(),
                             'enableTwoFactorURL' => '/admin?routeName=app_2fa_enable',
                             'disableTwoFactorURL' => '/admin?routeName=app_2fa_disable'
                         ])->getContent()
                     );
-                if (!$this->getIsLoggedInUserEditingUserCrud() and $twofactorEnabled and $this->isGranted('ROLE_ADMIN') ) {
+                if (!$this->getIsLoggedInUserEditingUserCrud() and $twofactorEnabled and $this->isGranted('ROLE_ADMIN')) {
                     yield BooleanField::new('TwoFactorEnabled', $this->t('admin.crud.user.label.TwoFactorEnabled'));
                 }
-
-
             }
 
             /*
@@ -235,7 +235,7 @@ class UserCrudController extends AbstractCrudController
                     ->setFormTypeOption('disabled', 'disabled');
             }
 
-        
+
             yield FormField::addPanel('Logs')->setIcon('fas fa-log');
 
             //yield AssociationField::new('logs');

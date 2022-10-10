@@ -386,7 +386,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         $this->twoFactor_active = $twoFactor_active;
     }
 
-    
+
     public function isGoogleAuthenticatorEnabled(): bool
     {
         return (null !== $this->twoFactor_secret_google) and $this->isTwoFactorEnabled();
@@ -406,7 +406,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     {
         $this->twoFactor_secret_google = $googleAuthenticatorSecret;
     }
-
-
-    
 }

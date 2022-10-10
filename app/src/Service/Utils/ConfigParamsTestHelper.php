@@ -14,9 +14,8 @@ use Symfony\Component\HttpFoundation\File\Exception\NoFileException;
 
 class ConfigParamsTestHelper extends AbstractController
 {
-    
     protected const END_OF_PATH_DISTINCT_VALUE = '[END_OF_LINE]';
-    
+
     /**
      * __construct
      *
@@ -38,18 +37,16 @@ class ConfigParamsTestHelper extends AbstractController
         $this->paramFileTest = Path::canonicalize($this->configDirTest .'/'.$paramsFile);
 
         $this->setup();
-        
     }
-    
+
     /**
      * setup
-     * 
+     *
      * @return bool
      */
-    public function setup() : ?bool
+    public function setup(): ?bool
     {
-        if(!$this->isParamFileOrginalExisting())
-        {
+        if (!$this->isParamFileOrginalExisting()) {
             return false;
         }
         $this->copyParamFileTest();
@@ -57,39 +54,35 @@ class ConfigParamsTestHelper extends AbstractController
 
         return null;
     }
- 
+
     /**
-     * isParamFileOrginalExisting checks wether /config/packages/parameters.yaml exists. 
+     * isParamFileOrginalExisting checks wether /config/packages/parameters.yaml exists.
      * paramsFile can be changed when creating
      *
      * @return bool
      */
-    public function isParamFileOrginalExisting() : bool
+    public function isParamFileOrginalExisting(): bool
     {
         $fs = new Filesystem();
-        if( $fs->exists($this->configDir) )
-        {
-            if( $fs->exists($this->paramFileOrginal) )
-            {
+        if ($fs->exists($this->configDir)) {
+            if ($fs->exists($this->paramFileOrginal)) {
                 return true;
             } else {
                 throw new \ErrorException('Config file not found:'. $this->paramFileOrginal.'.');
             }
         } else {
             throw new \ErrorException('configDirectory not found:'. $this->configDir.'.');
-            
         }
         return false;
-
     }
 
-        
+
     /**
      * refreshParamFileTest
-     * copies orignal param file to test file 
+     * copies orignal param file to test file
      * @return void
      */
-    public function copyParamFileTest() : void
+    public function copyParamFileTest(): void
     {
         $fs = new Filesystem();
         $fs->remove($this->paramFileTest);
@@ -98,22 +91,22 @@ class ConfigParamsTestHelper extends AbstractController
     }
 
 
-    public function loadTestFile() : void
+    public function loadTestFile(): void
     {
-        $this->yamlTest = Yaml::parseFile($this->paramFileTest);        
+        $this->yamlTest = Yaml::parseFile($this->paramFileTest);
         $this->yamlTestPaths = $this->generateYamlPaths($this->yamlTest);
     }
-    
+
     /**
      * generateYamlPaths
      * generate path, and sanetize it
      * @param  mixed $tree
      * @return array
      */
-    protected function generateYamlPaths($tree) : ?array
+    protected function generateYamlPaths($tree): ?array
     {
         $paths = $this->generateYamlPathsTree($tree);
-        
+
         array_walk($paths, array($this, 'cleanupGeneratedYamlSubstringPaths'), $paths);
         $paths = array_filter($paths);
 
@@ -121,7 +114,7 @@ class ConfigParamsTestHelper extends AbstractController
         $paths = preg_replace($pattern, '', $paths);
         return $paths;
     }
-    
+
     /**
      * generateYamlPathsTree
      * recoursive loop thru fields to greate paths
@@ -129,15 +122,15 @@ class ConfigParamsTestHelper extends AbstractController
      * @param  mixed $parent parent above
      * @return Array
      */
-    protected function generateYamlPathsTree($tree, $parent=null) : Array
+    protected function generateYamlPathsTree($tree, $parent=null): array
     {
         $paths = array();
-    
-        if($parent !== null) {
+
+        if ($parent !== null) {
             $parent = $parent.$this->separator;
         }
-        foreach($tree as $k => $v) {
-            if(is_array($v)) {
+        foreach ($tree as $k => $v) {
+            if (is_array($v)) {
                 $currentPath = $parent.$k;
                 $paths[] = $currentPath;
                 $paths = array_merge($paths, $this->generateYamlPathsTree($v, $currentPath));
@@ -147,12 +140,12 @@ class ConfigParamsTestHelper extends AbstractController
         }
         return $paths;
     }
-    
+
     /**
      * cleanupGeneratedYamlSubstringPaths
      * keep only last element of chain.
      * e.g will be kept 'house.room.table', but 'house'|'house.room' will be purged
-     * 
+     *
      * @param  mixed $value
      * @param  mixed $key
      * @param  mixed $paths
@@ -161,12 +154,11 @@ class ConfigParamsTestHelper extends AbstractController
     protected function cleanupGeneratedYamlSubstringPaths(&$value, $key, $paths)
     {
         unset($paths[$key]);
-        if( $this->substring_in_array($value, $paths) )
-        {
+        if ($this->substring_in_array($value, $paths)) {
             $value = null;
         }
     }
-    
+
     /**
      * substring_in_array
      * is substring in found in array values
@@ -175,7 +167,7 @@ class ConfigParamsTestHelper extends AbstractController
      * @param  mixed $haystack
      * @return bool
      */
-    protected function substring_in_array($needle, $haystack) : bool
+    protected function substring_in_array($needle, $haystack): bool
     {
         $found_keys=[];
         foreach ($haystack as $key => $value) {
@@ -185,50 +177,48 @@ class ConfigParamsTestHelper extends AbstractController
         }
         return !empty($found_keys);
     }
-    
+
     /**
      * updateValue
      * update yml by path and save it.
-     * 
+     *
      * @param  mixed $path
      * @param  mixed $value
      * @return bool
      */
-    public function updateValue(string $path, $value) : bool
+    public function updateValue(string $path, $value): bool
     {
         $pathPrefix = (!empty($this->pathPrefix)) ? $this->pathPrefix.$this->separator : '';
-        
 
-        if(!in_array($pathPrefix.$path, $this->yamlTestPaths))
-        {
+
+        if (!in_array($pathPrefix.$path, $this->yamlTestPaths)) {
             $pattern = '/^'.preg_quote($pathPrefix, '.').'/';
             $allowedPathsNoPrefix =preg_replace($pattern, '', $this->yamlTestPaths);
             $allowedPaths = join(PHP_EOL, $allowedPathsNoPrefix);
             throw new \LogicException('path not found: '. $path.PHP_EOL.'Allowed paths are:'.PHP_EOL.$allowedPaths);
         }
 
-        $pathParts = explode( $this->separator, $path );
+        $pathParts = explode($this->separator, $path);
         $yaml = &$this->yamlTest;
 
-        foreach($pathParts as $part){
+        foreach ($pathParts as $part) {
             $yaml = &$yaml[$part];
         }
         $yaml = $value;
         return $this->saveTestFile();
     }
-    
+
     /**
      * saveTestFile
      *
      * @return bool
      */
-    public function saveTestFile() : bool
+    public function saveTestFile(): bool
     {
-        if(!empty($this->yamlTest)){
+        if (!empty($this->yamlTest)) {
             $yaml = Yaml::dump($this->yamlTest, 10, 4);
             return file_put_contents($this->paramFileTest, $yaml.PHP_EOL.PHP_EOL) != false;
         }
         return false;
     }
-
 }
