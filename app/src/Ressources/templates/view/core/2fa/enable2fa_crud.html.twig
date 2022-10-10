@@ -1,5 +1,5 @@
 
-{% trans_default_domain 'core' %}
+{% trans_default_domain 'admin' %}
 
 <div class="container container-sm px-8 shadow-lg pt-5 rounded">
     <div class="row">
@@ -7,15 +7,16 @@
             {% if isEnabled %}
                 <p>
                     <span class="badge badge-pill badge-success even-larger-badge text-center w-100" >
-                        two-step verification is enabled
+                        {{ 'admin.crud.user.twofactor.badge.enabled'| trans }}
                     </span>
                 </p>
                     
                 {% if isLoggedInUser %}
                     <div class="form-group field-button text-center">
-                        If you want to disable the two-step verifcation: 
+                         
+                        {{ 'admin.crud.user.twofactor.label.link_disable_intro'| trans }}
                         <a href="{{ disableTwoFactorURL }}" target="_self" class="position-relative" style="font-size: var(--font-size-base);">
-                            Click here to disable
+                            {{ 'admin.crud.user.twofactor.label.link_disable'| trans }}
                         </a>.
                     </div> 
                 {% endif %}
@@ -23,20 +24,19 @@
             {% else %}
                 <p>
                     <span class="badge badge-pill badge-warning even-larger-badge text-center w-100">
-                        two-step verification is not enabled
+                        {{ 'admin.crud.user.twofactor.badge.disabled'| trans }}
                     </span>
                 </p>
 
                 {% if isLoggedInUser %}
                     <p>
-                        The two-step verification increases the security of your account. 
-                        In addition to your password, a code is required in a second step, which is displayed on your smartphone.
+                        {{ 'admin.crud.user.twofactor.label.explain_paragraph'| trans }}
                     </p>
 
                     <p class="text-center">
                         <div class="form-group field-button text-center">
                             <a href="{{enableTwoFactorURL}}" class="btn btn-primary btn-lg btn-block position-relative" style="font-size: var(--font-size-base); font-weight:normal">
-                                Click here to enable two-step verifcation
+                                {{ 'admin.crud.user.twofactor.label.link_enable'| trans }}
                             </a>
                         </div> 
                     </p>

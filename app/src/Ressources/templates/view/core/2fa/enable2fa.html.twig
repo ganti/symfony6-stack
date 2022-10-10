@@ -1,5 +1,5 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
-{% trans_default_domain 'core' %}
+{% trans_default_domain 'admin' %}
 
 
 {% block page_title 'Two Factor Authentication' %}
@@ -15,29 +15,29 @@
                     {% if isEnabled %}
                         <p>
                             <span class="badge badge-pill badge-success even-larger-badge text-center w-100">
-                                The two-step verification is enabled
+                                
+                                {{ 'admin.crud.user.twofactor.badge.enabled'| trans }}
                             </span>
                         </p>
                         <p>
-                            If you want to disable the two-step verifcation: 
-                            <a href="{{ disableURL }}" target="_self">Click here to disable</a>.
+                            {{ 'admin.crud.user.twofactor.label.link_disable_intro'| trans }}
+                            <a href="{{ disableURL }}" target="_self">{{ 'admin.crud.user.twofactor.label.link_disable'| trans }}</a>.
                         </p>
                         
 
                     {% else %}
                         <p>
                             <span class="badge badge-pill badge-warning even-larger-badge text-center w-100">
-                                The two-step verification is not enabled
+                                {{ 'admin.crud.user.twofactor.badge.disabled'| trans }}
                             </span>
                         </p>
                         
                         <p>
-                            The two-step verification increases the security of your account. 
-                            In addition to your password, a code is required in a second step, which is displayed on your smartphone.
+                            {{ 'admin.crud.user.twofactor.label.explain_paragraph'| trans }}
                         </p>
                         
                         <ul class="list-unstyled">
-                            <li>You may use one of the following apps for verification:
+                            <li>{{ 'admin.crud.user.twofactor.label.apps_intro'| trans }}
                                 <ul>
                                     <li>Google Authenticator (<a target="_blank" rel="noopener noreferrer" target="_blank" href="https://itunes.apple.com/en/app/google-authenticator/id388497605">iOS</a>, 
                                                             <a target="_blank" rel="noopener noreferrer" target="_blank" href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2">Android</a>)
@@ -70,7 +70,7 @@
                 <div class="row gx-3">
                     <div class="col-md-6">
                         <div class="p-3 col2fa-colors">
-                            <h4>Step 1: scan this QR-Code</h4>
+                            <h4>{{ 'admin.crud.user.twofactor.label.step2'| trans }}</h4>
                             <div class="container">
                                 <div class="row text-center">
                                     <object class="twofactorqrcode w-100 px-0 py-3" data="{{ url('app_2fa_qr_code') }}" type="image/svg+xml" ></object>
@@ -82,7 +82,7 @@
                         <div class="p-3 col2fa-colors h-100">
                             <div class="row h-100">
                                 <div class="col-12">
-                                    <h4>Step 2: verfication code</h4>
+                                    <h4>{{ 'admin.crud.user.twofactor.label.step2'| trans }}</h4>
                                 </div>
                                 <div class="col">
                                     <form class="form" action="" method="post">
@@ -99,6 +99,7 @@
                                                         pattern="[0-9]*"
                                                         class="w-100"
                                                         focus
+                                                        required="required"
                                                         minlength="6"
                                                         maxlength="6"
                                                         style="height: 5rem;font-size: 50pt;text-align: center;font-family: monospace;"
@@ -114,14 +115,14 @@
 
                                         {% if errorMsg|default(false) %}
                                             <div class="w-100 alert alert-danger">
-                                                {{ errorMsg }}
+                                                {{ errorMsg|trans }}
                                             </div>
                                         {% endif %}
 
 
                                         <div class="form-group field-button">
                                             <button type="submit" class="btn btn-primary btn-lg btn-block w-100" onclick="this.form.submit();" value="{{ "login"|trans({}, 'SchebTwoFactorBundle') }}" >
-                                                {{ 'Enable verifiaction' | trans }}
+                                                {{ 'admin.crud.user.twofactor.label.submit_enable'| trans }}
                                             </button>
                                         </div>
                                     </form>

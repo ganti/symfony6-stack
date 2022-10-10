@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatableMessage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
@@ -24,8 +25,7 @@ class TwoFactorController extends AbstractController
         $this->log = $log;
         $this->security = $security;
     }
-
-
+    
     #[Route("/authentication/2fa/enable", name:"app_2fa_enable")]
     #[IsGranted("ROLE_USER")]
     public function enable2fa(Request $request, GoogleAuthenticatorInterface $googleAutInterface, EntityManagerInterface $entityManager)
@@ -35,15 +35,16 @@ class TwoFactorController extends AbstractController
         if (!$user) {
             return $this->redirectToRoute('app_logout');
         }
+        $isLoggedInUser = ($user->getId() == $this->security->getUser()->getId());
 
         $verificationCode = (int) $request->request->get('verificationCode');
         if ($verificationCode) {
-            if (!$user->isGoogleAuthenticatorEnabled()) {
+            if (!$user->isGoogleAuthenticatorEnabled() and $isLoggedInUser) {
                 if ($googleAutInterface->checkCode($user, $verificationCode)) {
                     $user->setTwoFactorEnabled(true);
                     $entityManager->flush();
                 } else {
-                    $errorMsg = "verification code wrong";
+                    $errorMsg = 'admin.crud.user.twofactor.messages.verification_code_wrong';
                 }
             }
         } else {
@@ -53,8 +54,8 @@ class TwoFactorController extends AbstractController
                 $entityManager->flush();
             }
         }
-
-        $isLoggedInUser = ($user->getId() == $this->security->getUser()->getId());
+    
+        
         return $this->render('view/core/2fa/enable2fa.html.twig', [
             'isEnabled' => $user->isTwoFactorEnabled(),
             'isLoggedInUser' => $isLoggedInUser,
@@ -72,7 +73,7 @@ class TwoFactorController extends AbstractController
             return $this->redirectToRoute('app_logout');
         }
 
-        $disable = (1== $request->get('disable'));
+        $disable = (1 == $request->get('disable'));
         if ($disable) {
             if ($user->isGoogleAuthenticatorEnabled()) {
                 $user->setTwoFactorEnabled(true);
