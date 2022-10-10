@@ -7,7 +7,7 @@ scheb_two_factor:
     # Backup codes feature
     backup_codes:
         enabled: false                 # If the backup code feature should be enabled
-        manager: acme.custom_backup_code_manager  # Use a custom backup code manager
+        #manager: acme.custom_backup_code_manager  # Use a custom backup code manager
 
     # Google Authenticator config
     google:
@@ -16,5 +16,5 @@ scheb_two_factor:
         issuer: Symfony6Stack          # Issuer name used in QR code
         digits: 6                      # Number of digits in authentication code
         window: 1                      # How many codes before/after the current one would be accepted as valid
-        template: view/core/2fa/2fa_form.html.twig   # Template used to render the authentication form
+        template: view/core/2fa/login_2fa_form.html.twig   # Template used to render the authentication form
         #form_renderer: acme.custom_form_renderer  # Use a custom form renderer service

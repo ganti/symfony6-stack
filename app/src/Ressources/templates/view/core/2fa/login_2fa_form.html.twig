@@ -1,8 +1,8 @@
 {% extends 'view/core/core_base.html.twig' %}
 {% trans_default_domain 'core' %}
 
-{% set page_title = 'Two Factor Authentication' %}
-{% block title %}Two Factor Authentication{% endblock %}
+{% set page_title = 'service.login.twofactor.page_title'|trans %}
+{% block title %}{{'service.login.twofactor.page_title'|trans}}{% endblock %}
 
 {% block login_alert %}
     {% if authenticationError %}
@@ -15,7 +15,7 @@
 {% block page_content %}  
     {% block login_form %}
         <p>
-            Open your Authenticator app and type in the number.
+            {{ 'service.login.twofactor.info_text'|trans }}
         </p>
 
         {% if authenticationError %}
