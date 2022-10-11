@@ -13,6 +13,7 @@ use App\Entity\Traits\TimestampableDeletedTrait;
 use App\Entity\Traits\TimestampableUpdatedTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
+use Scheb\TwoFactorBundle\Model\TrustedDeviceInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -22,7 +23,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface, BackupCodeInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface, BackupCodeInterface, TrustedDeviceInterface
 {
     use UuidTrait;
     use ActiveTrait;
@@ -84,6 +85,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
 
     #[ORM\Column(name:"2fa_backupcodes", type:"json", nullable:true)]
     private array $twoFactor_backupCodes = [];
+
+    #[ORM\Column("2fa_trustedTokenVersion", type:"integer")]
+    private int $twoFactor_trustedTokenVersion = 0;
 
     #[ORM\OneToMany(mappedBy: 'User', targetEntity: Email::class)]
     private Collection $emails;
@@ -450,5 +454,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
             $this->addBackUpCode($backUpCode);
         }
     }
+
+    public function getTrustedTokenVersion(): int
+    {
+        return $this->twoFactor_trustedTokenVersion;
+    }
+    
 
 }

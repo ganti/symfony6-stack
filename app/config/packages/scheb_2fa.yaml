@@ -4,10 +4,6 @@ scheb_two_factor:
         - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
         - Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken
 
-    # Backup codes feature
-    backup_codes:
-        enabled: true                 # If the backup code feature should be enabled
-        #manager: acme.custom_backup_code_manager  # Use a custom backup code manager
 
     # Google Authenticator config
     google:
@@ -18,3 +14,18 @@ scheb_two_factor:
         window: 1                      # How many codes before/after the current one would be accepted as valid
         template: view/core/2fa/login_2fa_form.html.twig   # Template used to render the authentication form
         #form_renderer: acme.custom_form_renderer  # Use a custom form renderer service
+
+    # Backup codes feature
+    backup_codes:
+        enabled: true                 # If the backup code feature should be enabled
+        #manager: acme.custom_backup_code_manager  # Use a custom backup code manager
+
+    trusted_device:
+        enabled: true                 # If the trusted device feature should be enabled
+        lifetime: 432000              # Lifetime of the trusted device token
+        extend_lifetime: false         # Automatically extend lifetime of the trusted cookie on re-login
+        cookie_name: trusted_device    # Name of the trusted device cookie
+        cookie_secure: false            # Set the 'Secure' (HTTPS Only) flag on the trusted device cookie
+        cookie_same_site: "strict"        # The same-site option of the cookie, can be "lax" or "strict"
+        cookie_domain: "localhost"  # Domain to use when setting the cookie, fallback to the request domain if not set
+        cookie_path: "/"               # Path to use when setting the cookie

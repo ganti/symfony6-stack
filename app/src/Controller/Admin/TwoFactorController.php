@@ -42,6 +42,7 @@ class TwoFactorController extends AbstractController
             if (!$user->isGoogleAuthenticatorEnabled() and $isLoggedInUser) {
                 if ($googleAutInterface->checkCode($user, $verificationCode)) {
                     $user->setTwoFactorEnabled(true);
+                    $user->invalidateAllBackupCodes();
                     $user->generateBackUpCode($count = 5);
                     $entityManager->flush();
                 } else {
