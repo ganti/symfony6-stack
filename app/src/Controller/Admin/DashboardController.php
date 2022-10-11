@@ -10,12 +10,13 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use Symfony\Component\Translation\TranslatableMessage;
-use Symfony\Component\Security\Core\User\UserInterface;
 
+use Symfony\Component\Security\Core\User\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 
@@ -47,11 +48,9 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linktoDashboard($this->t('Manual'), 'fa-solid fa-book-open');
+        yield MenuItem::linktoDashboard($this->t('Dashboard'), 'fa-solid fa-house');
 
         if ($this->isGranted('ROLE_ADMIN')) {
-            yield MenuItem::linkToCrud('Newsletter', 'fas fa-link', Newsletter::class);
-
             yield MenuItem::section($this->t('admin.dashboard.menu.label.administration'));
             yield MenuItem::linkToCrud($this->t('admin.dashboard.menu.label.users'), 'fas fa-user', User::class);
             yield MenuItem::linkToCrud($this->t('admin.dashboard.menu.label.user_roles'), 'fas fa-user-tag', UserRole::class);
@@ -65,18 +64,19 @@ class DashboardController extends AbstractDashboardController
 
     public function configureUserMenu(UserInterface $user): UserMenu
     {
-        return parent::configureUserMenu($user)
+        $menuItems[] = MenuItem::linkToCrud($this->t('admin.dashboard.menu.label.my_profile'), 'fa fa-id-card', User::class)
+                                ->setAction('edit')
+                                ->setEntityId($this->security->getUser()->getId());
 
-            //Icon
+        if (!$this->security->getUser()->isTwoFactorEnabled()) {
+            $menuItems[] = MenuItem::section();
+            $menuItems[] = MenuItem::linkToRoute('Activate 2FA', 'fa fa-lock', 'app_2fa_enable');
+        }
+
+        return parent::configureUserMenu($user)
             ->displayUserAvatar(true)
             ->setGravatarEmail($this->security->getUser()->getEmail())
-
-            ->addMenuItems([
-                MenuItem::linkToCrud($this->t('admin.dashboard.menu.label.my_profile'), 'fa fa-id-card', User::class)
-                    ->setAction('edit')
-                    ->setEntityId($this->security->getUser()->getId()),
-                MenuItem::section(),
-            ]);
+            ->addMenuItems($menuItems);
     }
 
     //Default Crud Settings
@@ -89,5 +89,11 @@ class DashboardController extends AbstractDashboardController
             ->setDateFormat($this->security->getUser()->getDateFormat())
             ->setTimeFormat($this->security->getUser()->getTimeFormat())
         ;
+    }
+
+
+    public function configureAssets(): Assets
+    {
+        return Assets::new()->addCssFile('assets/css/easyadmin.css');
     }
 }

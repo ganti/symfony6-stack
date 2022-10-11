@@ -22,6 +22,7 @@ admin:
                 change_password: 'Change password'
                 admin_settings: 'Admin Settings'
                 user_settings: 'User Settings'
+                security: 'Security'
             label:
                 username: Username
                 email: eMail
@@ -40,6 +41,25 @@ admin:
                 locale: Language
             messages:
                 passwort_not_match: 'Passwords dont match'
+            twofactor:
+                badge:
+                    enabled: 'two-step verification is enabled'
+                    disabled: 'two-step verification is not enabled'
+                label:
+                    explain_paragraph: 'The two-step verification increases the security of your account. In addition to your password, a code is required in a second step, which is displayed on your smartphone.'
+                    apps_intro: 'You may use one of the following apps for verification:'
+                    link_enable: 'Click here to enable two-step verifcation'
+                    link_disable_intro: 'If you want to disable the two-step verifcation:'
+                    link_disable: 'Click here to disable'
+                    step1: 'Step 1: scan this QR-Code'
+                    step2: 'Step 2: verfication code'
+                    submit_enable: 'Enable verification'
+                backup:
+                    title: 'Backup Codes'
+                    intro: 'Backup codes are one-time authentication codes, which can be used instead of the actual codes. They''re meant as emergency codes, when the authentication device is not available, and you have to pass the two-factor authentication process.'
+                messages:
+                    verification_code_wrong: 'the verification code is wrong'
+                    
         user_roles:
             titles:
                 index_page: 'User Roles'

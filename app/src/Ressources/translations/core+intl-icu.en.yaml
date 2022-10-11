@@ -18,7 +18,10 @@ service:
         form:
             placeholder_email: Email
             placeholder_username: Username
-            placeholder_both: Username or Email            
+            placeholder_both: Username or Email
+        twofactor:
+            page_title: 'Two Factor Authentication'  
+            info_text: 'Open your Authenticator app and type in the number.'        
     registration:
         email:
             subject: 'Please confirm your email'

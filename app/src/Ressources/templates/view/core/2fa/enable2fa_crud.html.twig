@@ -1,0 +1,64 @@
+
+{% trans_default_domain 'admin' %}
+
+<div class="container container-sm px-8 shadow-lg pt-5 rounded">
+    <div class="row">
+        <div class="col-md-12 pb-3">
+            {% if isEnabled %}
+                <p>
+                    <span class="badge badge-pill badge-success even-larger-badge text-center w-100" >
+                        {{ 'admin.crud.user.twofactor.badge.enabled'| trans }}
+                    </span>
+                </p>
+                    
+                {% if isLoggedInUser %}
+                    <div class="form-group field-button text-center">
+                         
+                        {{ 'admin.crud.user.twofactor.label.link_disable_intro'| trans }}
+                        <a href="{{ disableTwoFactorURL }}" target="_self" class="position-relative" style="font-size: var(--font-size-base);">
+                            {{ 'admin.crud.user.twofactor.label.link_disable'| trans }}
+                        </a>.
+                    </div> 
+                    <hr>
+                    <p></p>
+                    
+                    {% if backupCodes|default(false) %}
+                        <h3>{{ 'admin.crud.user.twofactor.backup.title'| trans }}</h3>
+                        <p>{{ 'admin.crud.user.twofactor.backup.intro'| trans }}</p>
+                        <div class="col text-center">
+                            <code style="font-size: 32px">
+                            {% for c in backupCodes %}
+                                {{c}}<br>
+                            {% endfor %}
+                            </code>
+                        </div> 
+                    {% endif %}
+                {% endif %}
+                
+
+            
+
+            {% else %}
+                <p>
+                    <span class="badge badge-pill badge-warning even-larger-badge text-center w-100">
+                        {{ 'admin.crud.user.twofactor.badge.disabled'| trans }}
+                    </span>
+                </p>
+
+                {% if isLoggedInUser %}
+                    <p>
+                        {{ 'admin.crud.user.twofactor.label.explain_paragraph'| trans }}
+                    </p>
+
+                    <p class="text-center">
+                        <div class="form-group field-button text-center">
+                            <a href="{{enableTwoFactorURL}}" class="btn btn-primary btn-lg btn-block position-relative" style="font-size: var(--font-size-base); font-weight:normal">
+                                {{ 'admin.crud.user.twofactor.label.link_enable'| trans }}
+                            </a>
+                        </div> 
+                    </p>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
