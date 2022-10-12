@@ -3,7 +3,7 @@
 This stack contains some essentials to quick start  your symfony project:
 
 - **Docker**: dockerized development environment
-- **Authentication**: [Registration](https://symfonycasts.com/screencast/symfony-security/registration-auth), [Email verfication](https://symfonycasts.com/screencast/symfony-security/verify-email), [Password Reset](https://symfonycasts.com/screencast/symfony-security/verify-email)
+- **Authentication**: [Registration](https://symfonycasts.com/screencast/symfony-security/registration-auth), [Email verfication](https://symfonycasts.com/screencast/symfony-security/verify-email), [Password Reset](https://symfonycasts.com/screencast/symfony-security/verify-email), [two-factor authentication (2FA)](https://symfony.com/bundles/SchebTwoFactorBundle/6.x/index.html) with BackupCodes, TrustedDevice
 - **EasyAdmin 4.0**: [EasyAdmin](https://github.com/EasyCorp/EasyAdminBundle) is a fast, beautiful and modern admin generator for Symfony applications.
 - **Email Templates**:  most used elements  (header, footer, button) in separated files for an easy include
 - **Multiple Languages**: the core features are in translation fiels, easy implementation of other languages
