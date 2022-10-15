@@ -5,12 +5,13 @@ namespace App\Form\Core;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -30,6 +31,43 @@ class RegistrationFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        if ($options['ask_username']) {
+            $builder ->add('username', TextType::class, [
+                'label' => $this->t('service.registration.form.username.label'),
+                'attr' => [ 'placeholder' => $this->t('service.registration.form.username.placeholder'),
+                            'autocomplete' => 'username',
+                            'class' => 'form-control'
+                ],
+            ]);
+        }
+
+        if ($options['ask_name']) {
+            $builder ->add('firstname', TextType::class, [
+                'label' => $this->t('service.registration.form.firstname.label'),
+                'attr' => [ 'placeholder' => $this->t('service.registration.form.firstname.placeholder'),
+                            'autocomplete' => 'firstname',
+                            'class' => 'form-control'
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => $this->t('service.registration.form.firstname.messages.blank'),
+                    ]),
+                ],
+            ]);
+            $builder ->add('lastname', TextType::class, [
+                'label' => $this->t('service.registration.form.lastname.label'),
+                'attr' => [ 'placeholder' => $this->t('service.registration.form.lastname.placeholder'),
+                            'autocomplete' => 'lastname',
+                            'class' => 'form-control'
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => $this->t('service.registration.form.lastname.messages.blank'),
+                    ]),
+                ],
+            ]);
+        }
+
         $builder
             ->add('email', EmailType::class, [
                 'label' => $this->t('service.registration.form.email.label'),
@@ -89,6 +127,11 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'ask_username' => false,
+            'ask_name' => false,
+            'fistname' => null,
+            'lastname' => null,
+
         ]);
     }
 }

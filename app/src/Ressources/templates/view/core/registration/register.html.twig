@@ -14,6 +14,32 @@
                     {{ 'service.registration.page.header_text' | trans }}
                 </div>
 
+
+                {% if askUsername %}
+                    <div class="form-group field-text">
+                        <label for="username" class="sr-only form-control-label required">{{ 'service.registration.form.username.label' | trans }}</label>
+                        <div class="form-widget">
+                            {{ form_row(registrationForm.username) }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if askName %}
+                    <div class="form-group field-text">
+                        <label for="firstname" class="sr-only form-control-label required">{{ 'service.registration.form.firstname.label' | trans }}</label>
+                        <div class="form-widget">
+                            {{ form_row(registrationForm.firstname) }}
+                        </div>
+                    </div>
+                    <div class="form-group field-text">
+                        <label for="lastname" class="sr-only form-control-label required">{{ 'service.registration.form.lastname.label' | trans }}</label>
+                        <div class="form-widget">
+                            {{ form_row(registrationForm.lastname) }}
+                        </div>
+                    </div>
+                {% endif %}
+
+
                 <div class="form-group field-text">
                     <label for="email" class="sr-only form-control-label required">{{ 'service.registration.form.email.label' | trans }}</label>
                     <div class="form-widget">
@@ -27,6 +53,7 @@
                         {{ form_row(registrationForm.plainPassword) }}
                     </div>
                 </div>
+
                 
                 <div class="form-group form-check form-switch form-switch-lg w-100">
                     {{ form_widget(registrationForm.agreeTerms) }}

@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -37,9 +38,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Regex(pattern: '/^[a-zA-Z0-9]+$/', message: 'validators.username.alphanummeric')]
+    #[Assert\NotBlank(message: 'validators.general.blank')]
     private ?string $username = null;
 
     #[ORM\Column(length: 255, unique: true)]
+    #[Assert\NotBlank(message: 'validators.general.blank')]
+    #[Assert\Email(message: 'validators.email.invalid',)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -50,7 +55,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
 
     #[ORM\Column]
     private array $roles = ['ROLE_USER'];
-
 
     #[ORM\Column]
     private ?string $password = null;
@@ -415,7 +419,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         $this->twoFactor_secret_google = $googleAuthenticatorSecret;
     }
 
-    public function getBackupCodes(): ?Array
+    public function getBackupCodes(): ?array
     {
         return $this->twoFactor_backupCodes;
     }
@@ -427,7 +431,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     public function invalidateBackupCode(string $code): void
     {
         $key = array_search($code, $this->twoFactor_backupCodes);
-        if ($key !== false){
+        if ($key !== false) {
             unset($this->twoFactor_backupCodes[$key]);
         }
         $this->generateBackUpCode();
@@ -450,7 +454,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     {
         $codeLen = 6;
         for ($i = 0; $i < $count; $i++) {
-            $backUpCode = substr(str_shuffle(str_repeat('0123456789', mt_rand(1,10))), 1, $codeLen);
+            $backUpCode = substr(str_shuffle(str_repeat('0123456789', mt_rand(1, 10))), 1, $codeLen);
             $this->addBackUpCode($backUpCode);
         }
     }
@@ -459,6 +463,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     {
         return $this->twoFactor_trustedTokenVersion;
     }
-    
-
 }

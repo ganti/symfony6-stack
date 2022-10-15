@@ -35,11 +35,24 @@ service:
             username:
                 label: Username
                 placeholder: 'Your username'
+                messages:
+                    blank: 'Please enter your username'
+                    alphanummeric: 'Only letters and numbers are allowed'
             email:
                 label: Email
                 placeholder: john@doe.com
                 messages:
                     blank: 'Please enter your email'
+            firstname:
+                label: Firstname
+                placeholder: Firstname
+                messages:
+                    blank: 'Please enter your firstname'
+            lastname:
+                label: Lastname
+                placeholder: Lastname
+                messages:
+                    blank: 'Please enter your lastname'
             password:
                 label: Password
                 repeat_label: 'Repeat Password'
