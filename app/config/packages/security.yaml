@@ -27,7 +27,7 @@ security:
                     trusted_parameter_name: _trusted
                     
             login_throttling:
-                max_attempts: 1          # per minute ...
+                max_attempts: 3          # per minute ...
                 interval: '1 minutes' # ... or in a custom period
 
 

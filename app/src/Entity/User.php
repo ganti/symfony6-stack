@@ -44,6 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
 
     #[ORM\Column(length: 255, unique: true)]
     #[Assert\NotBlank(message: 'validators.general.blank')]
+    #[Assert\Email(message: 'validators.email.invalid',)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
