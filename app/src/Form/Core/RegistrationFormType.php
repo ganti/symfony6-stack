@@ -5,6 +5,7 @@ namespace App\Form\Core;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -12,9 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\LocaleType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
@@ -32,25 +31,17 @@ class RegistrationFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
-        if($options['ask_username'])
-        {
+        if ($options['ask_username']) {
             $builder ->add('username', TextType::class, [
                 'label' => $this->t('service.registration.form.username.label'),
                 'attr' => [ 'placeholder' => $this->t('service.registration.form.username.placeholder'),
                             'autocomplete' => 'username',
                             'class' => 'form-control'
                 ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => $this->t('service.registration.form.email.messages.blank'),
-                    ]),
-                ],
             ]);
         }
 
-        if($options['ask_name'])
-        {
+        if ($options['ask_name']) {
             $builder ->add('firstname', TextType::class, [
                 'label' => $this->t('service.registration.form.firstname.label'),
                 'attr' => [ 'placeholder' => $this->t('service.registration.form.firstname.placeholder'),
@@ -140,7 +131,7 @@ class RegistrationFormType extends AbstractType
             'ask_name' => false,
             'fistname' => null,
             'lastname' => null,
-            
+
         ]);
     }
 }

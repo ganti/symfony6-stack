@@ -15,9 +15,9 @@ parameters:
             login:
                 identifier: 'both' # username, email or both
             registration:
-                ask_username: false
+                ask_username: true
                 ask_name: false # firstname and lastname
-                 
+                
         mailer:
             from_email: 'team@root.dev'
             from_name: 'AcmeBotName'

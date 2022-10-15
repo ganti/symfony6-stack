@@ -45,8 +45,7 @@ class UserCrudController extends AbstractCrudController
         UserPasswordHasherInterface $passwordHasher,
         ContainerBagInterface $params,
         UserRepository $userRepository
-    )
-    {
+    ) {
         $this->adminContextProvider = $adminContextProvider;
         $this->adminUrlGenerator = $adminUrlGenerator;
         $this->security = $security;
@@ -201,7 +200,6 @@ class UserCrudController extends AbstractCrudController
                 if (!$this->getIsLoggedInUserEditingUserCrud() and $twofactorEnabled and $this->isGranted('ROLE_ADMIN')) {
                     yield BooleanField::new('TwoFactorEnabled', $this->t('admin.crud.user.label.TwoFactorEnabled'));
                 }
-
             }
 
             /*

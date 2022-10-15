@@ -35,6 +35,9 @@ service:
             username:
                 label: Username
                 placeholder: 'Your username'
+                messages:
+                    blank: 'Please enter your username'
+                    alphanummeric: 'Only letters and numbers are allowed'
             email:
                 label: Email
                 placeholder: john@doe.com

@@ -25,7 +25,7 @@ class TwoFactorController extends AbstractController
         $this->log = $log;
         $this->security = $security;
     }
-    
+
     #[Route("/authentication/2fa/enable", name:"app_2fa_enable")]
     #[IsGranted("ROLE_USER")]
     public function enable2fa(Request $request, GoogleAuthenticatorInterface $googleAutInterface, EntityManagerInterface $entityManager)
@@ -57,8 +57,8 @@ class TwoFactorController extends AbstractController
                 $entityManager->flush();
             }
         }
-    
-        
+
+
         return $this->render('view/core/2fa/enable2fa.html.twig', [
             'isEnabled' => $user->isTwoFactorEnabled(),
             'isLoggedInUser' => $isLoggedInUser,

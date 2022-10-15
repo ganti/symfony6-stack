@@ -1,0 +1,5 @@
+validators:
+    general:
+        blank: 'This value cant be blank'
+    username:
+        alphanummeric: 'Only letters and numbers are allowed'
