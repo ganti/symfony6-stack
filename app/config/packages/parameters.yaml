@@ -15,9 +15,8 @@ parameters:
             login:
                 identifier: 'both' # username, email or both
             registration:
-                ask_username: true
-                ask_name: true # firstname and lastname
-                ask_locale: true
+                ask_username: false
+                ask_name: false # firstname and lastname
                  
         mailer:
             from_email: 'team@root.dev'

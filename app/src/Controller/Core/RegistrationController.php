@@ -18,7 +18,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
-use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
 class RegistrationController extends AbstractController
 {
@@ -48,8 +47,13 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_auth_bridge');
         }
 
+        $options = [
+            'ask_username' => $this->getParameter('app')['core']['registration']['ask_username'],
+            'ask_name' => $this->getParameter('app')['core']['registration']['ask_name']
+        ];
+
         $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(RegistrationFormType::class, $user, $options);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -70,7 +74,6 @@ class RegistrationController extends AbstractController
             $user->setTimeFormat($this->getParameter('app')['time_format']); //Load global time format
             $user->setLocale($this->getParameter('app')['default_locale']); //Load global locale
 
-
             try {
                 $entityManager->persist($user);
                 $entityManager->flush();
@@ -85,6 +88,8 @@ class RegistrationController extends AbstractController
 
         return $this->render('view/core/registration/register.html.twig', [
             'registrationForm' => $form->createView(),
+            'askUsername' => $options['ask_username'],
+            'askName' => $options['ask_name']
         ]);
     }
 

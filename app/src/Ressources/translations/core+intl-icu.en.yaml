@@ -40,6 +40,16 @@ service:
                 placeholder: john@doe.com
                 messages:
                     blank: 'Please enter your email'
+            firstname:
+                label: Firstname
+                placeholder: Firstname
+                messages:
+                    blank: 'Please enter your firstname'
+            lastname:
+                label: Lastname
+                placeholder: Lastname
+                messages:
+                    blank: 'Please enter your lastname'
             password:
                 label: Password
                 repeat_label: 'Repeat Password'
