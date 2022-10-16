@@ -12,6 +12,16 @@ This stack contains some essentials to quick start  your symfony project:
 - **Database Logging**: Most critical and technical issues shall be logged into files, but some user actions may be logged into the database. A simple [Logging engine](https://github.com/ganti/symfony6-stack/blob/main/app/.env.dev) is used to log events into the database
 - **PHP Coding Standards Fixer**: normalize your PHP code with [CS-fixer](https://cs.symfony.com/)
 
+<<<<<<< Updated upstream
+=======
+
+<img src="/.github/img/login_forms.png" width="45%" alt="Ready to use Forms (Registration, mail verification, Login, 2FA, password reset">
+<img src="/.github/img/2fa_setup.png" width="45%" alt="two setup autentication setup">
+<img src="/.github/img/light_dark.png" width="45%" alt="Easyadmin with light and dark mode">
+<img src="/.github/img/email.png" width="45%" alt="Structured emailtemplate">
+
+
+>>>>>>> Stashed changes
 ## Installation
 
 ```bash
