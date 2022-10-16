@@ -8,7 +8,7 @@
    
       {% block email_body_content %}
          <p>
-            {{ 'service.generic.email.greeting' | trans }}
+            {{ 'service.generic.email.greeting' | trans }} {{ greeetingName }}
          </p>
          <p>
             {{ 'service.registration.email.body_text' | trans }}

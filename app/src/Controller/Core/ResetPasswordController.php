@@ -189,6 +189,7 @@ class ResetPasswordController extends AbstractController
             ->context([
                 'resetToken' => $resetToken,
                 'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
+                'greeetingName' => (!empty($user->getFirstname()) ? $user->getFirstname() : $user->getUsername()),
             ])
         ;
 
