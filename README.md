@@ -1,6 +1,6 @@
-# Symfony6 Admin Stack 
+# Symfony6 Stack 
 
-This stack contains some essentials to quick start  your symfony project:
+This stack contains some essentials to quick start your symfony project:
 
 - **Docker**: dockerized development environment
 - **Authentication**: [Registration](https://symfonycasts.com/screencast/symfony-security/registration-auth), [Email verfication](https://symfonycasts.com/screencast/symfony-security/verify-email), [Password Reset](https://symfonycasts.com/screencast/symfony-security/verify-email), [two-factor authentication (2FA)](https://symfony.com/bundles/SchebTwoFactorBundle/6.x/index.html) with BackupCodes, TrustedDevice
