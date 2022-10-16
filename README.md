@@ -25,7 +25,7 @@ This stack contains some essentials to quick start  your symfony project:
         <img src="/.github/img/2fa_setup.png" alt="two setup autentication setup">
         <img src="/.github/img/light_dark.png" alt="Easyadmin with light and dark mode">
     </td>
-    <td valign="top">
+    <td valign="top" width=50%>
         <img src="/.github/img/email.png" alt="Structured emailtemplate">
     </td>
   </tr>
