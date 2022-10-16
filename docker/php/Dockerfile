@@ -1,4 +1,4 @@
-FROM php:8.1.0-fpm
+FROM php:8.1.11-fpm
 
 RUN apt-get update && apt-get install -y git #In this place you can specify all the extensions you need.
 RUN docker-php-ext-install pdo_mysql
