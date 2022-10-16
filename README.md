@@ -45,7 +45,9 @@ Browse to [localhost:8001/login](http://localhost:8001/login) and use admin:admi
 ### Main configuration points
 - **app/.env.dev**/**app/.env.prod**: DATABASE_URL, MAILER_DSN
 - **app/config/packages/parameters.yaml**: App configuration (Locale, Timezone, Mailer settings)
--  **app/config/*.yaml**: many other settings
+- **app/config/packages/scheb_2fa.yaml**: two factor configuration  (backupcodes, trusted devices)
+- **app/config/*.yaml**: many other settings
+
 
 ### Makefile
 Here are a few make commands
