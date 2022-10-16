@@ -31,7 +31,7 @@ service:
         page:
             page_title: Registration
             header_text: 'Please fill out the following fields to register'
-            header_mailsent_text: 'We sent you a link to verify your email address'
+            header_mailsent_text: 'We sent you a link to verify your email address. Open the email and click the link. if you did not recieved the mail. you can login to resend the mail.'
         form:
             username:
                 label: Username
