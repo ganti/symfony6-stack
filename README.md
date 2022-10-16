@@ -13,10 +13,14 @@ This stack contains some essentials to quick start  your symfony project:
 - **PHP Coding Standards Fixer**: normalize your PHP code with [CS-fixer](https://cs.symfony.com/)
 
 
-<img src="/.github/img/login_forms.png" width="100%" alt="Ready to use Forms (Registration, mail verification, Login, 2FA, password reset">
-<img src="/.github/img/2fa_setup.png" width="45%" alt="two setup autentication setup"><img src="/.github/img/light_dark.png" width="45%" alt="Easyadmin with light and dark mode">
-<img src="/.github/img/email.png" width="45%" alt="Structured emailtemplate">
 
+
+<p float="left">
+    <img src="/.github/img/login_forms.png?" width="100%" alt="Ready to use Forms (Registration, mail verification, Login, 2FA, password reset">
+    <img src="/.github/img/2fa_setup.png" width="45%" alt="two setup autentication setup">
+    <img src="/.github/img/light_dark.png" width="45%" alt="Easyadmin with light and dark mode">
+    <img src="/.github/img/email.png" width="45%" alt="Structured emailtemplate">
+</p>
 
 ## Installation
 
