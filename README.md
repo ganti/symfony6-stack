@@ -15,8 +15,8 @@ This stack contains some essentials to quick start  your symfony project:
 
 
 <table>
-  <tr colspan=2>
-    <td>
+  <tr>
+    <td colspan=2>
         <img src="/.github/img/login_forms.png?" width="100%" alt="Ready to use Forms (Registration, mail verification, Login, 2FA, password reset">
     </td>
   </tr>
