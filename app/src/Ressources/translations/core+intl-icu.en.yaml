@@ -1,0 +1,97 @@
+service:
+    generic:
+        email:
+            greeting: Hey
+            farewell: Cheers
+            header: '<img src="http://placekitten.com/450/300" style="display: block;" />'
+            footer: 'This is the footer'
+        expire: 'This link will expire in {expire}.'
+        form:
+            submit:
+                label_back: Back to login
+    login:
+        page:
+            page_title: 'Acme Login'
+            submit_label: 'Log in'
+            reset_link: 'Reset password'
+            register_link: Register
+        form:
+            placeholder_email: Email
+            placeholder_username: Username
+            placeholder_both: Username or Email
+        twofactor:
+            page_title: 'Two Factor Authentication'  
+            info_text: 'Open your Authenticator app and type in the number.'        
+    registration:
+        email:
+            subject: 'Please confirm your email'
+            body_title: 'Please confirm your email'
+            body_text: 'Please confirm your email address by clicking the following link:'
+            button_text: 'Confirm my Email'
+        page:
+            page_title: Registration
+            header_text: 'Please fill out the following fields to register'
+            header_mailsent_text: 'We sent you a link to verify your email address. Open the email and click the link. if you did not recieved the mail. you can login to resend the mail.'
+        form:
+            username:
+                label: Username
+                placeholder: 'Your username'
+                messages:
+                    blank: 'Please enter your username'
+                    alphanummeric: 'Only letters and numbers are allowed'
+            email:
+                label: Email
+                placeholder: john@doe.com
+                messages:
+                    blank: 'Please enter your email'
+            firstname:
+                label: Firstname
+                placeholder: Firstname
+                messages:
+                    blank: 'Please enter your firstname'
+            lastname:
+                label: Lastname
+                placeholder: Lastname
+                messages:
+                    blank: 'Please enter your lastname'
+            password:
+                label: Password
+                repeat_label: 'Repeat Password'
+                messages:
+                    blank: 'Please enter a password'
+                    no_match: 'The password fields must match.'
+                    min_lenght: 'Your password should be at least {limit} characters'
+            terms:
+                label: 'Agree terms'
+                url: /en/terms
+                messages:
+                    agree: 'You should agree to our terms.'
+            submit:
+                label: Register
+    verify_mail:
+        page:
+            title: 'Resend Email Verification'
+            text: 'Enter your email address and we will send you a link to verify your account'
+            submit_label: 'Send email'
+        message:
+            not_verified: Your mailadress is not verfied yet. <a href="{url}">Send mail again</a>
+    password_reset:
+        email:
+            subject: 'Your password reset request'
+            body_title: 'Reset password'
+            body_text: 'To reset your password, please click button below'
+            button_text: 'Reset Password'
+        page:
+            title: 'Reset Password'
+            text: 'Enter your email address and we will send you a link to reset your password.'
+            submit_label: 'Send password reset email'
+        page_sent:
+            title: 'Password Reset Email Sent'
+            text_intro: 'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.'
+            text_outro: 'If you don''t receive an email please check your spam folder or <a href="{url}">try again</a>.'
+            submit_label: 'Back to page'
+        page_reset:
+            title: 'Reset Password'
+            text: ''
+            submit_label: 'Reset password now'
+

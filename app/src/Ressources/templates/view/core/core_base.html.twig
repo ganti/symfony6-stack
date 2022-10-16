@@ -1,0 +1,37 @@
+{% extends '@!EasyAdmin/page/login.html.twig' %}
+{% trans_default_domain 'core' %}
+
+{% if page_title is not defined or page_title is empty %}
+    {% set page_title = 'missing page_title' %}
+{% endif %}
+
+{% block wrapper_wrapper %}
+    <div class="login-wrapper">
+        <header class="main-header mb-4">
+            <div id="header-logo">
+                {% block header_logo %}
+                    {% if page_title %}
+                        <div class="logo {{ page_title|length > 14 ? 'logo-long' }}">
+                            <h3>{{ page_title|raw }}</h3>
+                        </div>
+                    {% endif %}
+                {% endblock header_logo %}
+            </div>
+        </header>
+
+        {% block login_alert %}
+        {% if error|default(false) %}
+            <div class="w-100 alert alert-danger">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+        {% endblock %}
+
+        <section class="content">
+            {% block page_content %}
+                    <h1>Empty block page_content</h1>
+            {% endblock %}
+        </section>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,85 @@
+admin:
+    dashboard:
+        menu:
+            label:
+                dashboard: Dashboard
+                administration: Administration
+                users: Users
+                user_roles: 'User Roles'
+                system: System
+                logs: Logs
+                phpinfo: phpinfo
+                my_profile: 'My Profile'
+    crud:
+        generic:
+            is_active: 'is active'
+            created_at: 'created at'
+            updated_at: 'updated at'
+        user:
+            titles:
+                index_page: Users
+                account_information: 'Account Information'
+                change_password: 'Change password'
+                admin_settings: 'Admin Settings'
+                user_settings: 'User Settings'
+                security: 'Security'
+            label:
+                username: Username
+                email: eMail
+                user_roles: 'User Roles'
+                fullname: 'Full name'
+                firstname: Firstname
+                lastname: Lastname
+                new_password: Password
+                new_password_repeat: 'Repeat password'
+                time_zone: Timezone
+                country: Country
+                mail_verified: 'Email is verfied'
+                user: User
+                date_format: 'Date format'
+                time_format: 'Time format'
+                locale: Language
+            messages:
+                passwort_not_match: 'Passwords dont match'
+            twofactor:
+                badge:
+                    enabled: 'two-step verification is enabled'
+                    disabled: 'two-step verification is not enabled'
+                label:
+                    explain_paragraph: 'The two-step verification increases the security of your account. In addition to your password, a code is required in a second step, which is displayed on your smartphone.'
+                    apps_intro: 'You may use one of the following apps for verification:'
+                    link_enable: 'Click here to enable two-step verifcation'
+                    link_disable_intro: 'If you want to disable the two-step verifcation:'
+                    link_disable: 'Click here to disable'
+                    step1: 'Step 1: scan this QR-Code'
+                    step2: 'Step 2: verfication code'
+                    submit_enable: 'Enable verification'
+                backup:
+                    title: 'Backup Codes'
+                    intro: 'Backup codes are one-time authentication codes, which can be used instead of the actual codes. They''re meant as emergency codes, when the authentication device is not available, and you have to pass the two-factor authentication process.'
+                messages:
+                    verification_code_wrong: 'the verification code is wrong'
+                    
+        user_roles:
+            titles:
+                index_page: 'User Roles'
+            label:
+                new_role: 'New Role'
+                role: Role
+                name: Name
+                description: Description
+                parent_roles: 'Parent Roles'
+        logs:
+            titles:
+                index_page: Logs
+                general: General
+                request_information: 'Request Information'
+            label:
+                level: Level
+                context: Context
+                subcontext: Subcontext
+                message: Message
+                request_method: 'Request Method'
+                request_path: 'Request Path'
+                client_ip: 'Client IP'
+                client_locale: 'Client locale'

@@ -1,0 +1,37 @@
+{% extends 'email/base.email.html.twig' %}
+{% trans_default_domain 'core' %}
+
+{% block email_body %}
+   {% embed 'email/include/body.email.html.twig' %}
+      {% trans_default_domain 'core' %}
+      {% set email_body_title = 'service.registration.email.body_title' | trans %}
+   
+      {% block email_body_content %}
+         <p>
+            {{ 'service.generic.email.greeting' | trans }} {{ greeetingName }}
+         </p>
+         <p>
+            {{ 'service.registration.email.body_text' | trans }}
+         </p>
+
+         {% include 'email/include/spacingTable.html.twig' %}
+
+         <center>
+            {% set btnURL = signedUrl|raw %}
+            {% set btnText = 'service.registration.email.button_text' | trans %}
+            {% include 'email/include/button.html.twig' with {'btnURL': btnURL, 'btnText' : btnText} %}
+         </center>
+
+         {% include 'email/include/spacingTable.html.twig' %}
+
+         <p>
+            {{ 'service.generic.expire'| trans({'expire' : expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle')}) }}
+         </p>   
+
+         <p>
+            {{ 'service.generic.email.farewell' | trans }}
+         </p>                 
+                              
+      {% endblock email_body_content %}
+   {% endembed %}
+{% endblock email_body %}

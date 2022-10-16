@@ -1,0 +1,22 @@
+{% trans_default_domain 'core' %}
+{% if footer_background_color is not defined or footer_background_color is null %}
+    {%set footer_background_color = '#ee4c50' %}
+{% endif %}
+{% if footer_font_color is not defined or footer_font_color is null %}
+    {%set footer_font_color = '#ffffff' %}
+{% endif %}
+
+
+<tr>
+   <td bgcolor="{{ footer_background_color }}" style="padding: 30px 30px;">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+         <tr>
+            <td style="color: {{ footer_font_color }}; font-family: Arial, sans-serif; font-size: 14px;">
+                {% block email_footer_content %}
+                    <p style="margin: 0;">{{ 'service.generic.email.footer'|trans }}</p>
+                {% endblock %}
+            </td>
+         </tr>
+      </table>
+   </td>
+</tr>

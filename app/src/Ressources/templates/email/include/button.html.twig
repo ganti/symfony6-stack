@@ -1,0 +1,34 @@
+{% if btnBackgroundColor is not defined or btnBackgroundColor is null %}
+    {% set btnBackgroundColor = '#6174d1' %}
+{% endif %} 
+
+{% if btnFontColor is not defined or btnFontColor is null %}
+    {% set btnFontColor = '#FFFFFF' %}
+{% endif %} 
+
+{% if btnURL is not defined or btnURL is null %}
+    {% set btnURL = '#noURLdefined' %}
+{% endif %} 
+
+{% if btnText is not defined or btnText is null %}
+    {% set btnText = '#missingButtonText' %}
+{% endif %} 
+
+         
+
+<div> 
+    <!--[if mso]>
+        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ btnURL }}" target="_blank" style="{% include 'email/include/stylesButtonMso.html.twig' %}" arcsize="10%" stroke="{{btnFontColor}}" fillcolor="{{btnBackgroundColor}}">
+        <w:anchorlock/>
+        <center>
+    <![endif]-->
+        <a href="{{ btnURL }}" target="_blank" style="{% include 'email/include/stylesButton.html.twig' %}">{{ btnText }}</a>
+        <!--[if mso]>
+        </center>
+        </v:roundrect>
+    <![endif]-->
+</div>
+
+
+
+
