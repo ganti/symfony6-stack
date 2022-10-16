@@ -17,12 +17,13 @@ This stack contains some essentials to quick start  your symfony project:
 <table>
   <tr>
     <td colspan=2>
-        <img src="/.github/img/login_forms.png?" alt="Ready to use Forms (Registration, mail verification, Login, 2FA, password reset">
+        <img src="/.github/img/login_forms.png?" alt="Ready to use Forms (Registration, mail verification, Login, 2FA, password reset"><br>
+        <img src="/.github/img/2fa_setup.png" alt="two setup autentication setup">
     </td>
   </tr>
   <tr>
     <td valign="top">
-        <img src="/.github/img/2fa_setup.png" alt="two setup autentication setup">
+        <img src="/.github/img/logs.png" alt="simple user event logging">
         <img src="/.github/img/light_dark.png" alt="Easyadmin with light and dark mode">
     </td>
     <td valign="top" width=50%>
