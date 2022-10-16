@@ -9,79 +9,93 @@
             <div class="alert alert-danger" role="alert">{{ flashError }}</div>
         {% endfor %}
 
-        {{ form_start(registrationForm) }}
-                <div>
-                    {{ 'service.registration.page.header_text' | trans }}
-                </div>
-
-
-                {% if askUsername %}
-                    <div class="form-group field-text">
-                        <label for="username" class="sr-only form-control-label required">{{ 'service.registration.form.username.label' | trans }}</label>
-                        <div class="form-widget">
-                            {{ form_row(registrationForm.username) }}
-                        </div>
-                    </div>
-                {% endif %}
-
-                {% if askName %}
-                    <div class="form-group field-text">
-                        <label for="firstname" class="sr-only form-control-label required">{{ 'service.registration.form.firstname.label' | trans }}</label>
-                        <div class="form-widget">
-                            {{ form_row(registrationForm.firstname) }}
-                        </div>
-                    </div>
-                    <div class="form-group field-text">
-                        <label for="lastname" class="sr-only form-control-label required">{{ 'service.registration.form.lastname.label' | trans }}</label>
-                        <div class="form-widget">
-                            {{ form_row(registrationForm.lastname) }}
-                        </div>
-                    </div>
-                {% endif %}
-
-
-                <div class="form-group field-text">
-                    <label for="email" class="sr-only form-control-label required">{{ 'service.registration.form.email.label' | trans }}</label>
-                    <div class="form-widget">
-                        {{ form_row(registrationForm.email) }}
-                    </div>
-                </div>
-
-                <div class="form-group field-text">
-                    <label for="password" class="sr-only form-control-label required">{{ 'service.registration.form.password.label' | trans }}</label>
-                    <div class="form-widget">
-                        {{ form_row(registrationForm.plainPassword) }}
-                    </div>
-                </div>
-
-                
-                <div class="form-group form-check form-switch form-switch-lg w-100">
-                    {{ form_widget(registrationForm.agreeTerms) }}
-                    <label class="form-check-label" for="flexSwitchCheckDefault">
-                        {% set termsLabel = 'service.registration.form.terms.label' | trans %}
-                        {% set termsURL = 'service.registration.form.terms.url' | trans %}
-                        {% if termsURL is not null and termsURL != '' and termsURL != 'service.registration.form.terms.url' %}
-                            <a href="{{termsURL}}" target="_blank">{{ termsLabel }}</a>
-                        {% else %}
-                            {{ termsLabel }}
-                        {% endif %}
-                    </label>
-                </div>
-
-
-                <div class="form-group field-button">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block w-100" onclick="this.form.submit();">
-                        {{ 'service.registration.form.submit.label' | trans }}
-                    </button>
-                </div>
-            {{ form_end(registrationForm) }}
-            <div class="form-group field-button">
-                <form action="{{ path('app_login') }}">
-                    <button type="submit" class="btn btn-lg btn-block w-100">
-                        {{ 'service.generic.form.submit.label_back'|trans }}
-                    </button>
-                </form>
+        {% if mailSent|default(false) %}
+            <div>
+                {{ 'service.registration.page.header_mailsent_text' | trans }}
             </div>
+            <div class="form-group field-button">
+                    <form action="{{ path('app_login') }}">
+                        <button type="submit" class="btn btn-lg btn-block w-100">
+                            {{ 'service.generic.form.submit.label_back'|trans }}
+                        </button>
+                    </form>
+                </div>
+
+        {% else %}
+            {{ form_start(registrationForm) }}
+                    <div>
+                        {{ 'service.registration.page.header_text' | trans }}
+                    </div>
+
+
+                    {% if askUsername %}
+                        <div class="form-group field-text">
+                            <label for="username" class="sr-only form-control-label required">{{ 'service.registration.form.username.label' | trans }}</label>
+                            <div class="form-widget">
+                                {{ form_row(registrationForm.username) }}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if askName %}
+                        <div class="form-group field-text">
+                            <label for="firstname" class="sr-only form-control-label required">{{ 'service.registration.form.firstname.label' | trans }}</label>
+                            <div class="form-widget">
+                                {{ form_row(registrationForm.firstname) }}
+                            </div>
+                        </div>
+                        <div class="form-group field-text">
+                            <label for="lastname" class="sr-only form-control-label required">{{ 'service.registration.form.lastname.label' | trans }}</label>
+                            <div class="form-widget">
+                                {{ form_row(registrationForm.lastname) }}
+                            </div>
+                        </div>
+                    {% endif %}
+
+
+                    <div class="form-group field-text">
+                        <label for="email" class="sr-only form-control-label required">{{ 'service.registration.form.email.label' | trans }}</label>
+                        <div class="form-widget">
+                            {{ form_row(registrationForm.email) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group field-text">
+                        <label for="password" class="sr-only form-control-label required">{{ 'service.registration.form.password.label' | trans }}</label>
+                        <div class="form-widget">
+                            {{ form_row(registrationForm.plainPassword) }}
+                        </div>
+                    </div>
+
+                    
+                    <div class="form-group form-check form-switch form-switch-lg w-100">
+                        {{ form_widget(registrationForm.agreeTerms) }}
+                        <label class="form-check-label" for="flexSwitchCheckDefault">
+                            {% set termsLabel = 'service.registration.form.terms.label' | trans %}
+                            {% set termsURL = 'service.registration.form.terms.url' | trans %}
+                            {% if termsURL is not null and termsURL != '' and termsURL != 'service.registration.form.terms.url' %}
+                                <a href="{{termsURL}}" target="_blank">{{ termsLabel }}</a>
+                            {% else %}
+                                {{ termsLabel }}
+                            {% endif %}
+                        </label>
+                    </div>
+
+
+                    <div class="form-group field-button">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block w-100" onclick="this.form.submit();">
+                            {{ 'service.registration.form.submit.label' | trans }}
+                        </button>
+                    </div>
+                {{ form_end(registrationForm) }}
+                <div class="form-group field-button">
+                    <form action="{{ path('app_login') }}">
+                        <button type="submit" class="btn btn-lg btn-block w-100">
+                            {{ 'service.generic.form.submit.label_back'|trans }}
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
     {% endblock %}
 {% endblock %}
 

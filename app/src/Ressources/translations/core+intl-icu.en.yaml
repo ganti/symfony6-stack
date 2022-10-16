@@ -31,6 +31,7 @@ service:
         page:
             page_title: Registration
             header_text: 'Please fill out the following fields to register'
+            header_mailsent_text: 'We sent you a link to verify your email address'
         form:
             username:
                 label: Username

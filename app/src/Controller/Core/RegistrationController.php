@@ -55,6 +55,7 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user, $options);
         $form->handleRequest($request);
+        $mailSent = false;
 
         if ($form->isSubmitted() && $form->isValid()) {
             if (empty($user->getUsername())) {
@@ -81,15 +82,15 @@ class RegistrationController extends AbstractController
                 $this->log->user_created($user);
             }
 
-            $this->sendVerificationMail($user);
+            $mailSent = $this->sendVerificationMail($user);
 
-            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('view/core/registration/register.html.twig', [
             'registrationForm' => $form->createView(),
             'askUsername' => $options['ask_username'],
-            'askName' => $options['ask_name']
+            'askName' => $options['ask_name'],
+            'mailSent' => $mailSent
         ]);
     }
 
@@ -104,6 +105,7 @@ class RegistrationController extends AbstractController
                 ->subject($this->t('service.registration.email.subject'))
                 ->htmlTemplate('email/core/registration_confirmation_email.html.twig')
         );
+        return true;
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
