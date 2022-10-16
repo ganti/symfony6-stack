@@ -7,7 +7,7 @@ This stack contains some essentials to quick start your symfony project:
 - **EasyAdmin 4.0**: [EasyAdmin](https://github.com/EasyCorp/EasyAdminBundle) is a fast, beautiful and modern admin generator for Symfony applications.
 - **Email Templates**:  most used elements  (header, footer, button) in separated files for an easy include
 - **Multiple Languages**: the core features are in translation fiels, easy implementation of other languages
-- **API Plattform**: The [API Platform](https://api-platform.com/) with token Authentication is ready to use.
+- **API Plattform**: The [API Platform](https://api-platform.com/) with token authentication is ready to use.
 - **Traits**: [Reusable Entityfields](https://github.com/ganti/symfony6-stack/tree/main/app/src/Entity/Traits): createdAt, updatedAt, deletedAt (softdelete), isActive, UUID
 - **Database Logging**: Most critical and technical issues shall be logged into files, but some user actions may be logged into the database. A simple [Logging engine](https://github.com/ganti/symfony6-stack/blob/main/app/.env.dev) is used to log events into the database
 - **PHP Coding Standards Fixer**: normalize your PHP code with [CS-fixer](https://cs.symfony.com/)
