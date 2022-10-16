@@ -17,16 +17,16 @@ This stack contains some essentials to quick start  your symfony project:
 <table>
   <tr>
     <td colspan=2>
-        <img src="/.github/img/login_forms.png?" width="100%" alt="Ready to use Forms (Registration, mail verification, Login, 2FA, password reset">
+        <img src="/.github/img/login_forms.png?" alt="Ready to use Forms (Registration, mail verification, Login, 2FA, password reset">
     </td>
   </tr>
   <tr>
     <td valign="top">
-        <img src="/.github/img/2fa_setup.png" width="45%" alt="two setup autentication setup">
-        <img src="/.github/img/light_dark.png" width="45%" alt="Easyadmin with light and dark mode">
+        <img src="/.github/img/2fa_setup.png" alt="two setup autentication setup">
+        <img src="/.github/img/light_dark.png" alt="Easyadmin with light and dark mode">
     </td>
     <td valign="top">
-        <img src="/.github/img/email.png" width="45%" alt="Structured emailtemplate">
+        <img src="/.github/img/email.png" alt="Structured emailtemplate">
     </td>
   </tr>
  </table>
